@@ -1,0 +1,135 @@
+<?php
+// $Id: shadowbox.module,v 1.1 2008/04/16 11:46:59 psynaptic Exp $
+
+/**
+ * Implementation of hook_help().
+ */
+function shadowbox_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#shadowbox':
+      return '<p>'. t('Shadowbox help will go here. You can access the !shadowbox page.',
+          array('!shadowbox' => l(t('Shadowbox configuration'), 'admin/settings/shadowbox'))) .'</p>';
+    case 'admin/settings/shadowbox':
+      return t('<p>This is the help text for the Shadowbox settings page.</p>');
+  }
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function shadowbox_menu() {
+  $items = array();
+
+  $items['admin/settings/shadowbox'] = array(
+     'title' => t('Shadowbox'),
+     'page callback' => 'drupal_get_form',
+     'page arguments' => array('shadowbox_admin_settings'),
+     'access callback' => 'user_access',
+     'access arguments' => array('administer shadowbox'),
+     'description' => t('Configure the settings for Shadowbox'),
+     'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_perm().
+ */
+function shadowbox_perm() {
+  return array('administer shadowbox');
+}
+
+/**
+ * Implementation of hook_init().
+ */
+function shadowbox_init() {
+  $path = drupal_get_path('module', 'shadowbox');
+  $options['shadowbox']['shadowbox_path'] = url() . $path .'/shadowbox/';
+  $options['shadowbox']['shadowbox_options_animate'] = variable_get('shadowbox_options_animate', TRUE);
+  $options['shadowbox']['shadowbox_options_animation_sequence'] = variable_get('shadowbox_options_animation_sequence', 'wh');
+  $options['shadowbox']['shadowbox_options_overlay_color'] = variable_get('shadowbox_options_overlay_color', '#000');
+  drupal_add_js($options, 'setting');
+}
+
+/**
+ * Implementation of hook_settings().
+ */
+function shadowbox_admin_settings() {
+  $form['shadowbox'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Global settings'),
+    '#access' => user_access('administer shadowbox'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['shadowbox']['shadowbox_enabled'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Shadowbox'),
+    '#default_value' => variable_get('shadowbox_enabled', FALSE),
+    '#description' => t('Check this box to enable Shadowbox for the site.'),
+  );
+  $form['shadowbox_options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Shadowbox options'),
+    '#description' => t('Shadowbox is highly configurable, but can also be used with little to no configuration at all. The following is a list of options that may be used to configure Shadowbox.'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#access' => user_access('administer shadowbox'),
+  );
+  $form['shadowbox_options']['shadowbox_options_animate'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('animate'),
+    '#description' => t('Set this false to disable all fancy dimension and opacity animations. This can improve the overall effect on computers with poor performance. Defaults to true.'),
+    '#default_value' => variable_get('shadowbox_options_animate', TRUE),
+  );
+  $form['shadowbox_options']['shadowbox_options_animation_sequence'] = array(
+    '#type' => 'select',
+    '#title' => t('animSequence'),
+    '#multiple' => FALSE,
+    '#description' => t('The animation sequence to use when resizing Shadowbox. May be either Width then height, Height then width, or Simultaneously. Defaults to Width then height.'),
+    '#options' => array(
+      'wh' => t('Width then height'),
+      'hw' => t('Height then width'),
+      'sync' => t('Simultaneously'),
+    ),
+    '#default_value' => variable_get('shadowbox_options_animation_sequence', 'wh'),
+  );
+  $form['shadowbox_options']['shadowbox_options_overlay_color'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Overlay color'),
+    '#description' => t('Select a hexadecimal color value for the overlay.'),
+    '#size' => 8,
+    '#maxlength' => 7,
+    '#default_value' => variable_get('shadowbox_options_overlay_color', '#000'),
+    '#validate' => array('shadowbox_valiadate'),
+  );
+
+  return system_settings_form($form);
+}
+
+function shadowbox_admin_settings_validate($form, &$form_state) {
+  if ($form_state['values']['shadowbox_options_overlay_color'] == '') {
+    form_set_error('shadowbox_options_overlay_color', t('You must enter a value for Overlay color.'));
+  }
+  elseif (!preg_match('/^#[a-f0-9]{3}([a-f0-9]{3})?$/', $form_state['values']['shadowbox_options_overlay_color'])) {
+    form_set_error('shadowbox_options_overlay_color', 'You didn\'t enter a properly formed hex value (e.g. #000 or #000000 for black.)');
+  }
+}
+
+/**
+ * Implementation of hook_nodeapi().
+ */
+function shadowbox_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
+  switch ($op) {
+    case 'view':
+      // The node is about to be presented to the user. The module may change
+      // $node->body prior to presentation. This hook will be called after
+      // hook_view(), so the module may assume the node is filtered and now contains HTML.
+      $path = drupal_get_path('module', 'shadowbox');
+      drupal_add_css($path ."/shadowbox/src/css/shadowbox.css");
+      drupal_add_js($path ."/shadowbox/src/js/adapter/shadowbox-jquery.js");
+      drupal_add_js($path ."/shadowbox/src/js/shadowbox.js");
+      drupal_add_js($path ."/shadowbox.js");
+  }
+}

@@ -1,0 +1,25 @@
+<?php
+// $Id $
+
+/**
+ * Implementation of hook_install()
+ */
+function shadowbox_install() {
+  // log the installation in watchdog
+  watchdog('shadowbox', 'Shadowbox module was installed');
+}
+
+/**
+ * Implementation of hook_uninstall()
+ */
+function shadowbox_uninstall() {
+  // delete the variables we created
+  variable_del('shadowbox_path');
+  variable_del('shadowbox_enabled');
+  variable_del('shadowbox_options_animate');
+  variable_del('shadowbox_options_animation_sequence');
+  variable_del('shadowbox_options_overlay_color');
+  // log the uninstallation in watchdog
+  watchdog('shadowbox', 'Shadowbox module was uninstalled');
+}
+

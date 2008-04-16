@@ -1,0 +1,4 @@
+; $Id: shadowbox.info,v 1.1 2008/04/16 11:46:59 psynaptic Exp $
+name = Shadowbox
+description = "Enables Shadowbox, a JavaScript modal media viewer application"
+core = 6.x
