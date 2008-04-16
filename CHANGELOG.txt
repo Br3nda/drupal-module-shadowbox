@@ -1,0 +1,10 @@
+$Id: CHANGELOG.txt,v 1.1 2008/04/16 15:53:52 psynaptic Exp $
+
+
+Changelog
+---------
+
+2008-Apr-16, Initial Commit
+
+1. Created module
+2. Added options for animate, animSequence, overlayColor

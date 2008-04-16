@@ -1,0 +1,29 @@
+$Id: INSTALL.txt,v 1.1 2008/04/16 15:53:52 psynaptic Exp $
+
+
+Installation
+------------
+
+1. Place the shadowbox directory in your modules directory (usually
+sites/all/modules/shadowbox)
+
+2. Download the 'code only' Shadowbox distribution:
+http://mjijackson.com/shadowbox/download.php?code
+
+3. Extract the download and place it in the shadowbox module directory
+(sites/all/modules/shadowbox/shadowbox)
+
+4. Enable the Shadowbox module (admin/build/modules)
+
+5. Visit the Shadowbox configuration page to review the settings
+(admin/settings/shadowbox)
+
+6. Add an image link to test out Shadowbox:
+
+ Using HTML:
+
+ <a href="image.jpg" rel="shadowbox">Click me</a>
+
+ Using PHP:
+
+ <?php print l('Click me', 'image.jpg', array('rel' => 'shadowbox')); ?>
