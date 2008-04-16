@@ -1,5 +1,5 @@
 <?php
-// $Id $
+// $Id: shadowbox.install,v 1.2 2008/04/16 15:51:48 psynaptic Exp $
 
 /**
  * Implementation of hook_install()

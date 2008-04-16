@@ -1,4 +1,4 @@
-// $Id: shadowbox.js,v 1.1 2008/04/16 11:46:59 psynaptic Exp $
+// $Id: shadowbox.js,v 1.2 2008/04/16 15:51:48 psynaptic Exp $
 
 $(document).ready(function(){
   var options = {
