@@ -1,7 +1,15 @@
-$Id: README.txt,v 1.2 2008/04/16 15:51:48 psynaptic Exp $
+$Id: README.txt,v 1.3 2008/04/24 14:57:24 psynaptic Exp $
 
+AUTHOR/MAINTAINERS
+------------------
 
-Description
+Module created by Richard Burford, aka, psynaptic
+http://freestylesystems.co.uk
+
+Shadowbox created by Michael J. I. Jackson
+http://mjijackson.com
+
+DESCRIPTION
 -----------
 
 "Shadowbox is a cross-browser, cross-platform, cleanly-coded and
@@ -16,44 +24,25 @@ type functionality for viewing images. The plan for the future is to add more
 advanced configuration options for images and to add for support for video,
 flash, and web content in general.
 
-
-Requirements
-------------
-
-This module requires Drupal 6.x
-
-Why no 5.x version?
-
-A Drupal 5.x version is unlikely due to the old version of jQuery that ships
-with core and that jquery_update does not update to the required version for
-Shadowbox to function correctly. There seems to be a conflict between older
-versions of jQuery and the 'animate' setting within Shadowbox that stops it from
-working. I may consider releasing a version that doesn't use the animate feature
-if there is enough call for it.
-
-
-Installation
+INSTALLATION
 ------------
 
 See INSTALL.txt
 
-
-Issues
+ISSUES
 ------
 
 There is currently a bug in Shadowbox when using a setting of Simultaneous for
 Animation sequence. A possible fix is posted on the Shadowbox forum:
 http://www.nabble.com/Box-builds-down-then-slides-up-into-place-to15718047.html#a15718047
 
-
-Author/Maintainers
-------------------
-
-Written by Richard Burford, aka, psynaptic rich@freestylesystems.co.uk
-http://freestylesystems.co.uk
-
-
-Changelog
+CHANGELOG
 ---------
 
 See CHANGELOG.txt
+
+KNOWN ISSUES
+------------
+
+There is currenly a bug when setting the 'Enable animation' setting to unchecked
+where the next/previous item cannot be found and the Shadowbox stalls.
