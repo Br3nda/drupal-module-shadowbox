@@ -1,5 +1,6 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.1 2008/05/04 19:41:09 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.2 2008/05/12 22:46:45 psynaptic Exp $
+
 
 /**
  * Implementation of hook_help().
@@ -21,13 +22,14 @@ function shadowbox_help($path, $arg) {
       $output .= '<p>'. t('Media can be grouped into a gallery using <code>shadowbox[name]</code> where <code>name</code> is any name you wish to apply. The value of <code>[name]</code> is only used internally by Shadowbox and won\'t be shown to the user.') .'</p>';
       $output .= '<p>'. t('<code><pre>&lt;a href=&quot;/files/image1.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 1&quot;&gt;Image&lt;/a&gt;
 &lt;a href=&quot;/files/image2.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 2&quot;&gt;Image&lt;/a&gt;
-&lt;a href=&quot;/files/image3.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 3&quot;&gt;Image&lt;/a&gt;</pre></code>'). '</p>';
+&lt;a href=&quot;/files/image3.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 3&quot;&gt;Image&lt;/a&gt;</pre></code>') .'</p>';
       $output .= '<strong>'. t('External URL:') .'</strong>';
       $output .= '<p>'. t('A powerful feature of Shadowbox is the ability to open web pages directly on top of the current page. Try out the example and see how the site still functions as normal on top of the originating page.') .'</p>';
       $output .= '<p>'. t('<code><pre>&lt;a href=&quot;http://google.com&quot; rel=&quot;shadowbox&quot; title=&quot;Google&quot;&gt;Google&lt;/a&gt;</pre></code>') .'<p>';
       $output .= '<h3>'. t('Advanced usage:') .'</h3>';
       $output .= '<p>'. t('Shadowbox allows you to specify options on a per-instance basis by using a JSON-formatted parameter. More information on this feature can be found on the <a href="!shadowbox_usage">Shadowbox usage page</a>.', array('!shadowbox_usage' => url('http://mjijackson.com/shadowbox/doc/usage.html#markup', array('absolute' => TRUE)))) .'</p>';
       return $output;
+
     case 'admin/settings/shadowbox':
       return t('<p>This page provides access to the Shadowbox settings. The settings work globally so any changes made here will affect Shadowbox for the entire site.</p>');
   }
@@ -97,7 +99,10 @@ function shadowbox_init() {
 }
 
 /**
- * Implementation of hook_settings().
+ * FAPI definition for the Shadowbox admin settings form.
+ *
+ * @ingroup forms
+ * @see shadowbox_admin_settings_validate()
  */
 function shadowbox_admin_settings() {
   // Global settings
@@ -397,6 +402,9 @@ function shadowbox_admin_settings() {
   return system_settings_form($form);
 }
 
+/**
+ * Validate admin settings form inputs.
+ */
 function shadowbox_admin_settings_validate($form, &$form_state) {
   $asset_url = $form_state['values']['shadowbox_asset_url'];
   if (!preg_match('!^(/[a-z0-9_-]+)+(/{1}$)!i', $asset_url)) {
@@ -437,7 +445,7 @@ function shadowbox_admin_settings_validate($form, &$form_state) {
     form_set_error('overlay_color', 'You must enter a properly formed hex value (e.g. #000 or #000000 for black.)');
   }
   $opacity = $form_state['values']['shadowbox_overlay_opacity'];
-  if ($opacity == '' || (floor($opacity) != 0  && $opacity != 1)) {
+  if ($opacity == '' || (floor($opacity) != 0 && $opacity != 1)) {
     form_set_error('overlay_opacity', 'You must enter a decimal number between 0 and 1.');
   }
   $background_image = $form_state['values']['shadowbox_background_image'];
@@ -452,15 +460,15 @@ function shadowbox_admin_settings_validate($form, &$form_state) {
     $form_state['values']['shadowbox_viewport_padding'] = (int)$viewport_padding;
   }
   $keys_close = $form_state['values']['shadowbox_keys_close'];
-  if (!_validate_keys_string($keys_close)) {
+  if (_validate_keys_string($keys_close)) {
     form_set_error('shadowbox_keys_close', 'You must enter a properly formed string of keys or keycodes seprated by a space.');
   }
   $keys_previous = $form_state['values']['shadowbox_keys_previous'];
-  if (!_validate_keys_string($keys_previous)) {
+  if (_validate_keys_string($keys_previous)) {
     form_set_error('shadowbox_keys_previous', 'You must enter a properly formed string of keys or keycodes seprated by a space.');
   }
   $keys_next = $form_state['values']['shadowbox_keys_next'];
-  if (!_validate_keys_string($keys_next)) {
+  if (_validate_keys_string($keys_next)) {
     form_set_error('shadowbox_keys_next', 'You must enter a properly formed string of keys or keycodes seprated by a space.');
   }
 }
@@ -473,32 +481,49 @@ function shadowbox_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
     switch ($op) {
       case 'view':
         $path = drupal_get_path('module', 'shadowbox');
-
-        drupal_add_css($path ."/shadowbox/src/css/shadowbox.css");
-        drupal_add_js($path ."/shadowbox/src/js/adapter/shadowbox-jquery.js");
-        drupal_add_js($path ."/shadowbox/src/js/shadowbox.js");
+        drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
+        drupal_add_js($path ."/shadowbox/build/js/adapter/shadowbox-jquery.js");
+        drupal_add_js($path ."/shadowbox/build/js/shadowbox.js");
         drupal_add_js($path ."/shadowbox.js");
     }
   }
 }
 
 /**
- * Convert a numerical string in an array to an integer.
+ * Convert numerical value(s) within a delimited string to integer(s).
+ *
+ * Explode a delimted string e.g. 'a b 2' or 'a,b,2' and type cast numeric
+ * string values to int.
+ *
+ * @param $string
+ *   A delimited string containing a numerical value.
+ * @param $delimiter
+ *   The boundary string by which to explode.
+ *
+ * @return
+ *   An array containing strings and integrers.
  */
-function _explode_to_int($array, $delimiter) {
-  foreach (explode($delimiter, $array) as $value) {
+function _explode_to_int($string, $delimiter) {
+  foreach (explode($delimiter, $string) as $value) {
     (is_numeric($value)) ? $output[] = (int)$value : $output[] = $value;
   }
   return $output;
 }
 
 /**
- * Validate a string of keys and/or keycodes.
+ * Validate a delimited string of keys and/or keycodes.
+ *
+ * @param $input
+ *   A delimited string of keys and/or keycodes to validate.
+ *
+ * @return
+ *   TRUE if $input is valid otherwise FALSE.
  */
 function _validate_keys_string($input) {
   foreach (explode(' ', $input) as $value) {
     (preg_match('!^(?:[a-z]|\d{1,3})$!i', $value)) ? $items[] = TRUE : $items[] = FALSE;
   }
-  (in_array(FALSE, $items)) ? $return = FALSE : $return = TRUE;
+  (in_array(FALSE, $items)) ? $return = TRUE : $return = FALSE;
   return $return;
 }
+
