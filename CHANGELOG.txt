@@ -1,6 +1,6 @@
-$Id: CHANGELOG.txt,v 1.3 2008/05/12 20:00:53 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.4 2008/05/12 20:03:06 psynaptic Exp $
 
-Shadowbox 6.x-1.x-dev, 2008-04-24
+Shadowbox 6.x-1.x-dev, 2008-05-12
 ---------------------------------
 - Improved Doxygen comments as per #1354.
 - Improved cleaning of variable table on uninstall.
