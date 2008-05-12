@@ -1,4 +1,4 @@
-$Id: CHANGELOG.txt,v 1.4 2008/05/12 20:03:06 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.5 2008/05/12 22:39:42 psynaptic Exp $
 
 Shadowbox 6.x-1.x-dev, 2008-05-12
 ---------------------------------
@@ -6,6 +6,8 @@ Shadowbox 6.x-1.x-dev, 2008-05-12
 - Improved cleaning of variable table on uninstall.
 - Improved naming of variables _explode_to_int().
 - Inverted return value and calls to _validate_keys_string().
+- Changed dependency from 'code only' to 'full' Shadowbox distribution.
+- Now using compressed files from shadowbox/build/*.
 
 Shadowbox HEAD, 2008-04-24
 --------------------------

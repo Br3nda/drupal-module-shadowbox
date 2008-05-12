@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.4 2008/05/12 20:00:53 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5 2008/05/12 22:39:42 psynaptic Exp $
 
 
 /**
@@ -481,9 +481,9 @@ function shadowbox_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
     switch ($op) {
       case 'view':
         $path = drupal_get_path('module', 'shadowbox');
-        drupal_add_css($path ."/shadowbox/src/css/shadowbox.css");
-        drupal_add_js($path ."/shadowbox/src/js/adapter/shadowbox-jquery.js");
-        drupal_add_js($path ."/shadowbox/src/js/shadowbox.js");
+        drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
+        drupal_add_js($path ."/shadowbox/build/js/adapter/shadowbox-jquery.js");
+        drupal_add_js($path ."/shadowbox/build/js/shadowbox.js");
         drupal_add_js($path ."/shadowbox.js");
     }
   }
