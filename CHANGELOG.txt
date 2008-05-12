@@ -1,4 +1,11 @@
-$Id: CHANGELOG.txt,v 1.2 2008/04/24 14:57:24 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.3 2008/05/12 20:00:53 psynaptic Exp $
+
+Shadowbox 6.x-1.x-dev, 2008-04-24
+---------------------------------
+- Improved Doxygen comments as per #1354.
+- Improved cleaning of variable table on uninstall.
+- Improved naming of variables _explode_to_int().
+- Inverted return value and calls to _validate_keys_string().
 
 Shadowbox HEAD, 2008-04-24
 --------------------------

@@ -1,5 +1,6 @@
 <?php
-// $Id: shadowbox.install,v 1.3 2008/04/24 14:57:24 psynaptic Exp $
+// $Id: shadowbox.install,v 1.4 2008/05/12 20:00:53 psynaptic Exp $
+
 
 /**
  * Implementation of hook_install()
@@ -14,33 +15,14 @@ function shadowbox_install() {
  */
 function shadowbox_uninstall() {
   // delete the variables we created
-  variable_del('shadowbox_enabled');
-  variable_del('shadowbox_asset_url');
-  variable_del('shadowbox_loading_image');
-  variable_del('shadowbox_animate');
-  variable_del('shadowbox_animation_sequence');
-  variable_del('shadowbox_flv_player');
-  variable_del('shadowbox_overlay_color');
-  variable_del('shadowbox_overlay_opacity');
-  variable_del('shadowbox_background_image');
-  variable_del('shadowbox_overlay_listen');
-  variable_del('shadowbox_autoplay_movies');
-  variable_del('shadowbox_show_movie_controls');
-  variable_del('shadowbox_resize_duration');
-  variable_del('shadowbox_fade_duration');
-  variable_del('shadowbox_display_nav');
-  variable_del('shadowbox_continuous_galleries');
-  variable_del('shadowbox_display_counter');
-  variable_del('shadowbox_counter_type');
-  variable_del('shadowbox_viewport_padding');
-  variable_del('shadowbox_initial_height');
-  variable_del('shadowbox_initial_width');
-  variable_del('shadowbox_enable_keys');
-  variable_del('shadowbox_keys_close');
-  variable_del('shadowbox_keys_previous');
-  variable_del('shadowbox_keys_next');
-  variable_del('shadowbox_handle_large_images');
-  variable_del('shadowbox_handle_unsupported');
+  global $conf;
+  $variables = db_query('SELECT name FROM {variable} WHERE name LIKE "%s"', 'shadowbox_%');
+  while ($name = db_result($variables)) {
+    db_query("DELETE FROM {variable} WHERE name = '%s'", $name);
+    unset($conf[$name]);
+  }
+  cache_clear_all('variables', 'cache');
   // log the uninstallation in watchdog
   watchdog('shadowbox', 'Shadowbox module was uninstalled');
 }
+
