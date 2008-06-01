@@ -1,4 +1,4 @@
-$Id: CHANGELOG.txt,v 1.5.2.1 2008/06/01 22:41:36 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.5.2.2 2008/06/01 23:10:21 psynaptic Exp $
 
 Shadowbox 5.x-1.x-dev, 2008-06-01
 ---------------------------------
@@ -6,6 +6,7 @@ Shadowbox 5.x-1.x-dev, 2008-06-01
 - Added @file Doxygen comments.
 - Fixed bug: erroneous use of url() with shadowbox_asset_url.
 - Removed #validate attributes.
+- Added dependency: jquery_update.
 
 Shadowbox 6.x-1.x-dev, 2008-05-12
 ---------------------------------
