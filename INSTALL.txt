@@ -1,4 +1,18 @@
-$Id: INSTALL.txt,v 1.5 2008/06/01 22:16:10 psynaptic Exp $
+$Id: INSTALL.txt,v 1.6 2008/06/01 22:55:57 psynaptic Exp $
+
+REQUIREMENTS
+------------
+
+This module requires Drupal 6.x
+
+Why no 5.x version?
+
+A Drupal 5.x version is unlikely due to the old version of jQuery that ships
+with core. jquery_update does not update to the required version for Shadowbox
+to function correctly. There seems to be a conflict between older versions of
+jQuery and the 'animate' setting within Shadowbox that stops it from working
+properly. I may consider releasing a version that doesn't use the animate
+feature.
 
 INSTALLATION
 ------------

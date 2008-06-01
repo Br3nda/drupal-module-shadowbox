@@ -1,4 +1,5 @@
-; $Id: shadowbox.info,v 1.4 2008/06/01 22:16:10 psynaptic Exp $
+; $Id: shadowbox.info,v 1.5 2008/06/01 22:55:57 psynaptic Exp $
 name = Shadowbox
 description = Enables Shadowbox, a JavaScript modal media viewer application
+core = 6.x
 package = Javascript tools

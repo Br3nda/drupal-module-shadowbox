@@ -1,13 +1,9 @@
 <?php
-// $Id: shadowbox.install,v 1.5 2008/06/01 22:16:10 psynaptic Exp $
+// $Id: shadowbox.install,v 1.6 2008/06/01 22:55:57 psynaptic Exp $
+
 
 /**
- * @file
- * Shadowbox module install file.
- */
-
-/**
- * Implementation of hook_install().
+ * Implementation of hook_install()
  */
 function shadowbox_install() {
   // log the installation in watchdog
@@ -15,7 +11,7 @@ function shadowbox_install() {
 }
 
 /**
- * Implementation of hook_uninstall().
+ * Implementation of hook_uninstall()
  */
 function shadowbox_uninstall() {
   // delete the variables we created
