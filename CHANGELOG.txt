@@ -1,4 +1,11 @@
-$Id: CHANGELOG.txt,v 1.5 2008/05/12 22:39:42 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.6 2008/06/01 22:16:10 psynaptic Exp $
+
+Shadowbox 5.x-1.x-dev, 2008-06-01
+---------------------------------
+- Ported to Drupal 5.
+- Added @file Doxygen comments.
+- Fixed bug: erroneous use of url() with shadowbox_asset_url.
+- Removed #validate attributes.
 
 Shadowbox 6.x-1.x-dev, 2008-05-12
 ---------------------------------

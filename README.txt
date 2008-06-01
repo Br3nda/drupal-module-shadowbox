@@ -1,4 +1,4 @@
-$Id: README.txt,v 1.4 2008/04/24 17:48:59 psynaptic Exp $
+$Id: README.txt,v 1.5 2008/06/01 22:16:10 psynaptic Exp $
 
 AUTHOR/MAINTAINERS
 ------------------
@@ -41,6 +41,6 @@ KNOWN ISSUES
    for 'Animation sequence'. A possible fix is posted on the Shadowbox forum:
    http://www.nabble.com/Box-builds-down-then-slides-up-into-place-to15718047.html#a15718047
 
-2. There is currenly a bug when setting the 'Enable animation' setting to
+2. There is currently a bug when setting the 'Enable animation' setting to
    unchecked where the next/previous item cannot be found and the Shadowbox 
    stalls.
