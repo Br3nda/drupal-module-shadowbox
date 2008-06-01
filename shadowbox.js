@@ -1,4 +1,4 @@
-// $Id: shadowbox.js,v 1.5 2008/06/01 22:16:10 psynaptic Exp $
+// $Id: shadowbox.js,v 1.4.2.1 2008/06/01 22:41:36 psynaptic Exp $
 if (Drupal.jsEnabled) {
   $(document).ready(function(){
     var options = {

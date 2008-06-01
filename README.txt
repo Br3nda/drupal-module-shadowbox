@@ -1,4 +1,4 @@
-$Id: README.txt,v 1.5 2008/06/01 22:16:10 psynaptic Exp $
+$Id: README.txt,v 1.4.2.1 2008/06/01 22:41:36 psynaptic Exp $
 
 AUTHOR/MAINTAINERS
 ------------------
