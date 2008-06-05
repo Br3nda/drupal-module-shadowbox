@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.12 2008/06/05 23:25:24 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.13 2008/06/05 23:59:39 psynaptic Exp $
 
 /**
  * @file
@@ -451,12 +451,15 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
   if (!preg_match('!^([a-z0-9_-]+/)*[a-z0-9_-]+\.gif$!i', $loading_image)) {
     form_set_error('shadowbox_loading_image', 'You must enter a valid path to an animated GIF image in the form <code>images/image.gif</code>.');
   }
-  elseif (!realpath($asset_url .'/'. $loading_image)) {
+  elseif (!file_exists($asset_url .'/'. $loading_image)) {
     form_set_error('shadowbox_loading_image', 'The specified image does not exist.');
   }
 
   if (!preg_match('!^([a-z0-9_-]+/)*[a-z0-9_-]+\.swf$!i', $flv_player)) {
     form_set_error('shadowbox_flv_player', 'You must enter a valid path to an SWF Flash Player in the form <code>flvplayer.swf</code>.');
+  }
+  elseif (!file_exists($asset_url .'/'. $flv_player)) {
+    form_set_error('shadowbox_flv_player', 'The FLV player does not exist.');
   }
 
   if (!is_numeric($resize_duration) || $resize_duration < 0 || $resize_duration > 10) {
@@ -492,7 +495,7 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
   if (!preg_match('!^([a-z0-9_-]+/)*[a-z0-9_-]+\.png$!i', $background_image)) {
     form_set_error('shadowbox_background_image', 'You must enter a valid path to a PNG image in the form <code>images/overlay-85.png</code>.');
   }
-  elseif (!realpath($asset_url .'/'. $background_image)) {
+  elseif (!file_exists($asset_url .'/'. $background_image)) {
     form_set_error('shadowbox_background_image', 'The specified image does not exist.');
   }
 

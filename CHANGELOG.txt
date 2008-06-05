@@ -1,7 +1,8 @@
-$Id: CHANGELOG.txt,v 1.5.2.15 2008/06/05 23:25:24 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.5.2.16 2008/06/05 23:59:39 psynaptic Exp $
 
 Shadowbox 5.x-1.x-dev, 2008-06-06
 ---------------------------------
+- Changed realpath to file_exists and added validation that flv player exists.
 - Moved shadowbox_enabled condition to hook_menu.
 
 Shadowbox 5.x-1.x-dev, 2008-06-05
