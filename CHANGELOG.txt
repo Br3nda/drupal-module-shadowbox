@@ -1,7 +1,8 @@
-$Id: CHANGELOG.txt,v 1.5.2.4 2008/06/05 19:30:14 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.5.2.5 2008/06/05 19:32:32 psynaptic Exp $
 
 Shadowbox 5.x-1.x-dev, 2008-06-05
 ---------------------------------
+- Added CSS file with min-wdith to fix disappearing controls.
 - Added requirements check for 3rd party software.
 - Removed unnecessary hook_install.
 - Streamlined hook_uninstall (by Morbus).

@@ -1,0 +1,13 @@
+/*$ID$*/
+
+#shadowbox {
+  min-width: 180px;
+}
+
+#shadowbox_body_inner {
+  text-align: center;
+}
+
+#shadowbox_content {
+  position: relative !important;
+}
