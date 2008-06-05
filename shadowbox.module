@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.11 2008/06/05 21:55:42 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.12 2008/06/05 23:25:24 psynaptic Exp $
 
 /**
  * @file
@@ -56,7 +56,7 @@ function shadowbox_menu($may_cache) {
       'type' => MENU_NORMAL_ITEM,
     );
   }
-  elseif (shadowbox_active()) {
+  elseif (shadowbox_active() && variable_get('shadowbox_enabled', TRUE)) {
     shadowbox_header();
   }
 
@@ -519,19 +519,17 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
  * Build the Shadowbox header by adding the necessary CSS and JS files.
  */
 function shadowbox_header() {
-  if (variable_get('shadowbox_enabled', TRUE)) {
-    $path = drupal_get_path('module', 'shadowbox');
-    if (variable_get('shadowbox_css_skin', 'original') == 'light') {
-      drupal_add_css($path ."/shadowbox/build/css/shadowbox-light.css");
-    }
-    else {
-      drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
-    }
-    drupal_add_css($path .'/shadowbox.css');
-    drupal_add_js($path .'/shadowbox/build/js/adapter/shadowbox-jquery.js');
-    drupal_add_js($path .'/shadowbox/build/js/shadowbox.js');
-    drupal_add_js($path .'/shadowbox.js');
+  $path = drupal_get_path('module', 'shadowbox');
+  if (variable_get('shadowbox_css_skin', 'original') == 'light') {
+    drupal_add_css($path ."/shadowbox/build/css/shadowbox-light.css");
   }
+  else {
+    drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
+  }
+  drupal_add_css($path .'/shadowbox.css');
+  drupal_add_js($path .'/shadowbox/build/js/adapter/shadowbox-jquery.js');
+  drupal_add_js($path .'/shadowbox/build/js/shadowbox.js');
+  drupal_add_js($path .'/shadowbox.js');
 
   $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
   $quicktime = variable_get('shadowbox_supported_quicktime', shadowbox_get_types('quicktime'));
