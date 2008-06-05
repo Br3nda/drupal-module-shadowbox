@@ -1,4 +1,10 @@
-$Id: CHANGELOG.txt,v 1.5.2.2 2008/06/01 23:10:21 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.5.2.3 2008/06/05 19:23:35 psynaptic Exp $
+
+Shadowbox 5.x-1.x-dev, 2008-06-05
+---------------------------------
+- Removed unnecessary hook_install.
+- Streamlined hook_uninstall (by Morbus).
+- Changed erroneous use of url in favour of base_path.
 
 Shadowbox 5.x-1.x-dev, 2008-06-01
 ---------------------------------

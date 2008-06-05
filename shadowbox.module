@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.2 2008/06/01 23:10:21 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.3 2008/06/05 19:23:35 psynaptic Exp $
 
 /**
  * @file
@@ -145,7 +145,7 @@ function shadowbox_admin_settings() {
     '#description' => t('A base URL that will be prepended to the loadingImage, flvPlayer, and overlayBgImage options to save on typing.'),
     '#size' => 40,
     '#maxlength' => 255,
-    '#default_value' => variable_get('shadowbox_asset_url', url(drupal_get_path('module', 'shadowbox') .'/shadowbox/')),
+    '#default_value' => variable_get('shadowbox_asset_url', base_path() . drupal_get_path('module', 'shadowbox') .'/shadowbox/'),
   );
   $form['shadowbox']['shadowbox_options']['asset_paths']['shadowbox_loading_image'] = array(
     '#type' => 'textfield',
