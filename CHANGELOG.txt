@@ -1,7 +1,9 @@
-$Id: CHANGELOG.txt,v 1.2.2.4 2008/06/05 22:45:32 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.2.2.5 2008/06/05 22:56:45 psynaptic Exp $
 
 Shadowbox 6.x-1.x-dev, 2008-06-05
 ---------------------------------
+- Removed unnecessary hook_install.
+- Streamlined hook_uninstall (by Morbus).
 - Changed asset URL to no leading or trailing slashes and relative to base_path.
 - Changed erroneous use of url in favour of base_path.
 

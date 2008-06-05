@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.install,v 1.1.2.3 2008/06/05 22:47:04 psynaptic Exp $
+// $Id: shadowbox.install,v 1.1.2.4 2008/06/05 22:56:45 psynaptic Exp $
 
 /**
  * @file
@@ -7,26 +7,10 @@
  */
 
 /**
- * Implementation of hook_install()
- */
-function shadowbox_install() {
-  // log the installation in watchdog
-  watchdog('shadowbox', 'Shadowbox module was installed');
-}
-
-/**
- * Implementation of hook_uninstall()
+ * Implementation of hook_uninstall().
  */
 function shadowbox_uninstall() {
   // delete the variables we created
-  global $conf;
-  $variables = db_query('SELECT name FROM {variable} WHERE name LIKE "%s"', 'shadowbox_%');
-  while ($name = db_result($variables)) {
-    db_query("DELETE FROM {variable} WHERE name = '%s'", $name);
-    unset($conf[$name]);
-  }
-  cache_clear_all('variables', 'cache');
-  // log the uninstallation in watchdog
-  watchdog('shadowbox', 'Shadowbox module was uninstalled');
+  db_query("DELETE FROM {variable} WHERE name LIKE 'shadowbox_%'");
 }
 
