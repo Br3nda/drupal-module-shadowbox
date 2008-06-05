@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.2 2008/05/12 22:46:45 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.3 2008/06/05 22:45:32 psynaptic Exp $
 
 
 /**
@@ -67,7 +67,7 @@ function shadowbox_perm() {
 function shadowbox_init() {
   if (variable_get('shadowbox_enabled', TRUE)) {
     $options['shadowbox'] = array(
-      'asset_url' => variable_get('shadowbox_asset_url', url(drupal_get_path('module', 'shadowbox') .'/shadowbox/')),
+      'asset_url' => base_path() . variable_get('shadowbox_asset_url', drupal_get_path('module', 'shadowbox') .'/shadowbox') .'/',
       'loading_image' => variable_get('shadowbox_loading_image', 'images/loading.gif'),
       'animation' => variable_get('shadowbox_animate', TRUE),
       'animation_sequence' => variable_get('shadowbox_animation_sequence', 'wh'),
@@ -141,7 +141,7 @@ function shadowbox_admin_settings() {
     '#description' => t('A base URL that will be prepended to the loadingImage, flvPlayer, and overlayBgImage options to save on typing.'),
     '#size' => 40,
     '#maxlength' => 255,
-    '#default_value' => variable_get('shadowbox_asset_url', url(drupal_get_path('module', 'shadowbox') .'/shadowbox/')),
+    '#default_value' => variable_get('shadowbox_asset_url', drupal_get_path('module', 'shadowbox') .'/shadowbox'),
   );
   $form['shadowbox']['shadowbox_options']['asset_paths']['shadowbox_loading_image'] = array(
     '#type' => 'textfield',
@@ -407,8 +407,8 @@ function shadowbox_admin_settings() {
  */
 function shadowbox_admin_settings_validate($form, &$form_state) {
   $asset_url = $form_state['values']['shadowbox_asset_url'];
-  if (!preg_match('!^(/[a-z0-9_-]+)+(/{1}$)!i', $asset_url)) {
-    form_set_error('asset_url', 'You must enter a valid path in the form <code>/path/to/asset/</code>. Leading and trailing slashes are required.');
+  if (!preg_match('!^([a-z0-9_-]+/)*[a-z0-9_-]+$!i', $asset_url)) {
+    form_set_error('shadowbox_asset_url', 'You must enter a valid path in the form <code>path/to/asset</code> (no leading or trailing slashes).');
   }
   $loading_image = $form_state['values']['shadowbox_loading_image'];
   if (!preg_match('!^([a-z0-9_-]+/)*[a-z0-9_-]+\.gif$!i', $loading_image)) {
