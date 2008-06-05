@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.10 2008/06/05 21:28:09 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.11 2008/06/05 21:55:42 psynaptic Exp $
 
 /**
  * @file
@@ -68,53 +68,6 @@ function shadowbox_menu($may_cache) {
  */
 function shadowbox_perm() {
   return array('administer shadowbox');
-}
-
-/**
- * Implementation of hook_init().
- */
-function shadowbox_init() {
-  if (variable_get('shadowbox_enabled', TRUE) && shadowbox_active()) {
-    $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
-    $quicktime = variable_get('shadowbox_supported_quicktime', shadowbox_get_types('quicktime'));
-    $wmp = variable_get('shadowbox_supported_wmp', shadowbox_get_types('wmp'));
-    $qtwmp = variable_get('shadowbox_supported_qtwmp', shadowbox_get_types('qtwmp'));
-    $iframe = variable_get('shadowbox_supported_iframe', shadowbox_get_types('iframe'));
-    $options['shadowbox'] = array(
-      'asset_url' => base_path() . variable_get('shadowbox_asset_url', drupal_get_path('module', 'shadowbox') .'/shadowbox') .'/',
-      'loading_image' => variable_get('shadowbox_loading_image', 'images/loading.gif'),
-      'animation' => variable_get('shadowbox_animate', TRUE),
-      'animation_sequence' => variable_get('shadowbox_animation_sequence', 'wh'),
-      'overlay_color' => variable_get('shadowbox_overlay_color', '#000'),
-      'overlay_opacity' => variable_get('shadowbox_overlay_opacity', 0.85),
-      'overlay_listen' => variable_get('shadowbox_overlay_listen', TRUE),
-      'resize_duration' => variable_get('shadowbox_resize_duration', 0.35),
-      'fade_duration' => variable_get('shadowbox_fade_duration', 0.35),
-      'display_nav' => variable_get('shadowbox_display_nav', TRUE),
-      'flv_player' => variable_get('shadowbox_flv_player', 'flvplayer.swf'),
-      'background_image' => variable_get('shadowbox_background_image', 'images/overlay-85.png'),
-      'autoplay_movies' => variable_get('shadowbox_autoplay_movies', TRUE),
-      'show_movie_controls' => variable_get('shadowbox_show_movie_controls', TRUE),
-      'continuous_galleries' => variable_get('shadowbox_continuous_galleries', FALSE),
-      'display_counter' => variable_get('shadowbox_display_counter', TRUE),
-      'counter_type' => variable_get('shadowbox_counter_type', 'default'),
-      'viewport_padding' => variable_get('shadowbox_viewport_padding', 20),
-      'initial_height' => variable_get('shadowbox_initial_height', 160),
-      'initial_width' => variable_get('shadowbox_initial_width', 320),
-      'enable_keys' => variable_get('shadowbox_enable_keys', TRUE),
-      'keys_close' => _explode_to_int(variable_get('shadowbox_keys_close', 'c q 27'), ' '),
-      'keys_previous' => _explode_to_int(variable_get('shadowbox_keys_previous', 'p 37'), ' '),
-      'keys_next' => _explode_to_int(variable_get('shadowbox_keys_next', 'n 39'), ' '),
-      'handle_large_images' => variable_get('shadowbox_handle_large_images', 'resize'),
-      'handle_unsupported' => variable_get('shadowbox_handle_unsupported', 'link'),
-      'extensions_img' => _array_to_string_values($images),
-      'extensions_qt' => _array_to_string_values($quicktime),
-      'extensions_wmp' => _array_to_string_values($wmp),
-      'extensions_qtwmp' => _array_to_string_values($qtwmp),
-      'extensions_iframe' => _array_to_string_values($iframe),
-    );
-    drupal_add_js($options, 'setting');
-  }
 }
 
 /**
@@ -579,6 +532,46 @@ function shadowbox_header() {
     drupal_add_js($path .'/shadowbox/build/js/shadowbox.js');
     drupal_add_js($path .'/shadowbox.js');
   }
+
+  $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
+  $quicktime = variable_get('shadowbox_supported_quicktime', shadowbox_get_types('quicktime'));
+  $wmp = variable_get('shadowbox_supported_wmp', shadowbox_get_types('wmp'));
+  $qtwmp = variable_get('shadowbox_supported_qtwmp', shadowbox_get_types('qtwmp'));
+  $iframe = variable_get('shadowbox_supported_iframe', shadowbox_get_types('iframe'));
+  $options['shadowbox'] = array(
+    'asset_url' => base_path() . variable_get('shadowbox_asset_url', drupal_get_path('module', 'shadowbox') .'/shadowbox') .'/',
+    'loading_image' => variable_get('shadowbox_loading_image', 'images/loading.gif'),
+    'animation' => variable_get('shadowbox_animate', TRUE),
+    'animation_sequence' => variable_get('shadowbox_animation_sequence', 'wh'),
+    'overlay_color' => variable_get('shadowbox_overlay_color', '#000'),
+    'overlay_opacity' => variable_get('shadowbox_overlay_opacity', 0.85),
+    'overlay_listen' => variable_get('shadowbox_overlay_listen', TRUE),
+    'resize_duration' => variable_get('shadowbox_resize_duration', 0.35),
+    'fade_duration' => variable_get('shadowbox_fade_duration', 0.35),
+    'display_nav' => variable_get('shadowbox_display_nav', TRUE),
+    'flv_player' => variable_get('shadowbox_flv_player', 'flvplayer.swf'),
+    'background_image' => variable_get('shadowbox_background_image', 'images/overlay-85.png'),
+    'autoplay_movies' => variable_get('shadowbox_autoplay_movies', TRUE),
+    'show_movie_controls' => variable_get('shadowbox_show_movie_controls', TRUE),
+    'continuous_galleries' => variable_get('shadowbox_continuous_galleries', FALSE),
+    'display_counter' => variable_get('shadowbox_display_counter', TRUE),
+    'counter_type' => variable_get('shadowbox_counter_type', 'default'),
+    'viewport_padding' => variable_get('shadowbox_viewport_padding', 20),
+    'initial_height' => variable_get('shadowbox_initial_height', 160),
+    'initial_width' => variable_get('shadowbox_initial_width', 320),
+    'enable_keys' => variable_get('shadowbox_enable_keys', TRUE),
+    'keys_close' => _explode_to_int(variable_get('shadowbox_keys_close', 'c q 27'), ' '),
+    'keys_previous' => _explode_to_int(variable_get('shadowbox_keys_previous', 'p 37'), ' '),
+    'keys_next' => _explode_to_int(variable_get('shadowbox_keys_next', 'n 39'), ' '),
+    'handle_large_images' => variable_get('shadowbox_handle_large_images', 'resize'),
+    'handle_unsupported' => variable_get('shadowbox_handle_unsupported', 'link'),
+    'extensions_img' => _array_to_string_values($images),
+    'extensions_qt' => _array_to_string_values($quicktime),
+    'extensions_wmp' => _array_to_string_values($wmp),
+    'extensions_qtwmp' => _array_to_string_values($qtwmp),
+    'extensions_iframe' => _array_to_string_values($iframe),
+  );
+  drupal_add_js($options, 'setting');
 }
 
 /**

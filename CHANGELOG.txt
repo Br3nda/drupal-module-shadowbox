@@ -1,7 +1,8 @@
-$Id: CHANGELOG.txt,v 1.5.2.12 2008/06/05 21:28:09 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.5.2.13 2008/06/05 21:55:42 psynaptic Exp $
 
 Shadowbox 5.x-1.x-dev, 2008-06-05
 ---------------------------------
+- Moved JavaScript options from hook_init to hook_menu.
 - Added options for controlling which media types to open in Shadowbox.
 - Rerouted form_set_error calls after previous change of form element names.
 - Added validation that assets actually exist (loading image and background image).
