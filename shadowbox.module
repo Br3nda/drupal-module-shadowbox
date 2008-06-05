@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.9 2008/06/05 21:19:10 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.10 2008/06/05 21:28:09 psynaptic Exp $
 
 /**
  * @file
@@ -75,6 +75,11 @@ function shadowbox_perm() {
  */
 function shadowbox_init() {
   if (variable_get('shadowbox_enabled', TRUE) && shadowbox_active()) {
+    $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
+    $quicktime = variable_get('shadowbox_supported_quicktime', shadowbox_get_types('quicktime'));
+    $wmp = variable_get('shadowbox_supported_wmp', shadowbox_get_types('wmp'));
+    $qtwmp = variable_get('shadowbox_supported_qtwmp', shadowbox_get_types('qtwmp'));
+    $iframe = variable_get('shadowbox_supported_iframe', shadowbox_get_types('iframe'));
     $options['shadowbox'] = array(
       'asset_url' => base_path() . variable_get('shadowbox_asset_url', drupal_get_path('module', 'shadowbox') .'/shadowbox') .'/',
       'loading_image' => variable_get('shadowbox_loading_image', 'images/loading.gif'),
@@ -102,6 +107,11 @@ function shadowbox_init() {
       'keys_next' => _explode_to_int(variable_get('shadowbox_keys_next', 'n 39'), ' '),
       'handle_large_images' => variable_get('shadowbox_handle_large_images', 'resize'),
       'handle_unsupported' => variable_get('shadowbox_handle_unsupported', 'link'),
+      'extensions_img' => _array_to_string_values($images),
+      'extensions_qt' => _array_to_string_values($quicktime),
+      'extensions_wmp' => _array_to_string_values($wmp),
+      'extensions_qtwmp' => _array_to_string_values($qtwmp),
+      'extensions_iframe' => _array_to_string_values($iframe),
     );
     drupal_add_js($options, 'setting');
   }
@@ -144,6 +154,48 @@ function shadowbox_admin_settings() {
     '#title' => t('Deactivate Shadowbox on specific pages'),
     '#default_value' => variable_get('shadowbox_excluded_pages', "admin*\nimg_assist*\nnode/add/*\nnode/*/edit"),
     '#description' => t("Enter one page per line as Drupal paths. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>')),
+  );
+  // Supported media
+  $form['shadowbox']['shadowbox_supported_media'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Supported media'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_images'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Image'),
+    '#description' => t('Supported image file extensions'),
+    '#options' => drupal_map_assoc(shadowbox_get_types('image')),
+    '#default_value' => variable_get('shadowbox_supported_images', shadowbox_get_types('image')),
+  );
+  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_quicktime'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Quicktime'),
+    '#description' => t('Movie file extensions supported by QuickTime'),
+    '#options' => drupal_map_assoc(shadowbox_get_types('quicktime')),
+    '#default_value' => variable_get('shadowbox_supported_quicktime', shadowbox_get_types('quicktime')),
+  );
+  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_wmp'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Windows Media Player'),
+    '#description' => t('Movie file extensions supported by Windows Media Player'),
+    '#options' => drupal_map_assoc(shadowbox_get_types('wmp')),
+    '#default_value' => variable_get('shadowbox_supported_wmp', shadowbox_get_types('wmp')),
+  );
+  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_qtwmp'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Quicktime and Windows Media Player'),
+    '#description' => t('Movie file extensions supported by both QuickTime and Windows Media Player'),
+    '#options' => drupal_map_assoc(shadowbox_get_types('qtwmp')),
+    '#default_value' => variable_get('shadowbox_supported_qtwmp', shadowbox_get_types('qtwmp')),
+  );
+  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_iframe'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('IFrame'),
+    '#description' => t('File extensions that will be display in an iframe'),
+    '#options' => drupal_map_assoc(shadowbox_get_types('iframe')),
+    '#default_value' => variable_get('shadowbox_supported_iframe', shadowbox_get_types('iframe')),
   );
   // Options
   $form['shadowbox']['shadowbox_options'] = array(
@@ -440,7 +492,7 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
   $keys_next = $form_values['shadowbox_keys_next'];
 
   if (!preg_match('!^([a-z0-9_-]+/)*[a-z0-9_-]+$!i', $asset_url)) {
-    form_set_error('asset_url', 'You must enter a valid path in the form <code>/path/to/asset/</code>. Leading and trailing slashes are required.');
+    form_set_error('shadowbox_asset_url', 'You must enter a valid path in the form <code>path/to/asset</code> (no leading or trailing slashes).');
   }
 
   if (!preg_match('!^([a-z0-9_-]+/)*[a-z0-9_-]+\.gif$!i', $loading_image)) {
@@ -488,11 +540,11 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
     form_set_error('shadowbox_background_image', 'You must enter a valid path to a PNG image in the form <code>images/overlay-85.png</code>.');
   }
   elseif (!realpath($asset_url .'/'. $background_image)) {
-    form_set_error('shadowbox_shadowbox_background_image', 'The specified image does not exist.');
+    form_set_error('shadowbox_background_image', 'The specified image does not exist.');
   }
 
   if (!is_numeric($viewport_padding) || $viewport_padding < 0 || $viewport_padding > 200) {
-    form_set_error('shadowbox_shadowbox_viewport_padding', 'You must enter a number between 0 and 200.');
+    form_set_error('shadowbox_viewport_padding', 'You must enter a number between 0 and 200.');
   }
   else {
     $form_values['shadowbox_viewport_padding'] = (int)$viewport_padding;
@@ -587,3 +639,52 @@ function _validate_keys_string($input) {
   return $return;
 }
 
+/**
+ * Filter values that are not strings from an array.
+ *
+ * @param $array
+ *   An array to filter.
+ *
+ * @return $output
+ *   The filtered array.
+ */
+function _array_to_string_values($array) {
+  foreach ($array as $value) {
+    if (is_string($value)) {
+      $output[] = $value;
+    }
+  }
+  return $output;
+}
+
+/**
+ * Helper function to get default values for supported media types.
+ *
+ * @param $input
+ *   The type of supported media options to return.
+ *
+ * @return
+ *   An array with default values for each type.
+ */
+function shadowbox_get_types($type) {
+  switch ($type) {
+    case 'image':
+      return array('png', 'jpg', 'jpeg', 'gif', 'bmp');
+      break;
+    case 'quicktime':
+      return array('dv', 'mov', 'moov', 'movie', 'mp4');
+      break;
+    case 'wmp':
+      return array('asf', 'wm', 'wmv');
+      break;
+    case 'qtwmp':
+      return array('avi', 'mpg', 'mpeg');
+      break;
+    case 'iframe':
+      return array('asp', 'aspx', 'cgi', 'cfm', 'htm', 'html', 'pl', 'php', 'php3', 'php4', 'php5', 'phtml', 'rb', 'rhtml', 'shtml', 'txt', 'vbs');
+      break;
+    default:
+      return FALSE;
+      break;
+  }
+}
