@@ -1,6 +1,10 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.3 2008/06/05 22:45:32 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.4 2008/06/05 22:47:04 psynaptic Exp $
 
+/**
+ * @file
+ * Shadowbox, a JavaScript media viewer application for displaying content in a modal dialog.
+ */
 
 /**
  * Implementation of hook_help().
