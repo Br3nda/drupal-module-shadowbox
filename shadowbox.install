@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.install,v 1.4.2.3 2008/06/05 19:23:35 psynaptic Exp $
+// $Id: shadowbox.install,v 1.4.2.4 2008/06/05 19:30:14 psynaptic Exp $
 
 /**
  * @file
@@ -12,5 +12,42 @@
 function shadowbox_uninstall() {
   // delete the variables we created
   db_query("DELETE FROM {variable} WHERE name LIKE 'shadowbox_%'");
+}
+
+/**
+ * Implementation of hook_requirements().
+ */
+function shadowbox_requirements($phase) {
+  $requirements = array();
+  $t = get_t();
+  switch ($phase) {
+    case 'install':
+    case 'runtime':
+    $path = drupal_get_path('module', 'shadowbox');
+    if (!file_exists($path .'/shadowbox/')) {
+      $requirements['shadowbox'] = array(
+        'title' => $t('Shadowbox'),
+        'description' => $t('In order for the Shadowbox module to work correctly, the Shadowbox \'full\' distribution must exists at %path.', array('%path' => $path .'/shadowbox/')),
+        'severity' => $phase == 'install' ? REQUIREMENT_WARNING : REQUIREMENT_ERROR,
+        'value' => $t('Install 3rd party Shadowbox software'),
+      );
+    }
+    elseif (!file_exists($path .'/shadowbox/build/js/shadowbox.js') || !file_exists($path .'/shadowbox/build/js/adapter/shadowbox-jquery.js') || !file_exists($path .'/shadowbox/build/css/shadowbox.css')) {
+      $requirements['shadowbox'] = array(
+        'title' => $t('Shadowbox'),
+        'description' => $t('The %path path exists but it appears that the directory structure underneath is not correct. Please check that %shadowbox, %jquery and %css exist.', array('%path' => $path .'/shadowbox/', '%shadowbox' => $path .'/shadowbox/build/js/shadowbox.js', '%jquery' => $path .'/shadowbox/build/js/adapter/shadowbox-jquery.js', '%css' => $path .'/shadowbox/build/css/shadowbox.css')),
+        'severity' => $phase == 'install' ? REQUIREMENT_WARNING : REQUIREMENT_ERROR,
+        'value' => $t('3rd party Shadowbox software not properly installed'),
+      );
+    }
+    elseif ($phase == 'runtime') {
+      $requirements['shadowbox'] = array(
+        'title' => $t('Shadowbox'),
+        'severity' => REQUIREMENT_OK,
+        'value' => $t('Installed correctly'),
+      );
+    }
+  }
+  return $requirements;
 }
 
