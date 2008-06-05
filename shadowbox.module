@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.8 2008/06/05 21:16:28 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.9 2008/06/05 21:19:10 psynaptic Exp $
 
 /**
  * @file
@@ -444,7 +444,7 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
   }
 
   if (!preg_match('!^([a-z0-9_-]+/)*[a-z0-9_-]+\.gif$!i', $loading_image)) {
-    form_set_error('loading_image', 'You must enter a valid path to an animated GIF image in the form <code>images/image.gif</code>.');
+    form_set_error('shadowbox_loading_image', 'You must enter a valid path to an animated GIF image in the form <code>images/image.gif</code>.');
   }
   elseif (!realpath($asset_url .'/'. $loading_image)) {
     form_set_error('shadowbox_loading_image', 'The specified image does not exist.');
@@ -455,44 +455,44 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
   }
 
   if (!is_numeric($resize_duration) || $resize_duration < 0 || $resize_duration > 10) {
-    form_set_error('resize_duration', 'You must enter a number between 0 and 10.');
+    form_set_error('shadowbox_resize_duration', 'You must enter a number between 0 and 10.');
   }
 
   if (!is_numeric($fade_duration) || $fade_duration < 0 || $fade_duration > 10) {
-    form_set_error('fade_duration', 'You must enter a number between 0 and 10.');
+    form_set_error('shadowbox_fade_duration', 'You must enter a number between 0 and 10.');
   }
 
   if (!is_numeric($initial_height)) {
-    form_set_error('initial_height', 'You must enter a number.');
+    form_set_error('shadowbox_initial_height', 'You must enter a number.');
   }
   else {
     $form_values['shadowbox_initial_height'] = floor($initial_height);
   }
 
   if (!is_numeric($initial_width)) {
-    form_set_error('initial_width', 'You must enter a number.');
+    form_set_error('shadowbox_initial_width', 'You must enter a number.');
   }
   else {
     $form_values['shadowbox_initial_height'] = floor($initial_width);
   }
 
   if (!preg_match('!^#[a-f0-9]{3}([a-f0-9]{3})?$!i', $color)) {
-    form_set_error('overlay_color', 'You must enter a properly formed hex value (e.g. #000 or #000000 for black.)');
+    form_set_error('shadowbox_overlay_color', 'You must enter a properly formed hex value (e.g. #000 or #000000 for black.)');
   }
 
   if ($opacity == '' || (floor($opacity) != 0 && $opacity != 1)) {
-    form_set_error('overlay_opacity', 'You must enter a decimal number between 0 and 1.');
+    form_set_error('shadowbox_overlay_opacity', 'You must enter a decimal number between 0 and 1.');
   }
 
   if (!preg_match('!^([a-z0-9_-]+/)*[a-z0-9_-]+\.png$!i', $background_image)) {
-    form_set_error('background_image', 'You must enter a valid path to a PNG image in the form <code>images/overlay-85.png</code>.');
+    form_set_error('shadowbox_background_image', 'You must enter a valid path to a PNG image in the form <code>images/overlay-85.png</code>.');
   }
   elseif (!realpath($asset_url .'/'. $background_image)) {
-    form_set_error('shadowbox_background_image', 'The specified image does not exist.');
+    form_set_error('shadowbox_shadowbox_background_image', 'The specified image does not exist.');
   }
 
   if (!is_numeric($viewport_padding) || $viewport_padding < 0 || $viewport_padding > 200) {
-    form_set_error('shadowbox_viewport_padding', 'You must enter a number between 0 and 200.');
+    form_set_error('shadowbox_shadowbox_viewport_padding', 'You must enter a number between 0 and 200.');
   }
   else {
     $form_values['shadowbox_viewport_padding'] = (int)$viewport_padding;

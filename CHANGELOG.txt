@@ -1,7 +1,8 @@
-$Id: CHANGELOG.txt,v 1.5.2.10 2008/06/05 21:16:28 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.5.2.11 2008/06/05 21:19:10 psynaptic Exp $
 
 Shadowbox 5.x-1.x-dev, 2008-06-05
 ---------------------------------
+- Rerouted form_set_error calls after previous change of form element names.
 - Added validation that assets actually exist (loading image and background image).
 - Changed asset URL to no leading or trailing slashes and relative to base_path.
 - Added ability to select light CSS skin.
