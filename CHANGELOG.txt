@@ -1,9 +1,10 @@
-$Id: CHANGELOG.txt,v 1.5.2.7 2008/06/05 19:55:55 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.5.2.8 2008/06/05 20:49:10 psynaptic Exp $
 
 Shadowbox 5.x-1.x-dev, 2008-06-05
 ---------------------------------
+- Added ability to select light CSS skin.
 - Added ability to exclude pages. Defaults to admin*, img_assist*, node/add/*, node/*/edit.
-- Created header building function and moved from hook_init to hook_menu.
+- Created header building function and moved from hook_nodeapi to hook_menu.
 - Added CSS file with min-width to fix disappearing controls.
 - Added requirements check for 3rd party software.
 - Removed unnecessary hook_install.

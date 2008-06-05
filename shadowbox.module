@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.5 2008/06/05 19:55:55 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.6 2008/06/05 20:49:10 psynaptic Exp $
 
 /**
  * @file
@@ -127,6 +127,17 @@ function shadowbox_admin_settings() {
     '#title' => t('Enable Shadowbox'),
     '#default_value' => variable_get('shadowbox_enabled', TRUE),
     '#description' => t('Check this box to enable Shadowbox for the site.'),
+  );
+  $form['shadowbox']['shadowbox_css_skin'] = array(
+    '#type' => 'select',
+    '#title' => t('Skin'),
+    '#multiple' => FALSE,
+    '#description' => t('Select the skin to use for the Shadowbox overlay.'),
+    '#options' => array(
+      'original' => 'Original',
+      'light' => 'Light',
+    ),
+    '#default_value' => variable_get('shadowbox_css_skin', 'original'),
   );
   $form['shadowbox']['shadowbox_excluded_pages'] = array(
     '#type' => 'textarea',
@@ -481,28 +492,17 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
 }
 
 /**
- * Implementation of hook_nodeapi().
- */
-function shadowbox_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
-  if (variable_get('shadowbox_enabled', TRUE)) {
-    switch ($op) {
-      case 'view':
-        $path = drupal_get_path('module', 'shadowbox');
-        drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
-        drupal_add_js($path ."/shadowbox/build/js/adapter/shadowbox-jquery.js");
-        drupal_add_js($path ."/shadowbox/build/js/shadowbox.js");
-        drupal_add_js($path ."/shadowbox.js");
-    }
-  }
-}
-
-/**
  * Build the Shadowbox header by adding the necessary CSS and JS files.
  */
 function shadowbox_header() {
   if (variable_get('shadowbox_enabled', TRUE)) {
     $path = drupal_get_path('module', 'shadowbox');
-    drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
+    if (variable_get('shadowbox_css_skin', 'original') == 'light') {
+      drupal_add_css($path ."/shadowbox/build/css/shadowbox-light.css");
+    }
+    else {
+      drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
+    }
     drupal_add_css($path .'/shadowbox.css');
     drupal_add_js($path .'/shadowbox/build/js/adapter/shadowbox-jquery.js');
     drupal_add_js($path .'/shadowbox/build/js/shadowbox.js');
