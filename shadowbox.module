@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.6 2008/06/05 20:49:10 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.7 2008/06/05 20:58:02 psynaptic Exp $
 
 /**
  * @file
@@ -76,7 +76,7 @@ function shadowbox_perm() {
 function shadowbox_init() {
   if (variable_get('shadowbox_enabled', TRUE) && shadowbox_active()) {
     $options['shadowbox'] = array(
-      'asset_url' => variable_get('shadowbox_asset_url', base_path() . drupal_get_path('module', 'shadowbox') .'/shadowbox/'),
+      'asset_url' => base_path() . variable_get('shadowbox_asset_url', drupal_get_path('module', 'shadowbox') .'/shadowbox') .'/',
       'loading_image' => variable_get('shadowbox_loading_image', 'images/loading.gif'),
       'animation' => variable_get('shadowbox_animate', TRUE),
       'animation_sequence' => variable_get('shadowbox_animation_sequence', 'wh'),
@@ -167,7 +167,7 @@ function shadowbox_admin_settings() {
     '#description' => t('A base URL that will be prepended to the loadingImage, flvPlayer, and overlayBgImage options to save on typing.'),
     '#size' => 40,
     '#maxlength' => 255,
-    '#default_value' => variable_get('shadowbox_asset_url', base_path() . drupal_get_path('module', 'shadowbox') .'/shadowbox/'),
+    '#default_value' => variable_get('shadowbox_asset_url', drupal_get_path('module', 'shadowbox') .'/shadowbox'),
   );
   $form['shadowbox']['shadowbox_options']['asset_paths']['shadowbox_loading_image'] = array(
     '#type' => 'textfield',
@@ -425,7 +425,7 @@ function shadowbox_admin_settings() {
 function shadowbox_admin_settings_validate($form_id, &$form) {
   global $form_values;
   $asset_url = $form_values['shadowbox_asset_url'];
-  if (!preg_match('!^(/[a-z0-9_-]+)+(/{1}$)!i', $asset_url)) {
+  if (!preg_match('!^([a-z0-9_-]+/)*[a-z0-9_-]+$!i', $asset_url)) {
     form_set_error('asset_url', 'You must enter a valid path in the form <code>/path/to/asset/</code>. Leading and trailing slashes are required.');
   }
   $loading_image = $form_values['shadowbox_loading_image'];
