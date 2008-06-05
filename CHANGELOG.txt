@@ -1,7 +1,8 @@
-$Id: CHANGELOG.txt,v 1.5.2.9 2008/06/05 20:58:02 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.5.2.10 2008/06/05 21:16:28 psynaptic Exp $
 
 Shadowbox 5.x-1.x-dev, 2008-06-05
 ---------------------------------
+- Added validation that assets actually exist (loading image and background image).
 - Changed asset URL to no leading or trailing slashes and relative to base_path.
 - Added ability to select light CSS skin.
 - Added ability to exclude pages. Defaults to admin*, img_assist*, node/add/*, node/*/edit.
