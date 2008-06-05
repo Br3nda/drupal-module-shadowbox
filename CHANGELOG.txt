@@ -1,7 +1,8 @@
-$Id: CHANGELOG.txt,v 1.2.2.10 2008/06/05 23:35:19 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.2.2.11 2008/06/05 23:38:01 psynaptic Exp $
 
 Shadowbox 6.x-1.x-dev, 2008-06-06
 ---------------------------------
+- Added ability to select light CSS skin.
 - Added ability to exclude pages. Defaults to admin*, img_assist*, node/add/*, node/*/edit.
 - Created header building function: shadowbox_header.
 
