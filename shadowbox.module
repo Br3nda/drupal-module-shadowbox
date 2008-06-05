@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.7 2008/06/05 23:28:29 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.8 2008/06/05 23:35:19 psynaptic Exp $
 
 /**
  * @file
@@ -69,7 +69,7 @@ function shadowbox_perm() {
  * Implementation of hook_init().
  */
 function shadowbox_init() {
-  if (variable_get('shadowbox_enabled', TRUE)) {
+  if (shadowbox_active() && variable_get('shadowbox_enabled', TRUE)) {
     shadowbox_header();
   }
 }
@@ -94,6 +94,12 @@ function shadowbox_admin_settings() {
     '#title' => t('Enable Shadowbox'),
     '#default_value' => variable_get('shadowbox_enabled', TRUE),
     '#description' => t('Check this box to enable Shadowbox for the site.'),
+  );
+  $form['shadowbox']['shadowbox_excluded_pages'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Deactivate Shadowbox on specific pages'),
+    '#default_value' => variable_get('shadowbox_excluded_pages', "admin*\nimg_assist*\nnode/add/*\nnode/*/edit"),
+    '#description' => t("Enter one page per line as Drupal paths. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>')),
   );
   // Options
   $form['shadowbox']['shadowbox_options'] = array(
@@ -489,6 +495,26 @@ function shadowbox_header() {
     'handle_unsupported' => variable_get('shadowbox_handle_unsupported', 'link'),
   );
   drupal_add_js($options, 'setting');
+}
+
+/**
+ * Verify that Shadowbox should be active for the current URL.
+ *
+ * Code from Thickbox, previously from block.module.
+ *
+ * @return
+ *   TRUE if Shadowbox should be active for the current page.
+ */
+function shadowbox_active() {
+  // If the path doesn't match any of the exeptions, load header files.
+  $path = drupal_get_path_alias($_GET['q']);
+  $regexp = '/^('. preg_replace(array('/(\r\n?|\n)/', '/\\\\\*/', '/(^|\|)\\\\<front\\\\>($|\|)/'), array('|', '.*', '\1'. preg_quote(variable_get('site_frontpage', 'node'), '/') .'\2'), preg_quote(variable_get('shadowbox_excluded_pages', "admin*\nimg_assist*\nnode/add/*\nnode/*/edit"), '/')) .')$/';
+  // Compare with the internal and path alias (if any).
+  $page_match = preg_match($regexp, $path);
+  if ($path != $_GET['q']) {
+    $page_match = $page_match || preg_match($regexp, $_GET['q']);
+  }
+  return !$page_match;
 }
 
 /**
