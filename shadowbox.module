@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.6 2008/06/05 23:19:26 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.7 2008/06/05 23:28:29 psynaptic Exp $
 
 /**
  * @file
@@ -70,42 +70,7 @@ function shadowbox_perm() {
  */
 function shadowbox_init() {
   if (variable_get('shadowbox_enabled', TRUE)) {
-    $path = drupal_get_path('module', 'shadowbox');
-    drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
-    drupal_add_css($path ."/shadowbox.css");
-    drupal_add_js($path ."/shadowbox/build/js/adapter/shadowbox-jquery.js");
-    drupal_add_js($path ."/shadowbox/build/js/shadowbox.js");
-    drupal_add_js($path ."/shadowbox.js");
-
-    $options['shadowbox'] = array(
-      'asset_url' => base_path() . variable_get('shadowbox_asset_url', drupal_get_path('module', 'shadowbox') .'/shadowbox') .'/',
-      'loading_image' => variable_get('shadowbox_loading_image', 'images/loading.gif'),
-      'animation' => variable_get('shadowbox_animate', TRUE),
-      'animation_sequence' => variable_get('shadowbox_animation_sequence', 'wh'),
-      'overlay_color' => variable_get('shadowbox_overlay_color', '#000'),
-      'overlay_opacity' => variable_get('shadowbox_overlay_opacity', 0.85),
-      'overlay_listen' => variable_get('shadowbox_overlay_listen', TRUE),
-      'resize_duration' => variable_get('shadowbox_resize_duration', 0.35),
-      'fade_duration' => variable_get('shadowbox_fade_duration', 0.35),
-      'display_nav' => variable_get('shadowbox_display_nav', TRUE),
-      'flv_player' => variable_get('shadowbox_flv_player', 'flvplayer.swf'),
-      'background_image' => variable_get('shadowbox_background_image', 'images/overlay-85.png'),
-      'autoplay_movies' => variable_get('shadowbox_autoplay_movies', TRUE),
-      'show_movie_controls' => variable_get('shadowbox_show_movie_controls', TRUE),
-      'continuous_galleries' => variable_get('shadowbox_continuous_galleries', FALSE),
-      'display_counter' => variable_get('shadowbox_display_counter', TRUE),
-      'counter_type' => variable_get('shadowbox_counter_type', 'default'),
-      'viewport_padding' => variable_get('shadowbox_viewport_padding', 20),
-      'initial_height' => variable_get('shadowbox_initial_height', 160),
-      'initial_width' => variable_get('shadowbox_initial_width', 320),
-      'enable_keys' => variable_get('shadowbox_enable_keys', TRUE),
-      'keys_close' => _explode_to_int(variable_get('shadowbox_keys_close', 'c q 27'), ' '),
-      'keys_previous' => _explode_to_int(variable_get('shadowbox_keys_previous', 'p 37'), ' '),
-      'keys_next' => _explode_to_int(variable_get('shadowbox_keys_next', 'n 39'), ' '),
-      'handle_large_images' => variable_get('shadowbox_handle_large_images', 'resize'),
-      'handle_unsupported' => variable_get('shadowbox_handle_unsupported', 'link'),
-    );
-    drupal_add_js($options, 'setting');
+    shadowbox_header();
   }
 }
 
@@ -482,6 +447,48 @@ function shadowbox_admin_settings_validate($form, &$form_state) {
   if (_validate_keys_string($keys_next)) {
     form_set_error('shadowbox_keys_next', 'You must enter a properly formed string of keys or keycodes seprated by a space.');
   }
+}
+
+/**
+ * Build the Shadowbox header by adding the necessary CSS and JS files.
+ */
+function shadowbox_header() {
+  $path = drupal_get_path('module', 'shadowbox');
+  drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
+  drupal_add_css($path ."/shadowbox.css");
+  drupal_add_js($path ."/shadowbox/build/js/adapter/shadowbox-jquery.js");
+  drupal_add_js($path ."/shadowbox/build/js/shadowbox.js");
+  drupal_add_js($path ."/shadowbox.js");
+  
+  $options['shadowbox'] = array(
+    'asset_url' => base_path() . variable_get('shadowbox_asset_url', drupal_get_path('module', 'shadowbox') .'/shadowbox') .'/',
+    'loading_image' => variable_get('shadowbox_loading_image', 'images/loading.gif'),
+    'animation' => variable_get('shadowbox_animate', TRUE),
+    'animation_sequence' => variable_get('shadowbox_animation_sequence', 'wh'),
+    'overlay_color' => variable_get('shadowbox_overlay_color', '#000'),
+    'overlay_opacity' => variable_get('shadowbox_overlay_opacity', 0.85),
+    'overlay_listen' => variable_get('shadowbox_overlay_listen', TRUE),
+    'resize_duration' => variable_get('shadowbox_resize_duration', 0.35),
+    'fade_duration' => variable_get('shadowbox_fade_duration', 0.35),
+    'display_nav' => variable_get('shadowbox_display_nav', TRUE),
+    'flv_player' => variable_get('shadowbox_flv_player', 'flvplayer.swf'),
+    'background_image' => variable_get('shadowbox_background_image', 'images/overlay-85.png'),
+    'autoplay_movies' => variable_get('shadowbox_autoplay_movies', TRUE),
+    'show_movie_controls' => variable_get('shadowbox_show_movie_controls', TRUE),
+    'continuous_galleries' => variable_get('shadowbox_continuous_galleries', FALSE),
+    'display_counter' => variable_get('shadowbox_display_counter', TRUE),
+    'counter_type' => variable_get('shadowbox_counter_type', 'default'),
+    'viewport_padding' => variable_get('shadowbox_viewport_padding', 20),
+    'initial_height' => variable_get('shadowbox_initial_height', 160),
+    'initial_width' => variable_get('shadowbox_initial_width', 320),
+    'enable_keys' => variable_get('shadowbox_enable_keys', TRUE),
+    'keys_close' => _explode_to_int(variable_get('shadowbox_keys_close', 'c q 27'), ' '),
+    'keys_previous' => _explode_to_int(variable_get('shadowbox_keys_previous', 'p 37'), ' '),
+    'keys_next' => _explode_to_int(variable_get('shadowbox_keys_next', 'n 39'), ' '),
+    'handle_large_images' => variable_get('shadowbox_handle_large_images', 'resize'),
+    'handle_unsupported' => variable_get('shadowbox_handle_unsupported', 'link'),
+  );
+  drupal_add_js($options, 'setting');
 }
 
 /**

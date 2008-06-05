@@ -1,4 +1,8 @@
-$Id: CHANGELOG.txt,v 1.2.2.8 2008/06/05 23:19:26 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.2.2.9 2008/06/05 23:28:29 psynaptic Exp $
+
+Shadowbox 6.x-1.x-dev, 2008-06-06
+---------------------------------
+- Created header building function: shadowbox_header.
 
 Shadowbox 6.x-1.x-dev, 2008-06-05
 ---------------------------------
