@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.5 2008/06/05 23:14:25 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.6 2008/06/05 23:19:26 psynaptic Exp $
 
 /**
  * @file
@@ -70,6 +70,13 @@ function shadowbox_perm() {
  */
 function shadowbox_init() {
   if (variable_get('shadowbox_enabled', TRUE)) {
+    $path = drupal_get_path('module', 'shadowbox');
+    drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
+    drupal_add_css($path ."/shadowbox.css");
+    drupal_add_js($path ."/shadowbox/build/js/adapter/shadowbox-jquery.js");
+    drupal_add_js($path ."/shadowbox/build/js/shadowbox.js");
+    drupal_add_js($path ."/shadowbox.js");
+
     $options['shadowbox'] = array(
       'asset_url' => base_path() . variable_get('shadowbox_asset_url', drupal_get_path('module', 'shadowbox') .'/shadowbox') .'/',
       'loading_image' => variable_get('shadowbox_loading_image', 'images/loading.gif'),
@@ -474,23 +481,6 @@ function shadowbox_admin_settings_validate($form, &$form_state) {
   $keys_next = $form_state['values']['shadowbox_keys_next'];
   if (_validate_keys_string($keys_next)) {
     form_set_error('shadowbox_keys_next', 'You must enter a properly formed string of keys or keycodes seprated by a space.');
-  }
-}
-
-/**
- * Implementation of hook_nodeapi().
- */
-function shadowbox_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
-  if (variable_get('shadowbox_enabled', TRUE)) {
-    switch ($op) {
-      case 'view':
-        $path = drupal_get_path('module', 'shadowbox');
-        drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
-        drupal_add_css($path ."/shadowbox.css");
-        drupal_add_js($path ."/shadowbox/build/js/adapter/shadowbox-jquery.js");
-        drupal_add_js($path ."/shadowbox/build/js/shadowbox.js");
-        drupal_add_js($path ."/shadowbox.js");
-    }
   }
 }
 
