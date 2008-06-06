@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.13 2008/06/05 23:59:39 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.14 2008/06/06 13:51:05 psynaptic Exp $
 
 /**
  * @file
@@ -515,6 +515,65 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
   }
   if (_validate_keys_string($keys_next)) {
     form_set_error('shadowbox_keys_next', $keys_message);
+  }
+}
+
+/**
+ * Implementation of hook_field_formatter_info().
+ *
+ * Add certain shadowbox+imagecache formatters to CCK image fields if the
+ * imagefield.module and the imagecache.module exist.
+ */
+function shadowbox_field_formatter_info() {
+  $formatter = array();
+  if (module_exists('imagefield') && module_exists('imagecache')) {
+    $rules = array();
+    if (function_exists('imagecache_presets')) {
+      $presets = imagecache_presets();
+      foreach ($presets as $preset_id => $preset_info) {
+        $rules[$preset_id] = $preset_info['presetname'];
+      }
+    }
+    else {
+      $rules = _imagecache_get_presets();
+    }
+    foreach ($rules as $ruleid => $rulename) {
+      $formatters['shadowbox]['. $rulename] = array(
+        'label' => 'Shadowbox: '. $rulename,
+        'field types' => array('image'),
+        );
+    }
+  }
+
+  return $formatters;
+}
+
+/**
+ * Implementation of hook_field_formatter().
+ */
+function shadowbox_field_formatter($field, $item, $formatter) {
+  if (module_exists('imagefield') && module_exists('imagecache') && !empty($item['fid'])) {
+    $file = _imagefield_file_load($item['fid']);
+    if (strpos($formatter, 'shadowbox][') !== FALSE) {
+      list($null, $namespace) = explode('][', $formatter, 2);
+      $rules = _imagecache_get_presets();
+      if (in_array($namespace, (array) $rules)) {
+        return theme('imagefield_image_imagecache_shadowbox', $namespace, $field, $file['filepath'], $item['alt'], $item['title']);
+      }
+    }
+  }
+}
+
+/**
+ * Implementation of theme_imagefield_image_imagecache_shadowbox().
+ */
+function theme_imagefield_image_imagecache_shadowbox($namespace, $field, $path, $alt = '', $title = '', $attributes = NULL) {
+  if (!empty($path)) {
+    $attributes = drupal_attributes($attributes);
+    $imagecache_path = file_create_url(file_directory_path() .'/imagecache/'. $namespace .'/'. $path);
+    $image = '<img src="'. $imagecache_path .'" alt="'. check_plain($alt) .'" '. $attributes .' />';
+
+    return l($image, file_create_url($path), array('title' => $title, 'rel' => 'shadowbox'), NULL, NULL, FALSE, TRUE);
   }
 }
 
