@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.14 2008/06/06 13:51:05 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.15 2008/06/06 20:23:11 psynaptic Exp $
 
 /**
  * @file
@@ -541,7 +541,7 @@ function shadowbox_field_formatter_info() {
       $formatters['shadowbox]['. $rulename] = array(
         'label' => 'Shadowbox: '. $rulename,
         'field types' => array('image'),
-        );
+      );
     }
   }
 
@@ -592,7 +592,6 @@ function shadowbox_header() {
   drupal_add_js($path .'/shadowbox/build/js/adapter/shadowbox-jquery.js');
   drupal_add_js($path .'/shadowbox/build/js/shadowbox.js');
   drupal_add_js($path .'/shadowbox.js');
-
   $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
   $quicktime = variable_get('shadowbox_supported_quicktime', shadowbox_get_types('quicktime'));
   $wmp = variable_get('shadowbox_supported_wmp', shadowbox_get_types('wmp'));
@@ -734,7 +733,9 @@ function shadowbox_get_types($type) {
       return array('avi', 'mpg', 'mpeg');
       break;
     case 'iframe':
-      return array('asp', 'aspx', 'cgi', 'cfm', 'htm', 'html', 'pl', 'php', 'php3', 'php4', 'php5', 'phtml', 'rb', 'rhtml', 'shtml', 'txt', 'vbs');
+      return array('asp', 'aspx', 'cgi', 'cfm', 'htm', 'html', 'pl', 'php',
+                  'php3', 'php4', 'php5', 'phtml', 'rb', 'rhtml', 'shtml',
+                  'txt', 'vbs');
       break;
     default:
       return FALSE;
