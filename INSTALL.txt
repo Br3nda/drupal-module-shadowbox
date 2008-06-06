@@ -1,4 +1,4 @@
-$Id: INSTALL.txt,v 1.4.2.3 2008/06/05 22:52:48 psynaptic Exp $
+$Id: INSTALL.txt,v 1.4.2.4 2008/06/06 22:45:08 psynaptic Exp $
 
 REQUIREMENTS
 ------------
@@ -24,11 +24,14 @@ INSTALLATION
 USAGE
 -----
 
-Currently, to activate Shadowbox for a link, you must manually inject the
-required attribute. To open any link in shadowbox you need to add a rel
-attribute with a value of shadowbox (for compatibility with Lightbox you can
-also use a value of lightbox). Depending on your specific needs you may need to
-inject the required attribute in the theme layer.
+The Drupal 5.x version of this module has integration with imagefield and 
+imagecache.
+
+To manually activate Shadowbox for a link, you must inject the required rel
+attribute. To open any link in shadowbox you need to add a rel attribute with a
+value of shadowbox (for compatibility with Lightbox you can also use a value of
+lightbox). Depending on your specific needs you may need to inject the required
+attribute in the theme layer.
 
 Single image
 ------------
@@ -54,8 +57,7 @@ External URL
 ------------
 
 A powerful feature of Shadowbox is the ability to open web pages directly on top
-of the current page. Try out the example and see how the site still functions as
-normal on top of the originating page.
+of the current page (in an iframe).
 
   <a href="http://google.com" title="Google" rel="shadowbox">Google</a>
 
@@ -65,3 +67,7 @@ Advanced usage
 Shadowbox allows you to specify options on a per-instance basis by using a
 JSON-formatted parameter. More information on this feature can be found on the
 Shadowbox usage page: http://mjijackson.com/shadowbox/doc/usage.html#markup
+
+  <a href="http://google.com" rel="shadowbox;width=740;height=400;
+    options={overlayColor:'#012',overlayOpacity:1,resizeDuration:0.2};">Google</a>
+  
