@@ -1,7 +1,8 @@
-$Id: CHANGELOG.txt,v 1.2.2.12 2008/06/05 23:41:15 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.2.2.13 2008/06/06 00:01:55 psynaptic Exp $
 
 Shadowbox 6.x-1.x-dev, 2008-06-06
 ---------------------------------
+- Added validation that assets actually exist (loading image, background image and flv player).
 - Rerouted form_set_error calls after previous change of form element names.
 - Added ability to select light CSS skin.
 - Added ability to exclude pages. Defaults to admin*, img_assist*, node/add/*, node/*/edit.
