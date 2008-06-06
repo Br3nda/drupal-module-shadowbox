@@ -1,7 +1,8 @@
-$Id: CHANGELOG.txt,v 1.2.2.13 2008/06/06 00:01:55 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.2.2.14 2008/06/06 00:16:10 psynaptic Exp $
 
 Shadowbox 6.x-1.x-dev, 2008-06-06
 ---------------------------------
+- Added options for controlling which media types to open in Shadowbox.
 - Added validation that assets actually exist (loading image, background image and flv player).
 - Rerouted form_set_error calls after previous change of form element names.
 - Added ability to select light CSS skin.

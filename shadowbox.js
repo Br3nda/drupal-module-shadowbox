@@ -1,4 +1,4 @@
-// $Id: shadowbox.js,v 1.1.2.2 2008/05/12 22:46:45 psynaptic Exp $
+// $Id: shadowbox.js,v 1.1.2.3 2008/06/06 00:16:10 psynaptic Exp $
 if (Drupal.jsEnabled) {
   $(document).ready(function(){
     var options = {
@@ -27,7 +27,14 @@ if (Drupal.jsEnabled) {
       keysClose:            Drupal.settings.shadowbox.keys_close,
       keysPrev:             Drupal.settings.shadowbox.keys_previous,
       keysNext:             Drupal.settings.shadowbox.keys_next,
-      handleUnsupported:    Drupal.settings.shadowbox.handle_unsupported
+      handleUnsupported:    Drupal.settings.shadowbox.handle_unsupported,
+      ext: {
+        img:                Drupal.settings.shadowbox.extensions_img,
+        qt:                 Drupal.settings.shadowbox.extensions_qt,
+        wmp:                Drupal.settings.shadowbox.extensions_wmp,
+        qtwmp:              Drupal.settings.shadowbox.extensions_qtwmp,
+        iframe:             Drupal.settings.shadowbox.extensions_iframe
+      }
     };
     Shadowbox.init(options);
   });
