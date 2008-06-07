@@ -1,10 +1,29 @@
 <?php
-// $Id: shadowbox.install,v 1.4.2.5 2008/06/05 23:06:25 psynaptic Exp $
+// $Id: shadowbox.install,v 1.4.2.6 2008/06/07 15:04:31 psynaptic Exp $
 
 /**
  * @file
  * Shadowbox module install file.
  */
+
+function shadowbox_install() {
+  switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':
+      db_query('CREATE TABLE IF NOT EXISTS {shadowbox_node} (
+        nid INT NOT NULL,
+        enable_keys INT NOT NULL default "1",
+        PRIMARY KEY (nid)
+      ) /*!40100 DEFAULT CHARACTER SET utf8 */');
+      break;
+    case 'pgsql':
+      db_query("CREATE TABLE {shadowbox_node} (
+        nid integer NOT NULL default '0',
+        enable_keys integer NOT NULL default '1'
+      )");
+      break;
+  }
+}
 
 /**
  * Implementation of hook_uninstall().
@@ -12,6 +31,7 @@
 function shadowbox_uninstall() {
   // delete the variables we created
   db_query("DELETE FROM {variable} WHERE name LIKE 'shadowbox_%'");
+  db_query('DROP TABLE {shadowbox_node}');
 }
 
 /**

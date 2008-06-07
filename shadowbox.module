@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.15 2008/06/06 20:23:11 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.16 2008/06/07 15:04:31 psynaptic Exp $
 
 /**
  * @file
@@ -57,7 +57,7 @@ function shadowbox_menu($may_cache) {
     );
   }
   elseif (shadowbox_active() && variable_get('shadowbox_enabled', TRUE)) {
-    shadowbox_header();
+    shadowbox_construct_header();
   }
 
   return $items;
@@ -519,6 +519,70 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
 }
 
 /**
+ * Implementation of hook_nodeapi().
+ */
+function shadowbox_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
+  switch ($op) {
+    case 'update':
+      db_query("DELETE FROM {shadowbox_node} WHERE nid = %d", $node->nid);
+      // fallthrough
+    case 'insert':
+      db_query("INSERT INTO {shadowbox_node} (nid, enable_keys) VALUES (%d, %d)", $node->nid, $node->enable_keys);
+      break;
+    case 'delete':
+      db_query('DELETE FROM {shadowbox_node} WHERE nid = %d', $node->nid);
+      break;
+    case 'load':
+      $result = db_result(db_query('SELECT enable_keys FROM {shadowbox_node} WHERE nid = %d', $node->nid));
+      return array('enable_keys' => $result);
+      break;
+    case 'view':
+      if ($a4) {
+        if (isset($node->enable_keys)) {
+          $settings = array('enable_keys' => (int)$node->enable_keys);
+          drupal_add_js(shadowbox_get_settings($settings), 'setting');
+        }
+      }
+      break;
+  }
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function shadowbox_form_alter($form_id, &$form) {
+  if ($form_id == 'node_type_form' && isset($form['identity']['type'])) {
+    $form['workflow']['shadowbox_enabled_type'] = array(
+      '#type' => 'radios',
+      '#title' => t('Shadowbox options'),
+      '#description' => t('Enable per-node configuration options for this node type.'),
+      '#default_value' => variable_get('shadowbox_enabled_type_'. $form['#node_type']->type, 0),
+      '#options' => array(t('Disabled'), t('Enabled')),
+    );
+  }
+  
+  if (isset($form['type'])) {
+    $node = $form['#node'];
+    
+    if ($form['type']['#value'] .'_node_form' == $form_id && variable_get("shadowbox_enabled_type_$node->type", TRUE)) {
+      $form['shadowbox'] = array(
+        '#type' => 'fieldset',
+        '#access' => user_access('administer shadowbox'),
+        '#title' => t('Shadowbox options'),
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+        '#weight' => 21,
+      );
+      $form['shadowbox']['enable_keys'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Enable keys'),
+        '#default_value' => ($node->enable_keys == '') ? 1 : $node->enable_keys,
+      );
+    }
+  }
+}
+
+/**
  * Implementation of hook_field_formatter_info().
  *
  * Add certain shadowbox+imagecache formatters to CCK image fields if the
@@ -580,24 +644,40 @@ function theme_imagefield_image_imagecache_shadowbox($namespace, $field, $path, 
 /**
  * Build the Shadowbox header by adding the necessary CSS and JS files.
  */
-function shadowbox_header() {
+function shadowbox_construct_header() {
   $path = drupal_get_path('module', 'shadowbox');
-  if (variable_get('shadowbox_css_skin', 'original') == 'light') {
-    drupal_add_css($path ."/shadowbox/build/css/shadowbox-light.css");
-  }
-  else {
+  (variable_get('shadowbox_css_skin', 'original') == 'light') ?
+    drupal_add_css($path ."/shadowbox/build/css/shadowbox-light.css") :
     drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
-  }
   drupal_add_css($path .'/shadowbox.css');
   drupal_add_js($path .'/shadowbox/build/js/adapter/shadowbox-jquery.js');
   drupal_add_js($path .'/shadowbox/build/js/shadowbox.js');
   drupal_add_js($path .'/shadowbox.js');
+  // We only want to avoid doing this on node/1 URLs since nodeapi view does this already
+  if (!(arg(0) == 'node' && is_numeric(arg(1)) && !arg(2))) {
+    drupal_add_js(shadowbox_get_settings(), 'setting');    
+  }
+}
+
+/**
+ * Construct the JS settings array.
+ *
+ * Allow overriding of settings for per-node configuration. Settings are 
+ * available at Drupal.settings.shadowbox.
+ *
+ * @param $override
+ *   An array of settings to override global values.
+ *
+ * @return
+ *   An array containing settings to be used in drupal_add_js.
+ */
+function shadowbox_get_settings($override = array()) {
   $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
   $quicktime = variable_get('shadowbox_supported_quicktime', shadowbox_get_types('quicktime'));
   $wmp = variable_get('shadowbox_supported_wmp', shadowbox_get_types('wmp'));
   $qtwmp = variable_get('shadowbox_supported_qtwmp', shadowbox_get_types('qtwmp'));
   $iframe = variable_get('shadowbox_supported_iframe', shadowbox_get_types('iframe'));
-  $options['shadowbox'] = array(
+  $settings = array(
     'asset_url' => base_path() . variable_get('shadowbox_asset_url', drupal_get_path('module', 'shadowbox') .'/shadowbox') .'/',
     'loading_image' => variable_get('shadowbox_loading_image', 'images/loading.gif'),
     'animation' => variable_get('shadowbox_animate', TRUE),
@@ -630,13 +710,13 @@ function shadowbox_header() {
     'extensions_qtwmp' => _array_to_string_values($qtwmp),
     'extensions_iframe' => _array_to_string_values($iframe),
   );
-  drupal_add_js($options, 'setting');
+  $settings = array_merge($settings, $override);
+  $settings = array('shadowbox' => $settings);
+  return $settings;
 }
 
 /**
  * Verify that Shadowbox should be active for the current URL.
- *
- * Code from Thickbox, previously from block.module.
  *
  * @return
  *   TRUE if Shadowbox should be active for the current page.

@@ -1,4 +1,8 @@
-$Id: CHANGELOG.txt,v 1.5.2.17 2008/06/06 13:51:05 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.5.2.18 2008/06/07 15:04:31 psynaptic Exp $
+
+Shadowbox 5.x-1.x-dev, 2008-06-06
+---------------------------------
+- Added per-node configuration option to disable key controls.
 
 Shadowbox 5.x-1.x-dev, 2008-06-06
 ---------------------------------
