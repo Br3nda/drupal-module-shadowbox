@@ -1,9 +1,10 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.16 2008/06/07 15:04:31 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.17 2008/06/09 14:57:00 psynaptic Exp $
 
 /**
  * @file
- * Shadowbox, a JavaScript media viewer application for displaying content in a modal dialog.
+ * Shadowbox, a JavaScript media viewer application for displaying content in a
+ * modal dialogue.
  */
 
 /**
@@ -56,7 +57,7 @@ function shadowbox_menu($may_cache) {
       'type' => MENU_NORMAL_ITEM,
     );
   }
-  elseif (shadowbox_active() && variable_get('shadowbox_enabled', TRUE)) {
+  else {
     shadowbox_construct_header();
   }
 
@@ -257,10 +258,11 @@ function shadowbox_admin_settings() {
   $form['shadowbox']['shadowbox_options']['overlay']['shadowbox_overlay_color'] = array(
     '#type' => 'textfield',
     '#title' => t('Overlay color'),
-    '#description' => t('Select a hexadecimal color value for the overlay (e.g. #000 or #000000 for black).'),
+    '#description' => t('Select a hexadecimal color value for the overlay (e.g. 000 or 000000 for black).'),
     '#size' => 8,
     '#maxlength' => 7,
-    '#default_value' => variable_get('shadowbox_overlay_color', '#000'),
+    '#default_value' => variable_get('shadowbox_overlay_color', '000'),
+    '#field_prefix' => '#',
   );
   $form['shadowbox']['shadowbox_options']['overlay']['shadowbox_overlay_opacity'] = array(
     '#type' => 'textfield',
@@ -484,8 +486,8 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
     $form_values['shadowbox_initial_height'] = floor($initial_width);
   }
 
-  if (!preg_match('!^#[a-f0-9]{3}([a-f0-9]{3})?$!i', $color)) {
-    form_set_error('shadowbox_overlay_color', 'You must enter a properly formed hex value (e.g. #000 or #000000 for black.)');
+  if (!_validate_hex_color($color)) {
+    form_set_error('shadowbox_overlay_color', 'You must enter a properly formed hex value (e.g. 000 or 000000 for black.)');
   }
 
   if ($opacity == '' || (floor($opacity) != 0 && $opacity != 1)) {
@@ -527,21 +529,37 @@ function shadowbox_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       db_query("DELETE FROM {shadowbox_node} WHERE nid = %d", $node->nid);
       // fallthrough
     case 'insert':
-      db_query("INSERT INTO {shadowbox_node} (nid, enable_keys) VALUES (%d, %d)", $node->nid, $node->enable_keys);
+      db_query("INSERT INTO {shadowbox_node} (nid, enable_keys, overlay_color) VALUES (%d, %d, '%s')", $node->nid, $node->enable_keys, $node->overlay_color);
       break;
     case 'delete':
       db_query('DELETE FROM {shadowbox_node} WHERE nid = %d', $node->nid);
       break;
     case 'load':
-      $result = db_result(db_query('SELECT enable_keys FROM {shadowbox_node} WHERE nid = %d', $node->nid));
-      return array('enable_keys' => $result);
+      $data = db_fetch_object(db_query('SELECT * FROM {shadowbox_node} WHERE nid = %d', $node->nid));
+      $node_settings = array();
+      if ($data) {
+        $node_settings['shadowbox_options'] = array(
+          'enable_keys' => $data->enable_keys,
+          'overlay_color' => $data->overlay_color,
+        );
+      }
+      return $node_settings;
       break;
     case 'view':
       if ($a4) {
-        if (isset($node->enable_keys)) {
-          $settings = array('enable_keys' => (int)$node->enable_keys);
-          drupal_add_js(shadowbox_get_settings($settings), 'setting');
+        $settings = array();
+        if ($options = $node->shadowbox_options) {
+          $settings = array(
+            'enable_keys' => (int)$node->shadowbox_options['enable_keys'],
+            'overlay_color' => $node->shadowbox_options['overlay_color'],
+          );
         }
+        drupal_add_js(shadowbox_get_settings($settings), 'setting');
+      }
+      break;
+    case 'validate':
+      if (!_validate_hex_color($node->overlay_color)) {
+        form_set_error('overlay_color', 'You must enter a properly formed hex value (e.g. 000 or 000000 for black.)');
       }
       break;
   }
@@ -563,7 +581,8 @@ function shadowbox_form_alter($form_id, &$form) {
   
   if (isset($form['type'])) {
     $node = $form['#node'];
-    
+    $options = $node->shadowbox_options;
+
     if ($form['type']['#value'] .'_node_form' == $form_id && variable_get("shadowbox_enabled_type_$node->type", TRUE)) {
       $form['shadowbox'] = array(
         '#type' => 'fieldset',
@@ -572,11 +591,21 @@ function shadowbox_form_alter($form_id, &$form) {
         '#collapsible' => TRUE,
         '#collapsed' => FALSE,
         '#weight' => 21,
+        '#attributes' => array('class' => 'shadowbox-options'),
       );
       $form['shadowbox']['enable_keys'] = array(
         '#type' => 'checkbox',
         '#title' => t('Enable keys'),
-        '#default_value' => ($node->enable_keys == '') ? 1 : $node->enable_keys,
+        '#default_value' => ($options['enable_keys'] == '') ? 1 : $options['enable_keys'],
+      );
+      $form['shadowbox']['overlay_color'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Overlay color'),
+        '#description' => t('Select a hexadecimal color value for the overlay (e.g. 000 or 000000 for black).'),
+        '#size' => 8,
+        '#maxlength' => 7,
+        '#default_value' => ($options['overlay_color'] == '') ? '000' : $options['overlay_color'],
+        '#field_prefix' => '#',
       );
     }
   }
@@ -591,19 +620,9 @@ function shadowbox_form_alter($form_id, &$form) {
 function shadowbox_field_formatter_info() {
   $formatter = array();
   if (module_exists('imagefield') && module_exists('imagecache')) {
-    $rules = array();
-    if (function_exists('imagecache_presets')) {
-      $presets = imagecache_presets();
-      foreach ($presets as $preset_id => $preset_info) {
-        $rules[$preset_id] = $preset_info['presetname'];
-      }
-    }
-    else {
-      $rules = _imagecache_get_presets();
-    }
-    foreach ($rules as $ruleid => $rulename) {
-      $formatters['shadowbox]['. $rulename] = array(
-        'label' => 'Shadowbox: '. $rulename,
+    foreach (imagecache_presets() as $preset) {
+      $formatters['shadowbox]['. $preset['presetname']] = array(
+      'label' => 'Shadowbox: '. $preset['presetname'],
         'field types' => array('image'),
       );
     }
@@ -620,8 +639,7 @@ function shadowbox_field_formatter($field, $item, $formatter) {
     $file = _imagefield_file_load($item['fid']);
     if (strpos($formatter, 'shadowbox][') !== FALSE) {
       list($null, $namespace) = explode('][', $formatter, 2);
-      $rules = _imagecache_get_presets();
-      if (in_array($namespace, (array) $rules)) {
+      if ($preset = imagecache_preset_by_name($namespace)) {
         return theme('imagefield_image_imagecache_shadowbox', $namespace, $field, $file['filepath'], $item['alt'], $item['title']);
       }
     }
@@ -634,7 +652,7 @@ function shadowbox_field_formatter($field, $item, $formatter) {
 function theme_imagefield_image_imagecache_shadowbox($namespace, $field, $path, $alt = '', $title = '', $attributes = NULL) {
   if (!empty($path)) {
     $attributes = drupal_attributes($attributes);
-    $imagecache_path = file_create_url(file_directory_path() .'/imagecache/'. $namespace .'/'. $path);
+    $imagecache_path = imagecache_create_url($namespace, $path);
     $image = '<img src="'. $imagecache_path .'" alt="'. check_plain($alt) .'" '. $attributes .' />';
 
     return l($image, file_create_url($path), array('title' => $title, 'rel' => 'shadowbox'), NULL, NULL, FALSE, TRUE);
@@ -646,16 +664,21 @@ function theme_imagefield_image_imagecache_shadowbox($namespace, $field, $path, 
  */
 function shadowbox_construct_header() {
   $path = drupal_get_path('module', 'shadowbox');
-  (variable_get('shadowbox_css_skin', 'original') == 'light') ?
-    drupal_add_css($path ."/shadowbox/build/css/shadowbox-light.css") :
-    drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
   drupal_add_css($path .'/shadowbox.css');
-  drupal_add_js($path .'/shadowbox/build/js/adapter/shadowbox-jquery.js');
-  drupal_add_js($path .'/shadowbox/build/js/shadowbox.js');
-  drupal_add_js($path .'/shadowbox.js');
-  // We only want to avoid doing this on node/1 URLs since nodeapi view does this already
-  if (!(arg(0) == 'node' && is_numeric(arg(1)) && !arg(2))) {
-    drupal_add_js(shadowbox_get_settings(), 'setting');    
+
+  if (shadowbox_active() && variable_get('shadowbox_enabled', TRUE)) {
+    (variable_get('shadowbox_css_skin', 'original') == 'light') ?
+      drupal_add_css($path ."/shadowbox/build/css/shadowbox-light.css") :
+      drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
+      drupal_add_js($path .'/shadowbox/build/js/adapter/shadowbox-jquery.js');
+      drupal_add_js($path .'/shadowbox/build/js/shadowbox.js');
+      drupal_add_js($path .'/shadowbox.js');
+
+      // We need to avoid including the settings on node pages because
+      // hook_nodeapi view will be doing this for us.
+      if (!(arg(0) == 'node' && is_numeric(arg(1)) && !arg(2))) {
+        drupal_add_js(shadowbox_get_settings(), 'setting');    
+      }
   }
 }
 
@@ -682,7 +705,7 @@ function shadowbox_get_settings($override = array()) {
     'loading_image' => variable_get('shadowbox_loading_image', 'images/loading.gif'),
     'animation' => variable_get('shadowbox_animate', TRUE),
     'animation_sequence' => variable_get('shadowbox_animation_sequence', 'wh'),
-    'overlay_color' => variable_get('shadowbox_overlay_color', '#000'),
+    'overlay_color' => variable_get('shadowbox_overlay_color', '000'),
     'overlay_opacity' => variable_get('shadowbox_overlay_opacity', 0.85),
     'overlay_listen' => variable_get('shadowbox_overlay_listen', TRUE),
     'resize_duration' => variable_get('shadowbox_resize_duration', 0.35),
@@ -699,9 +722,9 @@ function shadowbox_get_settings($override = array()) {
     'initial_height' => variable_get('shadowbox_initial_height', 160),
     'initial_width' => variable_get('shadowbox_initial_width', 320),
     'enable_keys' => variable_get('shadowbox_enable_keys', TRUE),
-    'keys_close' => _explode_to_int(variable_get('shadowbox_keys_close', 'c q 27'), ' '),
-    'keys_previous' => _explode_to_int(variable_get('shadowbox_keys_previous', 'p 37'), ' '),
-    'keys_next' => _explode_to_int(variable_get('shadowbox_keys_next', 'n 39'), ' '),
+    'keys_close' => _explode_to_int(variable_get('shadowbox_keys_close', 'c q 27')),
+    'keys_previous' => _explode_to_int(variable_get('shadowbox_keys_previous', 'p 37')),
+    'keys_next' => _explode_to_int(variable_get('shadowbox_keys_next', 'n 39')),
     'handle_large_images' => variable_get('shadowbox_handle_large_images', 'resize'),
     'handle_unsupported' => variable_get('shadowbox_handle_unsupported', 'link'),
     'extensions_img' => _array_to_string_values($images),
@@ -709,6 +732,14 @@ function shadowbox_get_settings($override = array()) {
     'extensions_wmp' => _array_to_string_values($wmp),
     'extensions_qtwmp' => _array_to_string_values($qtwmp),
     'extensions_iframe' => _array_to_string_values($iframe),
+    'text_cancel' => t('Cancel'),
+    'text_loading' => t('Loading'),
+    'text_close' => t('Close'),
+    'text_next' => t('Next'),
+    'text_previous' => t('Previous'),
+    'errors_single' => t('You must install the <a href="{0}">{1}</a> browser plugin to view this content.'),
+    'errors_shared' => t('You must install both the <a href="{0}">{1}</a> and <a href="{2}">{3}</a> browser plugins to view this content.'),
+    'errors_either' => t('You must install either the <a href="{0}">{1}</a> or the <a href="{2}">{3}</a> browser plugin to view this content.'),
   );
   $settings = array_merge($settings, $override);
   $settings = array('shadowbox' => $settings);
@@ -722,7 +753,6 @@ function shadowbox_get_settings($override = array()) {
  *   TRUE if Shadowbox should be active for the current page.
  */
 function shadowbox_active() {
-  // If the path doesn't match any of the exeptions, load header files.
   $path = drupal_get_path_alias($_GET['q']);
   $regexp = '/^('. preg_replace(array('/(\r\n?|\n)/', '/\\\\\*/', '/(^|\|)\\\\<front\\\\>($|\|)/'), array('|', '.*', '\1'. preg_quote(variable_get('site_frontpage', 'node'), '/') .'\2'), preg_quote(variable_get('shadowbox_excluded_pages', "admin*\nimg_assist*\nnode/add/*\nnode/*/edit"), '/')) .')$/';
   // Compare with the internal and path alias (if any).
@@ -736,20 +766,18 @@ function shadowbox_active() {
 /**
  * Convert numerical value(s) within a delimited string to integer(s).
  *
- * Explode a delimted string e.g. 'a b 2' or 'a,b,2' and type cast numeric
- * string values to int.
+ * Explode a space delimited string e.g. 'a b 2' and cast numeric string values 
+ * to integers.
  *
  * @param $string
- *   A delimited string containing a numerical value.
- * @param $delimiter
- *   The boundary string by which to explode.
+ *   A space delimited string.
  *
  * @return
- *   An array containing strings and integrers.
+ *   An array containing strings and integers.
  */
-function _explode_to_int($string, $delimiter) {
-  foreach (explode($delimiter, $string) as $value) {
-    (is_numeric($value)) ? $output[] = (int)$value : $output[] = $value;
+function _explode_to_int($string) {
+  foreach (explode(' ', $string) as $value) {
+    $output[] = (is_numeric($value)) ? (int)$value : $value;
   }
   return $output;
 }
@@ -765,10 +793,22 @@ function _explode_to_int($string, $delimiter) {
  */
 function _validate_keys_string($input) {
   foreach (explode(' ', $input) as $value) {
-    (preg_match('!^(?:[a-z]|\d{1,3})$!i', $value)) ? $items[] = TRUE : $items[] = FALSE;
+    $items[] = preg_match('!^(?:[a-z]|\d{1,3})$!i', $value);
   }
-  (in_array(FALSE, $items)) ? $return = TRUE : $return = FALSE;
-  return $return;
+  return in_array(FALSE, $items);
+}
+
+/**
+ * Validate a hex color value.
+ *
+ * @param $input
+ *   The string to validate.
+ *
+ * @return
+ *   TRUE if $input is a valid hex color value (e.g. 000 or 000000)
+ */
+function _validate_hex_color($input) {
+  return preg_match('!^[a-f0-9]{3}([a-f0-9]{3})?$!i', $input);
 }
 
 /**
@@ -814,11 +854,8 @@ function shadowbox_get_types($type) {
       break;
     case 'iframe':
       return array('asp', 'aspx', 'cgi', 'cfm', 'htm', 'html', 'pl', 'php',
-                  'php3', 'php4', 'php5', 'phtml', 'rb', 'rhtml', 'shtml',
-                  'txt', 'vbs');
-      break;
-    default:
-      return FALSE;
+        'php3', 'php4', 'php5', 'phtml', 'rb', 'rhtml', 'shtml', 'txt', 'vbs');
       break;
   }
 }
+

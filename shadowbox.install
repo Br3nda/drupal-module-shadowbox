@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.install,v 1.4.2.6 2008/06/07 15:04:31 psynaptic Exp $
+// $Id: shadowbox.install,v 1.4.2.7 2008/06/09 14:57:00 psynaptic Exp $
 
 /**
  * @file
@@ -10,16 +10,18 @@ function shadowbox_install() {
   switch ($GLOBALS['db_type']) {
     case 'mysql':
     case 'mysqli':
-      db_query('CREATE TABLE IF NOT EXISTS {shadowbox_node} (
-        nid INT NOT NULL,
-        enable_keys INT NOT NULL default "1",
+      db_query("CREATE TABLE {shadowbox_node} (
+        nid int NOT NULL,
+        enable_keys int NOT NULL default '1',
+        overlay_color varchar(6) NOT NULL default '000',
         PRIMARY KEY (nid)
-      ) /*!40100 DEFAULT CHARACTER SET utf8 */');
+      ) /*!40100 DEFAULT CHARACTER SET utf8 */");
       break;
     case 'pgsql':
       db_query("CREATE TABLE {shadowbox_node} (
-        nid integer NOT NULL default '0',
-        enable_keys integer NOT NULL default '1'
+        nid int NOT NULL default '0',
+        enable_keys int NOT NULL default '1',
+        overlay_color varchar(6) NOT NULL default '000'
       )");
       break;
   }

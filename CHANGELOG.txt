@@ -1,4 +1,14 @@
-$Id: CHANGELOG.txt,v 1.5.2.18 2008/06/07 15:04:31 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.5.2.19 2008/06/09 14:57:00 psynaptic Exp $
+
+Shadowbox 5.x-1.x-dev, 2008-06-09
+---------------------------------
+- Changed overlay color input to remove requirement to input # before hex value.
+- Added per-node option to change overlay color.
+- Reformatted comments to break at column 80.
+- Moved activation logic into shadowbox_construct_header().
+- #267917 by Davy Van Den Bremt: Added ability to translate Shadowbox.
+- Dropped support for imagecache 5.x-1.x in favour of 5.x-2.x.
+- A small amount of code shortening.
 
 Shadowbox 5.x-1.x-dev, 2008-06-06
 ---------------------------------

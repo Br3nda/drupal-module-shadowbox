@@ -1,4 +1,4 @@
-// $Id: shadowbox.js,v 1.4.2.3 2008/06/05 21:28:09 psynaptic Exp $
+// $Id: shadowbox.js,v 1.4.2.4 2008/06/09 14:57:00 psynaptic Exp $
 if (Drupal.jsEnabled) {
   $(document).ready(function(){
     var options = {
@@ -7,7 +7,7 @@ if (Drupal.jsEnabled) {
       animate:              Drupal.settings.shadowbox.animation,
       animSequence:         Drupal.settings.shadowbox.animation_sequence,
       flvPlayer:            Drupal.settings.shadowbox.flv_player,
-      overlayColor:         Drupal.settings.shadowbox.overlay_color,
+      overlayColor:         '#' + Drupal.settings.shadowbox.overlay_color,
       overlayOpacity:       Drupal.settings.shadowbox.overlay_opacity,
       overlayBgImage:       Drupal.settings.shadowbox.background_image,
       listenOverlay:        Drupal.settings.shadowbox.overlay_listen,
@@ -34,6 +34,18 @@ if (Drupal.jsEnabled) {
         wmp:                Drupal.settings.shadowbox.extensions_wmp,
         qtwmp:              Drupal.settings.shadowbox.extensions_qtwmp,
         iframe:             Drupal.settings.shadowbox.extensions_iframe
+      },
+      text: {
+        cancel:     Drupal.settings.shadowbox.text_cancel,
+        loading:    Drupal.settings.shadowbox.text_loading,
+        close:      Drupal.settings.shadowbox.text_close,
+        next:       Drupal.settings.shadowbox.text_next,
+        prev:       Drupal.settings.shadowbox.text_previous,
+        errors: {
+          single: Drupal.settings.shadowbox.errors_single,
+          shared: Drupal.settings.shadowbox.errors_shared,
+          either: Drupal.settings.shadowbox.errors_either
+        }
       }
     };
     Shadowbox.init(options);

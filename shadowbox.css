@@ -11,3 +11,8 @@
 #shadowbox_content {
   position: relative !important;
 }
+
+.node-form .shadowbox-options .form-text {
+  display: inline;
+  width: auto;
+}
