@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.19 2008/06/13 12:43:28 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.20 2008/06/13 23:48:53 psynaptic Exp $
 
 /**
  * @file
@@ -557,7 +557,7 @@ function shadowbox_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
       }
       break;
     case 'validate':
-      if (!_validate_hex_color($node->overlay_color)) {
+      if ($node->overlay_color && !_validate_hex_color($node->overlay_color)) {
         form_set_error('overlay_color', t('You must enter a properly formed hex value (e.g. 000 or 000000 for black.)'));
       }
       break;
