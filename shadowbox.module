@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.17 2008/06/09 14:57:00 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.18 2008/06/13 12:19:47 psynaptic Exp $
 
 /**
  * @file
@@ -422,7 +422,6 @@ function shadowbox_admin_settings() {
     ),
     '#default_value' => variable_get('shadowbox_handle_unsupported', 'link'),
   );
-
   return system_settings_form($form);
 }
 
@@ -446,18 +445,18 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
   $keys_previous = $form_values['shadowbox_keys_previous'];
   $keys_next = $form_values['shadowbox_keys_next'];
 
-  if (!preg_match('!^([a-z0-9_-]+/)*[a-z0-9_-]+$!i', $asset_url)) {
+  if (!preg_match('!^([a-z0-9_\-.]+/)*[a-z0-9_\-]+$!i', $asset_url)) {
     form_set_error('shadowbox_asset_url', 'You must enter a valid path in the form <code>path/to/asset</code> (no leading or trailing slashes).');
   }
 
-  if (!preg_match('!^([a-z0-9_-]+/)*[a-z0-9_-]+\.gif$!i', $loading_image)) {
+  if (!preg_match('!^([a-z0-9_\-]+/)*[a-z0-9_\-]+\.gif$!i', $loading_image)) {
     form_set_error('shadowbox_loading_image', 'You must enter a valid path to an animated GIF image in the form <code>images/image.gif</code>.');
   }
   elseif (!file_exists($asset_url .'/'. $loading_image)) {
     form_set_error('shadowbox_loading_image', 'The specified image does not exist.');
   }
 
-  if (!preg_match('!^([a-z0-9_-]+/)*[a-z0-9_-]+\.swf$!i', $flv_player)) {
+  if (!preg_match('!^([a-z0-9_\-]+/)*[a-z0-9_\-]+\.swf$!i', $flv_player)) {
     form_set_error('shadowbox_flv_player', 'You must enter a valid path to an SWF Flash Player in the form <code>flvplayer.swf</code>.');
   }
   elseif (!file_exists($asset_url .'/'. $flv_player)) {
@@ -494,7 +493,7 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
     form_set_error('shadowbox_overlay_opacity', 'You must enter a decimal number between 0 and 1.');
   }
 
-  if (!preg_match('!^([a-z0-9_-]+/)*[a-z0-9_-]+\.png$!i', $background_image)) {
+  if (!preg_match('!^([a-z0-9_\-]+/)*[a-z0-9_\-]+\.png$!i', $background_image)) {
     form_set_error('shadowbox_background_image', 'You must enter a valid path to a PNG image in the form <code>images/overlay-85.png</code>.');
   }
   elseif (!file_exists($asset_url .'/'. $background_image)) {
@@ -764,6 +763,36 @@ function shadowbox_active() {
 }
 
 /**
+ * Helper function to get default values for supported media types.
+ *
+ * @param $input
+ *   The type of supported media options to return.
+ *
+ * @return
+ *   An array with default values for each type.
+ */
+function shadowbox_get_types($type) {
+  switch ($type) {
+    case 'image':
+      return array('png', 'jpg', 'jpeg', 'gif', 'bmp');
+      break;
+    case 'quicktime':
+      return array('dv', 'mov', 'moov', 'movie', 'mp4');
+      break;
+    case 'wmp':
+      return array('asf', 'wm', 'wmv');
+      break;
+    case 'qtwmp':
+      return array('avi', 'mpg', 'mpeg');
+      break;
+    case 'iframe':
+      return array('asp', 'aspx', 'cgi', 'cfm', 'htm', 'html', 'pl', 'php',
+        'php3', 'php4', 'php5', 'phtml', 'rb', 'rhtml', 'shtml', 'txt', 'vbs');
+      break;
+  }
+}
+
+/**
  * Convert numerical value(s) within a delimited string to integer(s).
  *
  * Explode a space delimited string e.g. 'a b 2' and cast numeric string values 
@@ -827,35 +856,5 @@ function _array_to_string_values($array) {
     }
   }
   return $output;
-}
-
-/**
- * Helper function to get default values for supported media types.
- *
- * @param $input
- *   The type of supported media options to return.
- *
- * @return
- *   An array with default values for each type.
- */
-function shadowbox_get_types($type) {
-  switch ($type) {
-    case 'image':
-      return array('png', 'jpg', 'jpeg', 'gif', 'bmp');
-      break;
-    case 'quicktime':
-      return array('dv', 'mov', 'moov', 'movie', 'mp4');
-      break;
-    case 'wmp':
-      return array('asf', 'wm', 'wmv');
-      break;
-    case 'qtwmp':
-      return array('avi', 'mpg', 'mpeg');
-      break;
-    case 'iframe':
-      return array('asp', 'aspx', 'cgi', 'cfm', 'htm', 'html', 'pl', 'php',
-        'php3', 'php4', 'php5', 'phtml', 'rb', 'rhtml', 'shtml', 'txt', 'vbs');
-      break;
-  }
 }
 
