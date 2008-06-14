@@ -1,4 +1,12 @@
-$Id: CHANGELOG.txt,v 1.5.2.19 2008/06/09 14:57:00 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.5.2.20 2008/06/14 00:39:42 psynaptic Exp $
+
+Shadowbox 5.x-1.x-dev, 2008-06-14
+---------------------------------
+- Added pdf media type option and made both pdf and txt default to not supported.
+- #270356 reported by jstamper: Fixed node form validation issue.
+- Reported by snpower: Wrapping form error messages in t().
+- Reported by snpower: Adjusting regex to allow period in asset URL.
+- Escaped dashes to prevent 'range out of order' errors occurring in the future.
 
 Shadowbox 5.x-1.x-dev, 2008-06-09
 ---------------------------------
