@@ -1,0 +1,509 @@
+# $Id: ja.po,v 1.1.2.1 2008/06/16 10:38:26 imagine Exp $
+# -----------------------------------------------------------------------------
+# Japanese translation of Drupal (modules-shadowbox)
+#
+# Copyright (c) 2006-2008  Drupal Japan  ( http://drupal.jp/ )  /
+#                          Takafumi      ( jp.drupal@imagine **reverse order**)
+#
+# Generated from file:
+#  shadowbox.module,v 1.1.2.12 2008/06/06 00:16:10 psynaptic
+#  shadowbox.install,v 1.1.2.5 2008/06/05 23:08:47 psynaptic
+#  shadowbox.info,v 1.1.2.2 2008/05/12 22:46:45 psynaptic
+#
+# -----------------------------------------------------------------------------
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2008-06-16 00:27+0900\n"
+"Last-Translator: Takafumi <jp.drupal@imagine **reverse order**>\n"
+"Language-Team: Drupal Japan\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: shadowbox.module:15
+msgid "Shadowbox is a modal media viewer application akin to <a href=\"!lightbox_project\">Lightbox2</a> and <a href=\"!thickbox_project\">Thickbox</a>. You can use it to display images, movies, and other web content in a window that is overlaid on top of the originating page."
+msgstr "Shadowbox は、<a href=\"!lightbox_project\">Lightbox2</a> や <a href=\"!thickbox_project\">Thickbox</a> と同種のモーダルなメディアビューアアプリケーションで、現在のページ上にオーバーレイされたウィンドウに、画像・動画・その他のコンテンツを表示するために使用できます。"
+
+#: shadowbox.module:16
+msgid "From the author of Shadowbox:"
+msgstr "Shadowboxの作者より："
+
+#: shadowbox.module:17
+msgid "Shadowbox is a cross-browser, cross-platform, cleanly-coded and fully-documented media viewer application written entirely in JavaScript. Using Shadowbox, website authors can display a wide assortment of media in all major browsers without navigating away from the linking page."
+msgstr "Shadowboxは全体にJavaScriptで書かれ、きれいなコード化と十分なドキュメント化がされた、クロスブラウザ・クロスプラットフォームのメディアビューアアプリケーションです。 ウェブサイトの投稿者はShadowboxを使用し、リンクしているページから離れてナビゲートすることなく、メジャーなブラウザで幅広い種類のメディアを表示することができます。"
+
+#: shadowbox.module:18
+msgid "This module currently provides only the most basic of functionality. It has <a href=\"!shadowbox_settings\">global settings</a> that work on a site-wide basis. This means if you change a setting it will apply to all the Shadowboxes on your site."
+msgstr "このモジュールは現在のところ、機能性の最も基本的なもののみを提供し、サイト全域規模に作用する<a href=\"!shadowbox_settings\">全般の設定</a>を持ちます。 このため、それらの設定を変更した場合、サイトのすべてのShadowboxに適用されることになります。"
+
+#: shadowbox.module:19
+msgid "Future versions of this module will integrate with imagefield, imagecache and other important Drupal image modules and provide more options for configuring Shadowbox on a per-instance basis."
+msgstr "このモジュールの今後のバージョンでは、imagefield や imagecache、あるいはその他の重要なDrupalイメージモジュールと融合し、より多くのオプションをインスタンス単位でのShadowboxに提供するでしょう。"
+
+#: shadowbox.module:20
+msgid "Usage:"
+msgstr "使い方："
+
+#: shadowbox.module:21
+msgid "Currently, to activate Shadowbox for a link, you must manually inject the required attribute. Depending on your needs you may need to do this on the theming layer. To open any link in shadowbox you need to add a <strong><code>rel</code></strong> attribute with a value of <strong><code>shadowbox</code></strong> (for compatibility with Lightbox you can also use a value of <strong><code>lightbox</code></strong>)."
+msgstr "現在のところ、リンクでShadowboxを活性化させるためには、必要とされる属性を手作業で挿入する必要があります。 必要に応じて、この作業をテーマ層で行う必要があるかもしれません。 Shadowboxで任意のリンクを開くには、<strong><code>shadowbox</code></strong> を値に持つ <strong><code>rel</code></strong> 属性を加える必要があります。（Lightboxとの互換性のために <strong><code>lightbox</code></strong> の値を使用することもできます）"
+
+#: shadowbox.module:22
+msgid "Single image:"
+msgstr "単独の画像："
+
+#: shadowbox.module:23
+msgid "The important thing to note here is the <code>rel</code> attribute. This tells Shadowbox you wish to activate it for this link. The <code>title</code> attribute is optional and can be used to give a caption to the instance."
+msgstr "ここで注意すべき大切なことは <code>rel</code> 属性です。 これは、このリンクで作動させたいことをShadowboxに伝えます。 <code>title</code> 属性は任意で、インスタンスにキャプションを与えるために使用できます。"
+
+#: shadowbox.module:24
+msgid "<code><pre>&lt;a href=&quot;/files/image1.jpg&quot; rel=&quot;shadowbox&quot; title=&quot;Caption&quot;&gt;Image&lt;/a&gt;</pre></code>"
+msgstr "<code><pre>&lt;a href=&quot;/files/image1.jpg&quot; rel=&quot;shadowbox&quot; title=&quot;Caption&quot;&gt;画像&lt;/a&gt;</pre></code>"
+
+#: shadowbox.module:25
+msgid "Multiple instances (gallery mode):"
+msgstr "複数のインスタンス（ギャラリーモード）："
+
+#: shadowbox.module:26
+msgid "Media can be grouped into a gallery using <code>shadowbox[name]</code> where <code>name</code> is any name you wish to apply. The value of <code>[name]</code> is only used internally by Shadowbox and won't be shown to the user."
+msgstr "メディアは <code>shadowbox[name]</code> （<code>name</code> は適用したい任意の名前）を使用してギャラリー内にグループ化することができます。 <code>[name]</code> の値はShadowboxの内部でのみ使われ、ユーザに表示されることはありません。"
+
+#: shadowbox.module:27
+msgid ""
+"<code><pre>&lt;a href=&quot;/files/image1.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 1&quot;&gt;Image&lt;/a&gt;\n"
+"&lt;a href=&quot;/files/image2.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 2&quot;&gt;Image&lt;/a&gt;\n"
+"&lt;a href=&quot;/files/image3.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 3&quot;&gt;Image&lt;/a&gt;</pre></code>"
+msgstr ""
+"<code><pre>&lt;a href=&quot;/files/image1.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 1&quot;&gt;画像&lt;/a&gt;\n"
+"&lt;a href=&quot;/files/image2.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 2&quot;&gt;画像&lt;/a&gt;\n"
+"&lt;a href=&quot;/files/image3.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 3&quot;&gt;画像&lt;/a&gt;</pre></code>"
+
+#: shadowbox.module:30
+msgid "External URL:"
+msgstr "外部URL:"
+
+#: shadowbox.module:31
+msgid "A powerful feature of Shadowbox is the ability to open web pages directly on top of the current page. Try out the example and see how the site still functions as normal on top of the originating page."
+msgstr "Shadowboxの強力な機能は、現在のページ上に直接ウェブページを開く能力です。 具体例を試し、起点となったページ上でサイトがどのように通常どおり機能するのかを見てください。"
+
+#: shadowbox.module:32
+msgid "<code><pre>&lt;a href=&quot;http://google.com&quot; rel=&quot;shadowbox&quot; title=&quot;Google&quot;&gt;Google&lt;/a&gt;</pre></code>"
+msgstr "<code><pre>&lt;a href=&quot;http://google.com&quot; rel=&quot;shadowbox&quot; title=&quot;Google&quot;&gt;Google&lt;/a&gt;</pre></code>"
+
+#: shadowbox.module:33
+msgid "Advanced usage:"
+msgstr "高度な使い方："
+
+#: shadowbox.module:34
+msgid "Shadowbox allows you to specify options on a per-instance basis by using a JSON-formatted parameter. More information on this feature can be found on the <a href=\"!shadowbox_usage\">Shadowbox usage page</a>."
+msgstr "ShadowboxはJSON形式のパラメータを使用することで、インスタンス単位でオプションを指定することができます。 この機能についてのより詳しい情報は <a href=\"!shadowbox_usage\">Shadowbox usage page</a> を参照してください。"
+
+#: shadowbox.module:38
+msgid "<p>This page provides access to the Shadowbox settings. The settings work globally so any changes made here will affect Shadowbox for the entire site.</p>"
+msgstr "このページはShadowboxの設定へのアクセスを提供します。 設定は全体的に作用しますので、ここで行われた変更はサイト全域のShadowboxに影響を与えます。"
+
+#: shadowbox.module:87
+msgid "Global settings"
+msgstr "全般の設定"
+
+#: shadowbox.module:94
+msgid "Enable Shadowbox"
+msgstr "Shadowboxを有効化"
+
+#: shadowbox.module:96
+msgid "Check this box to enable Shadowbox for the site."
+msgstr "ここにチェックを入れると、サイトでShadowboxが有効になります。"
+
+#: shadowbox.module:100
+msgid "Skin"
+msgstr "スキン"
+
+#: shadowbox.module:102
+msgid "Select the skin to use for the Shadowbox overlay."
+msgstr "Shadowboxのオーバーレイに使用するスキンを選択してください。"
+
+#: shadowbox.module:111
+msgid "Deactivate Shadowbox on specific pages"
+msgstr "特定のページでShadowboxを無効化"
+
+#: shadowbox.module:113
+msgid "Enter one page per line as Drupal paths. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page."
+msgstr "１行に１ベージとして、Drupalパスを入力してください。 <b>*</b> はワイルドカードとして使えます。 例えばブログページのパスを指定するには <b>%blog</b>、ユーザ別のブログは <b>%blog-wildcard</b> と入力してください。 また、フロントページを指定するには <b>%front</b> と入力してください。<br />"
+
+#: shadowbox.module:118
+msgid "Supported media"
+msgstr "サポートされるメディア"
+
+#: shadowbox.module:124
+msgid "Image"
+msgstr "画像"
+
+#: shadowbox.module:125
+msgid "Supported image file extensions"
+msgstr "サポートされる画像ファイルの拡張子を指定してください。"
+
+#: shadowbox.module:131
+msgid "Quicktime"
+msgstr "Quicktime"
+
+#: shadowbox.module:132
+msgid "Movie file extensions supported by QuickTime"
+msgstr "QuickTime でサポートされる、動画ファイルの拡張子を指定してください。"
+
+#: shadowbox.module:138
+msgid "Windows Media Player"
+msgstr "Windows Media Player"
+
+#: shadowbox.module:139
+msgid "Movie file extensions supported by Windows Media Player"
+msgstr "Windows Media Player でサポートされる、動画ファイルの拡張子を指定してください。"
+
+#: shadowbox.module:145
+msgid "Quicktime and Windows Media Player"
+msgstr "Quicktime と Windows Media Player"
+
+#: shadowbox.module:146
+msgid "Movie file extensions supported by both QuickTime and Windows Media Player"
+msgstr "Quicktime と Windows Media Player でサポートされる、動画ファイルの拡張子を指定してください。"
+
+#: shadowbox.module:152
+msgid "IFrame"
+msgstr "IFrame"
+
+#: shadowbox.module:153
+msgid "File extensions that will be display in an iframe"
+msgstr "iframe で表示されるファイルの拡張子を指定してください。"
+
+#: shadowbox.module:160
+msgid "Options"
+msgstr "オプション"
+
+#: shadowbox.module:161
+msgid "Shadowbox is highly configurable, but can also be used with little to no configuration at all. The following options may be used to configure Shadowbox on a site-wide basis."
+msgstr "Shadowboxには多くの設定項目がありますが、ほとんど設定しなくとも利用できます。 以下はサイト全域でのShadowboxが使うことのあるオプションです。"
+
+#: shadowbox.module:169
+msgid "Assets"
+msgstr "アセット"
+
+#: shadowbox.module:175
+msgid "Base asset URL"
+msgstr "ベースアセットのURL"
+
+#: shadowbox.module:176
+msgid "The path to the assets (loading image, FLV player, and background image). Relative to Drupal root e.g. <code>sites/all/modules/shadowbox/shadowbox</code>."
+msgstr "Drupalルートに相対的な、アセット（「ロード中」画像、FLVプレイヤー、背景画像）へのパスを入力してください。 例：<code>sites/all/modules/shadowbox/shadowbox</code>"
+
+#: shadowbox.module:183
+msgid "Loading image path"
+msgstr "「ロード中」画像のパス"
+
+#: shadowbox.module:184
+msgid "The URL of an image to use as a loading indicator while loading content."
+msgstr "コンテンツのロード中にインジケータとして表示する、画像のパスを入力してください。"
+
+#: shadowbox.module:191
+msgid "FLV player"
+msgstr "FLVプレイヤー"
+
+#: shadowbox.module:192
+msgid "The URL of the flash video player."
+msgstr "Flashビデオプレイヤーのパスを入力してください。"
+
+#: shadowbox.module:200
+msgid "Animation"
+msgstr "アニメーション"
+
+#: shadowbox.module:206
+msgid "Enable animation"
+msgstr "アニメーションを有効化"
+
+#: shadowbox.module:207
+msgid "Enable all fancy dimension and opacity animations. Disabling this option can improve the overall effect on computers with poor performance."
+msgstr "しゃれた広がりや透過のアニメーションを行うかどうかを指定してください。 このオプションを無効にすることで、性能の低いコンピュータで全体的なエフェクトを向上させることができます。"
+
+#: shadowbox.module:212
+msgid "Animation sequence"
+msgstr "アニメーションの進行順序"
+
+#: shadowbox.module:214
+msgid "The animation sequence to use when resizing Shadowbox."
+msgstr "Shadowboxがリサイズする際に使用する、アニメーションの進行の仕方を指定してください。"
+
+#: shadowbox.module:216
+msgid "Width then height"
+msgstr "幅 → 高さ"
+
+#: shadowbox.module:217
+msgid "Height then width"
+msgstr "高さ → 幅"
+
+#: shadowbox.module:218
+msgid "Simultaneously"
+msgstr "同時進行"
+
+#: shadowbox.module:224
+msgid "Resize duration"
+msgstr "リサイズの継続時間"
+
+#: shadowbox.module:225
+msgid "The duration (in seconds) of the resizing animations."
+msgstr "リサイズするアニメーションの継続時間を、秒単位で入力してください。"
+
+#: shadowbox.module:232
+msgid "Fade duration"
+msgstr "フェードの継続時間"
+
+#: shadowbox.module:233
+msgid "The duration (in seconds) of the overlay fade animation."
+msgstr "オーバーレイフェードアニメーションの継続時間を、秒単位で入力してください。"
+
+#: shadowbox.module:240
+msgid "Initial height"
+msgstr "高さの初期値"
+
+#: shadowbox.module:241
+msgid "The height of Shadowbox (in pixels) when it first appears on the screen."
+msgstr "画面に最初に現れる際のShadowboxの高さを、ピクセル単位で入力してください。"
+
+#: shadowbox.module:248
+msgid "Initial width"
+msgstr "幅の初期値"
+
+#: shadowbox.module:249
+msgid "The width of Shadowbox (in pixels) when it first appears on the screen. "
+msgstr "画面に最初に現れる際のShadowboxの幅を、ピクセル単位で入力してください。"
+
+#: shadowbox.module:257
+msgid "Overlay"
+msgstr "オーバーレイ"
+
+#: shadowbox.module:263
+msgid "Overlay color"
+msgstr "オーバーレイ用カラー"
+
+#: shadowbox.module:264
+msgid "Select a hexadecimal color value for the overlay (e.g. #000 or #000000 for black)."
+msgstr "オーバーレイ用の16進カラーコードを入力してください。 例： ブラックの場合は #000 または #000000"
+
+#: shadowbox.module:271
+msgid "Overlay opacity"
+msgstr "オーバーレイの不透明度"
+
+#: shadowbox.module:272
+msgid "The opacity of the overlay. Accepts values between 0 and 1. 0 is fully transparent, 1 is fully opaque."
+msgstr "オーバーレイの不透明度を入力してください。 0 ～ 1 の値が認められ、0 が 完全に透明、1 が完全に不透明となります。"
+
+#: shadowbox.module:279
+msgid "Overlay backround image"
+msgstr "オーバーレイの背景画像"
+
+#: shadowbox.module:280
+msgid "The URL of a pre-made image to use for browsers (such as FF Mac) that don't support playing movies over backgrounds that are not 100% opaque."
+msgstr "一部のブラウザで使用する背景用画像のパスを入力してください。 これは、100% 不透明でない背景上での動画再生をサポートしない、FF Mac のようなブラウザで使用されます。"
+
+#: shadowbox.module:287
+msgid "Viewport padding"
+msgstr "ビューポート（表示域）のパディング"
+
+#: shadowbox.module:288
+msgid "The amount of padding (in pixels) to maintain around the edge of the browser window."
+msgstr "ブラウザウィンドウ周りのパディング量を、ピクセル単位で入力してください。"
+
+#: shadowbox.module:296
+msgid "Galleries"
+msgstr "ギャラリー"
+
+#: shadowbox.module:302
+msgid "Display gallery navigation."
+msgstr "ギャラリーナビゲーションを表示"
+
+#: shadowbox.module:303
+msgid "Uncheck this option to hide the gallery navigation controls."
+msgstr "ギャラリーナビゲーションを表示するかどうかを指定してください。 ここにチェックを入れると、ギャラリーナビゲーションコントロールが表示されます。"
+
+#: shadowbox.module:308
+msgid "Enable continuous galleries"
+msgstr "連続ギャラリーの有効化"
+
+#: shadowbox.module:309
+msgid "Check this option to enable \"continuous\" galleries. By default, the galleries will not let a user go before the first image or after the last. Enabling this feature will let the user go directly to the first image in a gallery from the last one by selecting \"Next\"."
+msgstr "ここにチェックを入れると、「途切れない」ギャラリーが有効になります。 デフォルトでは、ギャラリーの先頭画像の前や、最終画像の後ろへユーザが行くことはできません。 この機能を有効にすると、「Next」や「Previous」を選ぶことで、ギャラリーの最終と先頭の間をユーザが直接行けるようになります。"
+
+#: shadowbox.module:314
+msgid "Enable counter"
+msgstr "カウンタの有効化"
+
+#: shadowbox.module:315
+msgid "Uncheck this option to hide the gallery counter. Counters are never displayed on elements that are not part of a gallery."
+msgstr "ここにチェックを入れると、ギャラリーのカウンタが有効になります。 カウンタはギャラリーの一部ではない要素には表示されません。"
+
+#: shadowbox.module:320
+msgid "Counter type"
+msgstr "カウンタタイプ"
+
+#: shadowbox.module:322
+msgid "The mode to use for the gallery counter. May be either 'default' or 'skip'. The default counter is a simple '1 of 5' message. The skip counter displays a separate link to each piece in the gallery, enabling quick navigation in large galleries."
+msgstr "ギャラリカウンタに使用するモードを指定してください。 モードは「デフォルト」か「スキップ」のいずれかです。 「デフォルト」は「1 of 5」のような単純なメッセージです。 「スキップ」は大きなギャラリーでの素早いナビゲーションを可能にする、ギャラリーの各部分への独立したリンクが表示されます。"
+
+#: shadowbox.module:324
+msgid "Default"
+msgstr "デフォルト"
+
+#: shadowbox.module:325
+msgid "Skip"
+msgstr "スキップ"
+
+#: shadowbox.module:332
+msgid "Movies"
+msgstr "動画"
+
+#: shadowbox.module:338
+msgid "Enable auto-play movies"
+msgstr "自動再生動画の有効化"
+
+#: shadowbox.module:339
+msgid "Set this false to disable automatically playing movies when they are loaded."
+msgstr "ここにチェックを入れると、ロードされた動画の自動再生が有効になります。"
+
+#: shadowbox.module:344
+msgid "Enable movie controls"
+msgstr "動画コントロールの有効化"
+
+#: shadowbox.module:345
+msgid "Set this false to disable displaying QuickTime and Windows Media player movie control bars."
+msgstr "ここにチェックを入れると、QuickTime と Windows Media player での動画コントロールバーの表示が有効になります。"
+
+#: shadowbox.module:351
+msgid "Input controls"
+msgstr "入力コントロール"
+
+#: shadowbox.module:357
+msgid "Mouse click closes overlay."
+msgstr "オーバーレイのマウスクリックで閉じる"
+
+#: shadowbox.module:358
+msgid "Set this false to disable listening for mouse clicks on the overlay that will close Shadowbox."
+msgstr "ここにチェックを入れると、オーバーレイでのマウスクリックでShadowboxを閉じられるようになります。"
+
+#: shadowbox.module:363
+msgid "Keyboard controls"
+msgstr "キーボードコントロール"
+
+#: shadowbox.module:369
+msgid "Enable keys"
+msgstr "キーを有効化"
+
+#: shadowbox.module:370
+msgid "Set this false to disable keyboard navigation of galleries."
+msgstr "ここにチェックを入れると、ギャラリーのキーボードナビゲーションが有効になります。"
+
+#: shadowbox.module:375
+msgid "Close keys"
+msgstr "「閉じる」キー"
+
+#: shadowbox.module:376
+msgid "A list of keys (or key codes) that a user may use to close Shadowbox. Values should be separated by a space. Defaults to 'c q 27' (c, q, or esc)."
+msgstr "Shadowboxを閉じるのに使用する、キー（またはキーコード）のリストを空白文字で区切って入力してください。 デフォルトは 'c q 27'（c, q, Esc） です。"
+
+#: shadowbox.module:383
+msgid "Previous keys"
+msgstr "「前へ」キー"
+
+#: shadowbox.module:384
+msgid "An list of keys (or key codes) that a user may use to skip to the previous piece in the gallery. Values should be separated by a space. Defaults to 'p, 37' (p or left arrow)."
+msgstr "ギャラリーの前の部分にスキップするのに使用する、キー（またはキーコード）のリストを空白文字で区切って入力してください。 デフォルトは 'p 37'（p, 左矢印） です。"
+
+#: shadowbox.module:391
+msgid "Next keys"
+msgstr "「次へ」キー"
+
+#: shadowbox.module:392
+msgid "A list of keys (or key codes) that a user may use to skip to the next piece in the gallery. Values should be separated by a space. Defaults to 'n, 39' (n or right arrow)."
+msgstr "ギャラリーの次の部分にスキップするのに使用する、キー（またはキーコード）のリストを空白文字で区切って入力してください。 デフォルトは 'n 39'（n, 右矢印） です。"
+
+#: shadowbox.module:400
+msgid "Media handling"
+msgstr "メディア処理"
+
+#: shadowbox.module:406
+msgid "Handle large images"
+msgstr "大きい画像の処理"
+
+#: shadowbox.module:408
+msgid "The mode to use for handling images that are too large for the viewport. May be one of \"none\", \"resize\", or \"drag\". The \"none\" setting will not alter the image dimensions, though clipping will occur. Setting this to \"resize\" enables on-the-fly resizing of large images. In this mode, the height and width of large images will be adjusted so that they may still be viewed in their entirety while maintaining the original aspect ratio. The \"drag\" mode will display the image at its original resolution, but will allow the user to drag the image within the view to see portions that may be clipped."
+msgstr "表示域より大きい画像の処理に使用するモードを指定してください。 モードは「なし」「リサイズ」「ドラッグ」のいずれかです。 「なし」は、切り抜きは起こりますが画像サイズの変更はありません。 「リサイズ」は、大きな画像のその場でのサイズ変更が有効になります。 このモードでは、オリジナルの縦横比が維持されたまま、全体が表示されるように大きな画像の幅と高さが調整されます。 「ドラッグ」は、オリジナルの画像サイズで表示されますが、切り取られた部分を表示するために、ユーザが表示域で画像をドラッグできるようになります。"
+
+#: shadowbox.module:410
+msgid "Resize"
+msgstr "リサイズ"
+
+#: shadowbox.module:411
+msgid "Drag"
+msgstr "ドラッグ"
+
+#: shadowbox.module:412
+msgid "None"
+msgstr "なし"
+
+#: shadowbox.module:418
+msgid "Handle unsupported"
+msgstr "非サポートの処理"
+
+#: shadowbox.module:420
+msgid "The mode to use for handling unsupported media. May be either <strong>link</strong> or <strong>remove</strong>. Media are unsupported when the browser plugin required to display the media properly is not installed. The link option will display a user-friendly error message with a link to a page where the needed plugin can be downloaded. The remove option will simply remove any unsupported gallery elements from the gallery before displaying it. With this option, if the element is not part of a gallery, the link will simply be followed."
+msgstr "サポートされていないメディアの処理に使用するモードを指定してください。 モードは「リンク」か「取り外し」のいずれかです。 メディアを正しく表示するのに必要なブラウザプラグインがインストールされていない場合、メディアはサポートされません。 「リンク」を選んだ場合、必要なプラグインをダウンロードできるページへのリンクと共に、分かり易いエラーメッセージが表示されます。 「取り外す」を選んだ場合、サポートされていないギャラリー要素は表示前に取り除かれます。 このオプションでは、要素がギャラリーの一部でない場合、単にリンクが続きます。"
+
+#: shadowbox.module:422
+msgid "Link"
+msgstr "リンク"
+
+#: shadowbox.module:423
+msgid "Remove"
+msgstr "取り外す"
+
+#: shadowbox.module:65
+msgid "administer shadowbox"
+msgstr "Shadowboxの管理"
+
+#: (duplicate) shadowbox.module:49 shadowbox.install:29 ;37 ;45
+#: shadowbox.info:0
+msgid "Shadowbox"
+msgstr "Shadowbox"
+
+#: shadowbox.module:54
+msgid "Configure the settings for Shadowbox"
+msgstr "Shadowboxの設定を行います。"
+
+#: shadowbox.module:0
+msgid "shadowbox"
+msgstr "shadowbox"
+
+#: (duplicate) shadowbox.install:30
+msgid "In order for the Shadowbox module to work correctly, the Shadowbox 'full' distribution must exists at <code>%path</code>."
+msgstr "Shadowboxを正しく動作させるには、<code>%path</code> にShadowboxの「full」ディストリビューションが存在する必要があります。"
+
+#: (duplicate) shadowbox.install:32
+msgid "Install 3rd party Shadowbox software"
+msgstr "サードパーティの Shadowbox ソフトウェアをインストールしてください"
+
+#: (duplicate) shadowbox.install:38
+msgid "The <code>%path</code> path exists but it appears that the directory structure underneath is not correct. Please check that <code>%shadowbox</code>, <code>%jquery</code> and <code>%css</code> exist."
+msgstr "パス <code>%path</code> は存在しますが、ディレクトリ構造が正しくないように思われます。<ul><li><code>%shadowbox</code></li><li><code>%jquery</code></li><li><code>%css</code></li></ul>が存在することを確認してください。"
+
+#: (duplicate) shadowbox.install:40
+msgid "3rd party Shadowbox software not properly installed"
+msgstr "サードパーティの Shadowbox ソフトウェアが適切にインストールされていません"
+
+#: (duplicate) shadowbox.install:47
+msgid "Installed correctly"
+msgstr "正しくインストールされました"
+
+#: shadowbox.info:0
+msgid "Enables Shadowbox, a JavaScript modal media viewer application"
+msgstr "JavaScriptのモーダルメディアビューアアプリケーションであるShadowboxを有効にします。"
+
+#: shadowbox.info:0
+msgid "Javascript tools"
+msgstr "Javascriptツール"
