@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.21 2008/06/14 00:39:42 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.22 2008/07/10 01:40:54 psynaptic Exp $
 
 /**
  * @file
@@ -13,13 +13,13 @@
 function shadowbox_help($section) {
   switch ($section) {
     case 'admin/help#shadowbox':
-      $output = '<p>'. t('Shadowbox is a modal media viewer application akin to <a href="!lightbox_project">Lightbox2</a> and <a href="!thickbox_project">Thickbox</a>. You can use it to display images, movies, and other web content in a window that is overlaid on top of the originating page.', array('!thickbox_project' => url('http://drupal.org/project/thickbox', array('absolute' => TRUE)), '!lightbox_project' => url('http://drupal.org/project/lightbox2', array('absolute' => TRUE)))) .'</p>';
+      $output = '<p>'. t('Shadowbox is a modal media viewer application akin to <a href="!lightbox_project">lightbox2</a> and <a href="!thickbox_project">Thickbox</a>. You can use it to display images, movies, and other web content in a window that is overlaid on top of the originating page.', array('!thickbox_project' => url('http://drupal.org/project/thickbox', array('absolute' => TRUE)), '!lightbox_project' => url('http://drupal.org/project/lightbox2', array('absolute' => TRUE)))) .'</p>';
       $output .= '<strong>'. t('From the author of Shadowbox:') .'</strong>';
       $output .= '<blockquote>'. t('Shadowbox is a cross-browser, cross-platform, cleanly-coded and fully-documented media viewer application written entirely in JavaScript. Using Shadowbox, website authors can display a wide assortment of media in all major browsers without navigating away from the linking page.') .'</blockquote>';
       $output .= '<p>'. t('This module currently provides only the most basic of functionality. It has <a href="!shadowbox_settings">global settings</a> that work on a site-wide basis. This means if you change a setting it will apply to all the Shadowboxes on your site.', array('!shadowbox_settings' => url('admin/settings/shadowbox'))) .'</p>';
       $output .= '<p>'. t('Future versions of this module will integrate with imagefield, imagecache and other important Drupal image modules and provide more options for configuring Shadowbox on a per-instance basis.') .'</p>';
       $output .= '<h3>'. t('Usage:') .'</h3>';
-      $output .= '<p>'. t('Currently, to activate Shadowbox for a link, you must manually inject the required attribute. Depending on your needs you may need to do this on the theming layer. To open any link in shadowbox you need to add a <strong><code>rel</code></strong> attribute with a value of <strong><code>shadowbox</code></strong> (for compatibility with Lightbox you can also use a value of <strong><code>lightbox</code></strong>).') .'</p>';
+      $output .= '<p>'. t('Currently, to activate Shadowbox for a link, you must manually inject the required attribute. Depending on your needs you may need to do this on the theming layer. To open any link in shadowbox you need to add a <strong><code>rel</code></strong> attribute with a value of <strong><code>shadowbox</code></strong> (for compatibility with shadowbox you can also use a value of <strong><code>lightbox</code></strong>).') .'</p>';
       $output .= '<strong>'. t('Single image:') .'</strong>';
       $output .= '<p>'. t('The important thing to note here is the <code>rel</code> attribute. This tells Shadowbox you wish to activate it for this link. The <code>title</code> attribute is optional and can be used to give a caption to the instance.') .'</p>';
       $output .= '<p>'. t('<code><pre>&lt;a href=&quot;/files/image1.jpg&quot; rel=&quot;shadowbox&quot; title=&quot;Caption&quot;&gt;Image&lt;/a&gt;</pre></code>') .'</p>';
@@ -553,7 +553,9 @@ function shadowbox_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
             'overlay_color' => $node->shadowbox_options['overlay_color'],
           );
         }
-        drupal_add_js(shadowbox_get_settings($settings), 'setting');
+        if (_shadowbox_static_variable() == 1) {
+          drupal_add_js(shadowbox_get_settings($settings), 'setting');
+        }
       }
       break;
     case 'validate':
@@ -619,11 +621,43 @@ function shadowbox_form_alter($form_id, &$form) {
 function shadowbox_field_formatter_info() {
   $formatter = array();
   if (module_exists('imagefield') && module_exists('imagecache')) {
-    foreach (imagecache_presets() as $preset) {
-      $formatters['shadowbox]['. $preset['presetname']] = array(
-      'label' => 'Shadowbox: '. $preset['presetname'],
+    $rules = array();
+    if (function_exists('imagecache_presets')) {
+      $presets = imagecache_presets();
+      foreach ($presets as $preset_id => $preset_info) {
+        $rules[$preset_id] = $preset_info['presetname'];
+      }
+    }
+    else {
+      $rules = _imagecache_get_presets();
+    }
+    foreach ($rules as $ruleid => $view_rule) {
+      $formatters['shadowbox][original]['. $view_rule] = array(
+        'label' => 'shadowbox: original->'. $view_rule,
         'field types' => array('image'),
       );
+      $formatters['shadowbox]['. $view_rule .'][original'] = array(
+        'label' => 'shadowbox: '. $view_rule .'->original',
+        'field types' => array('image'),
+      );
+      $formatters['shadowbox_gallery][original]['. $view_rule] = array(
+        'label' => 'shadowbox gallery: original->'. $view_rule,
+        'field types' => array('image'),
+      );
+      $formatters['shadowbox_gallery]['. $view_rule .'][original'] = array(
+        'label' => 'shadowbox gallery: '. $view_rule .'->original',
+        'field types' => array('image'),
+      );
+      foreach ($rules as $rid => $shadowbox_rule) {
+        $formatters['shadowbox]['. $view_rule .']['. $shadowbox_rule] = array(
+          'label' => 'shadowbox: '. $view_rule .'->'. $shadowbox_rule,
+          'field types' => array('image'),
+        );
+        $formatters['shadowbox_gallery]['. $view_rule .']['. $shadowbox_rule] = array(
+          'label' => 'shadowbox gallery: '. $view_rule .'->'. $shadowbox_rule,
+          'field types' => array('image'),
+        );
+      }
     }
   }
 
@@ -634,12 +668,40 @@ function shadowbox_field_formatter_info() {
  * Implementation of hook_field_formatter().
  */
 function shadowbox_field_formatter($field, $item, $formatter) {
-  if (module_exists('imagefield') && module_exists('imagecache') && !empty($item['fid'])) {
-    $file = _imagefield_file_load($item['fid']);
-    if (strpos($formatter, 'shadowbox][') !== FALSE) {
-      list($null, $namespace) = explode('][', $formatter, 2);
-      if ($preset = imagecache_preset_by_name($namespace)) {
-        return theme('imagefield_image_imagecache_shadowbox', $namespace, $field, $file['filepath'], $item['alt'], $item['title']);
+  if (module_exists('imagefield') && module_exists('imagecache')) {
+    if (isset($item['filepath'])) {
+      $filepath = &$item['filepath'];
+    }
+    else if (!empty($item['fid'])) {
+      $file = _imagefield_file_load($item['fid']);
+      $filepath = &$file['filepath'];
+    }
+    else {
+      return '';
+    }
+
+    $item = array_merge($item, (array)$file);
+    $item['filepath'] = $filepath;
+    if (strpos($formatter, 'shadowbox][') !== FALSE || strpos($formatter, 'shadowbox_gallery][') !== FALSE) {
+      list($null, $view_preset, $shadowbox_preset) = explode('][', $formatter, 3);
+      $item['shadowbox_preset'] = $shadowbox_preset;
+
+      $rules = array();
+      if (function_exists('imagecache_presets')) {
+        $presets = imagecache_presets();
+        foreach ($presets as $preset_id => $preset_info) {
+          $rules[$preset_id] = $preset_info['presetname'];
+        }
+      }
+      else {
+        $rules = _imagecache_get_presets();
+      }
+      if ($view_preset == 'original' || in_array($view_preset, (array) $rules)) {
+        $gallery = FALSE;
+        if (strpos($formatter, 'shadowbox_gallery][') !== FALSE) {
+          $gallery = TRUE;
+        }
+        return theme('imagefield_image_imagecache_shadowbox', $view_preset, $field, $item, NULL, $gallery);
       }
     }
   }
@@ -648,13 +710,54 @@ function shadowbox_field_formatter($field, $item, $formatter) {
 /**
  * Implementation of theme_imagefield_image_imagecache_shadowbox().
  */
-function theme_imagefield_image_imagecache_shadowbox($namespace, $field, $path, $alt = '', $title = '', $attributes = NULL) {
-  if (!empty($path)) {
-    $attributes = drupal_attributes($attributes);
-    $imagecache_path = imagecache_create_url($namespace, $path);
-    $image = '<img src="'. $imagecache_path .'" alt="'. check_plain($alt) .'" '. $attributes .' />';
+function theme_imagefield_image_imagecache_shadowbox($view_preset, $field, $item, $attributes = NULL, $gallery) {
+  $filepath = $item['filepath'];
+  $alt = $item['alt'];
+  $title = $item['title'];
+  $rel = ($gallery) ? 'shadowbox['. $view_preset .']' : 'shadowbox';
 
-    return l($image, file_create_url($path), array('title' => $title, 'rel' => 'shadowbox'), NULL, NULL, FALSE, TRUE);
+  $link_attributes = array(
+    'rel' => $rel,
+    'title' => $item['title'] . $node_link,
+  );
+
+  if ($view_preset == 'original') {
+    $image = theme('shadowbox_image', $filepath, $alt, $title, $attributes);
+  }
+  else {
+    $image = theme('imagecache', $view_preset, $filepath, $alt, $item['title'], $attributes);
+  }
+  if ($item['shadowbox_preset'] == 'original') {
+    $output = l($image, file_create_url($filepath), $link_attributes, NULL, NULL, FALSE, TRUE);
+  }
+  else {
+    $output = l($image, shadowbox_imagecache_create_url($item['shadowbox_preset'], $filepath), $link_attributes, NULL, NULL, FALSE, TRUE);
+  }
+
+  return $output;
+}
+
+
+/**
+ * Theme function for displaying the shadowbox trigger image in an imagefield.
+ */
+function theme_shadowbox_image($path, $alt = '', $title = '', $attributes = NULL) {
+  $attributes = drupal_attributes($attributes);
+  $image = '<img src="'. file_create_url($path) .'" alt="'.  check_plain($alt) .'" title="'. check_plain($title) .'" '. $attributes .' />';
+  return $image;
+}
+
+/**
+ * Implementation of the imagecache_create_url() function for integration with
+ * imagecache module versions prior to imagecache 2.
+ */
+function shadowbox_imagecache_create_url($preset, $filepath) {
+  if (function_exists('imagecache_create_url')) {
+    return imagecache_create_url($preset, $filepath);
+  }
+  else {
+    $path = _imagecache_strip_file_directory($filepath);
+    return file_create_url(file_directory_path() .'/imagecache/'. $preset .'/'. $path);
   }
 }
 
@@ -673,9 +776,7 @@ function shadowbox_construct_header() {
       drupal_add_js($path .'/shadowbox/build/js/shadowbox.js');
       drupal_add_js($path .'/shadowbox.js');
 
-      // We need to avoid including the settings on node pages because
-      // hook_nodeapi view will be doing this for us.
-      if (!(arg(0) == 'node' && is_numeric(arg(1)) && !arg(2))) {
+      if (_shadowbox_static_variable() == 1) {
         drupal_add_js(shadowbox_get_settings(), 'setting');    
       }
   }
@@ -694,13 +795,14 @@ function shadowbox_construct_header() {
  *   An array containing settings to be used in drupal_add_js.
  */
 function shadowbox_get_settings($override = array()) {
+  $module_path = drupal_get_path('module', 'shadowbox');
   $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
   $quicktime = variable_get('shadowbox_supported_quicktime', shadowbox_get_types('quicktime'));
   $wmp = variable_get('shadowbox_supported_wmp', shadowbox_get_types('wmp'));
   $qtwmp = variable_get('shadowbox_supported_qtwmp', shadowbox_get_types('qtwmp'));
   $iframe = variable_get('shadowbox_supported_iframe', shadowbox_get_types('iframe'));
   $settings = array(
-    'asset_url' => base_path() . variable_get('shadowbox_asset_url', drupal_get_path('module', 'shadowbox') .'/shadowbox') .'/',
+    'asset_url' => base_path() . variable_get('shadowbox_asset_url', $module_path .'/shadowbox') .'/',
     'loading_image' => variable_get('shadowbox_loading_image', 'images/loading.gif'),
     'animation' => variable_get('shadowbox_animate', TRUE),
     'animation_sequence' => variable_get('shadowbox_animation_sequence', 'wh'),
@@ -858,3 +960,14 @@ function _array_to_string_values($array) {
   return $output;
 }
 
+/**
+ * Keeps track of if JavaScript settings have been added or not.
+ *
+ * @return $counter
+ *   Returns 1 if Shadowbox settings have not been added yet.
+ */
+function _shadowbox_static_variable() {
+  static $counter = 0;
+  $counter++;
+  return $counter;
+}
