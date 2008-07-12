@@ -1,7 +1,8 @@
-$Id: CHANGELOG.txt,v 1.5.2.23 2008/07/12 18:22:28 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.5.2.24 2008/07/12 18:31:25 psynaptic Exp $
 
 Shadowbox 5.x-1.x-dev, 2008-07-12
 ---------------------------------
+- Released Shadowbox 5.x-1.0.
 - Edited download location in README.txt to compatible version of Shadowbox.
 - Remove per-node configuration options.
 - Removed static variable function.
