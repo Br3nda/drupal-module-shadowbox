@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.22 2008/07/10 01:40:54 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.23 2008/07/12 13:05:53 psynaptic Exp $
 
 /**
  * @file
@@ -520,99 +520,6 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
 }
 
 /**
- * Implementation of hook_nodeapi().
- */
-function shadowbox_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
-  switch ($op) {
-    case 'update':
-      db_query("DELETE FROM {shadowbox_node} WHERE nid = %d", $node->nid);
-      // fallthrough
-    case 'insert':
-      db_query("INSERT INTO {shadowbox_node} (nid, enable_keys, overlay_color) VALUES (%d, %d, '%s')", $node->nid, $node->enable_keys, $node->overlay_color);
-      break;
-    case 'delete':
-      db_query('DELETE FROM {shadowbox_node} WHERE nid = %d', $node->nid);
-      break;
-    case 'load':
-      $data = db_fetch_object(db_query('SELECT * FROM {shadowbox_node} WHERE nid = %d', $node->nid));
-      $node_settings = array();
-      if ($data) {
-        $node_settings['shadowbox_options'] = array(
-          'enable_keys' => $data->enable_keys,
-          'overlay_color' => $data->overlay_color,
-        );
-      }
-      return $node_settings;
-      break;
-    case 'view':
-      if ($a4) {
-        $settings = array();
-        if ($options = $node->shadowbox_options) {
-          $settings = array(
-            'enable_keys' => (int)$node->shadowbox_options['enable_keys'],
-            'overlay_color' => $node->shadowbox_options['overlay_color'],
-          );
-        }
-        if (_shadowbox_static_variable() == 1) {
-          drupal_add_js(shadowbox_get_settings($settings), 'setting');
-        }
-      }
-      break;
-    case 'validate':
-      if ($node->overlay_color && !_validate_hex_color($node->overlay_color)) {
-        form_set_error('overlay_color', t('You must enter a properly formed hex value (e.g. 000 or 000000 for black.)'));
-      }
-      break;
-  }
-}
-
-/**
- * Implementation of hook_form_alter().
- */
-function shadowbox_form_alter($form_id, &$form) {
-  if ($form_id == 'node_type_form' && isset($form['identity']['type'])) {
-    $form['workflow']['shadowbox_enabled_type'] = array(
-      '#type' => 'radios',
-      '#title' => t('Shadowbox options'),
-      '#description' => t('Enable per-node configuration options for this node type.'),
-      '#default_value' => variable_get('shadowbox_enabled_type_'. $form['#node_type']->type, 0),
-      '#options' => array(t('Disabled'), t('Enabled')),
-    );
-  }
-  
-  if (isset($form['type'])) {
-    $node = $form['#node'];
-    $options = $node->shadowbox_options;
-
-    if ($form['type']['#value'] .'_node_form' == $form_id && variable_get("shadowbox_enabled_type_$node->type", TRUE)) {
-      $form['shadowbox'] = array(
-        '#type' => 'fieldset',
-        '#access' => user_access('administer shadowbox'),
-        '#title' => t('Shadowbox options'),
-        '#collapsible' => TRUE,
-        '#collapsed' => FALSE,
-        '#weight' => 21,
-        '#attributes' => array('class' => 'shadowbox-options'),
-      );
-      $form['shadowbox']['enable_keys'] = array(
-        '#type' => 'checkbox',
-        '#title' => t('Enable keys'),
-        '#default_value' => ($options['enable_keys'] == '') ? 1 : $options['enable_keys'],
-      );
-      $form['shadowbox']['overlay_color'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Overlay color'),
-        '#description' => t('Select a hexadecimal color value for the overlay (e.g. 000 or 000000 for black).'),
-        '#size' => 8,
-        '#maxlength' => 7,
-        '#default_value' => ($options['overlay_color'] == '') ? '000' : $options['overlay_color'],
-        '#field_prefix' => '#',
-      );
-    }
-  }
-}
-
-/**
  * Implementation of hook_field_formatter_info().
  *
  * Add certain shadowbox+imagecache formatters to CCK image fields if the
@@ -772,21 +679,17 @@ function shadowbox_construct_header() {
     (variable_get('shadowbox_css_skin', 'original') == 'light') ?
       drupal_add_css($path ."/shadowbox/build/css/shadowbox-light.css") :
       drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
-      drupal_add_js($path .'/shadowbox/build/js/adapter/shadowbox-jquery.js');
-      drupal_add_js($path .'/shadowbox/build/js/shadowbox.js');
-      drupal_add_js($path .'/shadowbox.js');
 
-      if (_shadowbox_static_variable() == 1) {
-        drupal_add_js(shadowbox_get_settings(), 'setting');    
-      }
+    drupal_add_js($path .'/shadowbox/build/js/adapter/shadowbox-jquery.js');
+    drupal_add_js($path .'/shadowbox/build/js/shadowbox.js');
+    drupal_add_js($path .'/shadowbox.js');
+
+    drupal_add_js(shadowbox_get_settings(), 'setting');
   }
 }
 
 /**
  * Construct the JS settings array.
- *
- * Allow overriding of settings for per-node configuration. Settings are 
- * available at Drupal.settings.shadowbox.
  *
  * @param $override
  *   An array of settings to override global values.
@@ -897,7 +800,7 @@ function shadowbox_get_types($type) {
 /**
  * Convert numerical value(s) within a delimited string to integer(s).
  *
- * Explode a space delimited string e.g. 'a b 2' and cast numeric string values 
+ * Explode a space delimited string e.g. 'a b 2' and cast numeric string values
  * to integers.
  *
  * @param $string
@@ -958,16 +861,4 @@ function _array_to_string_values($array) {
     }
   }
   return $output;
-}
-
-/**
- * Keeps track of if JavaScript settings have been added or not.
- *
- * @return $counter
- *   Returns 1 if Shadowbox settings have not been added yet.
- */
-function _shadowbox_static_variable() {
-  static $counter = 0;
-  $counter++;
-  return $counter;
 }
