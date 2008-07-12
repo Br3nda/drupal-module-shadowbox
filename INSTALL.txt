@@ -1,4 +1,4 @@
-$Id: INSTALL.txt,v 1.4.2.4 2008/06/06 22:45:08 psynaptic Exp $
+$Id: INSTALL.txt,v 1.4.2.5 2008/07/12 15:15:14 psynaptic Exp $
 
 REQUIREMENTS
 ------------
@@ -11,9 +11,9 @@ INSTALLATION
 1. Place the shadowbox directory in your modules directory
 
 2. Download the 'full' Shadowbox distribution:
-   http://mjijackson.com/shadowbox/download.php?full
+   http://freestylesystems.co.uk/files/shadowbox-1.0.tgz
 
-3. Extract the download, rename the shadowbox-1.x directory to just 'shadowbox'
+3. Extract the download, rename the shadowbox-1.0 directory to just 'shadowbox'
    and place it in the shadowbox module directory
 
 4. Enable the Shadowbox module
