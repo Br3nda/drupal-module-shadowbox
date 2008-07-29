@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.24 2008/07/12 18:22:28 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.24.2.1 2008/07/29 14:15:21 psynaptic Exp $
 
 /**
  * @file
@@ -13,29 +13,36 @@
 function shadowbox_help($section) {
   switch ($section) {
     case 'admin/help#shadowbox':
-      $output = '<p>'. t('Shadowbox is a modal media viewer application akin to !lightbox_project and !thickbox_project. You can use it to display images, movies, and other web content in a window that is overlaid on top of the originating page.', array('!lightbox_project' => l('lightbox2', 'http://drupal.org/project/lightbox2', array(), NULL, NULL, TRUE), '!thickbox_project' => l('thickbox', 'http://drupal.org/project/thickbox', array(), NULL, NULL, TRUE))) .'</p>';
+      $output = '<p>'. t('Shadowbox is a modal media viewer application akin to !lightbox and !thickbox. You can use it to display images, movies, and other web content in a window that is overlaid on top of the originating page.', array('!lightbox' => l('lightbox2', 'http://drupal.org/project/lightbox2', array(), NULL, NULL, TRUE), '!thickbox' => l('thickbox', 'http://drupal.org/project/thickbox', array(), NULL, NULL, TRUE))) .'</p>';
       $output .= '<h3>'. t('From the author of Shadowbox:') .'</h3>';
-      $output .= '<blockquote>'. t('Shadowbox is a cross-browser, cross-platform, cleanly-coded and fully-documented media viewer application written entirely in JavaScript. Using Shadowbox, website authors can display a wide assortment of media in all major browsers without navigating away from the linking page.') .'</blockquote>';
-      $output .= '<p>'. t('This module provides integration with imagefield 2, imagecache 2 and views. It has !global_settings that work on a site-wide basis. Future versions of this module will integrate with image, emfield and other media modules.', array('!global_settings' => l('global settings', 'admin/settings/shadowbox'))) .'</p>';
+      $output .= '<blockquote>'. t('Shadowbox is an online media viewer application that supports all of the web\'s most popular media publishing formats. Shadowbox is written entirely in JavaScript and CSS and is highly customizable. Using Shadowbox, website authors can showcase a wide assortment of media in all major browsers without navigating users away from the linking page.') .'</blockquote>';
       $output .= '<h3>'. t('Usage:') .'</h3>';
-      $output .= '<p>'. t('Integration with Imagefield, Imagecache and Views is provided so the usual options are available. To manually enable Shadowbox for a link you must add a <strong><code>rel</code></strong> attribute with a value of <strong><code>shadowbox</code></strong> (for compatibility with lightbox you can also use a value of <strong><code>lightbox</code></strong>).') .'</p>';
-      $output .= '<strong>'. t('Single image:') .'</strong>';
-      $output .= '<p>'. t('The important thing to note here is the <code>rel</code> attribute. This tells Shadowbox you wish to activate it for this link. The <code>title</code> attribute is optional and can be used to give a caption to the instance.') .'</p>';
-      $output .= '<p>'. t('<code><pre>&lt;a href=&quot;/files/image1.jpg&quot; rel=&quot;shadowbox&quot; title=&quot;Caption&quot;&gt;Image&lt;/a&gt;</pre></code>') .'</p>';
-      $output .= '<strong>'. t('Multiple instances (gallery mode):') .'</strong>';
-      $output .= '<p>'. t('Media can be grouped into a gallery using <code>shadowbox[name]</code> where <code>name</code> is any name you wish to apply. The value of <code>[name]</code> is only used internally by Shadowbox and won\'t be shown to the user.') .'</p>';
-      $output .= '<p>'. t('<code><pre>&lt;a href=&quot;/files/image1.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 1&quot;&gt;Image&lt;/a&gt;
-&lt;a href=&quot;/files/image2.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 2&quot;&gt;Image&lt;/a&gt;
-&lt;a href=&quot;/files/image3.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 3&quot;&gt;Image&lt;/a&gt;</pre></code>') .'</p>';
-      $output .= '<strong>'. t('External URL:') .'</strong>';
-      $output .= '<p>'. t('A powerful feature of Shadowbox is the ability to open web pages directly on top of the current page. Try out the example and see how the site still functions as normal on top of the originating page.') .'</p>';
+      $output .= '<p>'. t('This module has !global_settings that work on a site-wide basis.', array('!global_settings' => l('global settings', 'admin/settings/shadowbox'))) .'</p>';
+      $output .= '<p>'. t('Integration with !imagefield 2, !imagecache 2 and !views is provided and the same formatters found in lightbox2 are available in this module.', array('!imagecache' => l('imagecache', 'http://drupal.org/project/imagecache'), '!imagefield' => l('imagefield', 'http://drupal.org/project/imagefield'), '!views' => l('views', 'http://drupal.org/project/views'))) .'</p>';
+      $output .= '<p>'. t('To manually enable Shadowbox for a link you must add a <strong><code>rel</code></strong> attribute with a value of <strong><code>shadowbox</code></strong> (for compatibility with lightbox2 you can also use a value of <strong><code>lightbox</code></strong>).') .'</p>';
+      $output .= '<h4>'. t('Single media item:') .'</h4>';
+      $output .= '<p>'. t('The important thing to note here is the <code>rel</code> attribute. This tells Shadowbox you wish to activate it for this link. The <code>title</code> attribute is optional and can be used to give a caption to the item.') .'</p>';
+      $output .= '<strong>'. t('Example:') .'</strong>';
+      $output .= '<p>'. t('<code><pre>&lt;a href=&quot;image1.jpg&quot; rel=&quot;shadowbox&quot; title=&quot;Caption&quot;&gt;Image&lt;/a&gt;</pre></code>') .'</p>';
+      $output .= '<h4>'. t('Gallery:') .'</h4>';
+      $output .= '<p>'. t('Media of mixed type can be grouped into a gallery using <code>shadowbox[name]</code> where <code>name</code> is any value you wish to use for the current grouping of media. The value of <code>name</code> is only used internally by Shadowbox and won\'t be shown to the user.') .'</p>';
+      $output .= '<strong>'. t('Example:') .'</strong>';
+      $output .= '<p>'. t('<code><pre>&lt;a href=&quot;image1.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 1&quot;&gt;Image 1&lt;/a&gt;
+&lt;a href=&quot;image2.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 2&quot;&gt;Image 2&lt;/a&gt;
+&lt;a href=&quot;image3.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 3&quot;&gt;Image 3&lt;/a&gt;</pre></code>') .'</p>';
+      $output .= '<h4>'. t('iFrame:') .'</h4>';
+      $output .= '<p>'. t('A useful feature of Shadowbox is the ability to open another website directly on top of the current page.') .'</p>';
+      $output .= '<strong>'. t('Example:') .'</strong>';
       $output .= '<p>'. t('<code><pre>&lt;a href=&quot;http://google.com&quot; rel=&quot;shadowbox&quot; title=&quot;Google&quot;&gt;Google&lt;/a&gt;</pre></code>') .'<p>';
-      $output .= '<h3>'. t('Advanced usage:') .'</h3>';
+      $output .= '<h4>'. t('Advanced usage:') .'</h4>';
       $output .= '<p>'. t('Shadowbox allows you to specify options on a per-instance basis by using a JSON-formatted parameter. More information on this feature can be found on the !shadowbox_usage', array('!shadowbox_usage' => l('Shadowbox usage page', 'http://mjijackson.com/shadowbox/doc/usage.html#markup', array(), NULL, NULL, TRUE))) .'</p>';
+      $output .= '<strong>'. t('Example:') .'</strong>';
+      $output .= '<p>'. t('<code><pre>&lt;a href=&quot;http://google.com&quot; rel=&quot;shadowbox;width=740;height=380;
+  options={overlayOpacity:1,resizeDuration:0.2};&quot;&gt;Google&lt;/a&gt;</pre></code>'). '</p>';
       return $output;
 
     case 'admin/settings/shadowbox':
-      return '<p>'. t('This page provides access to the Shadowbox settings. The settings work globally so any changes made here will affect Shadowbox for the entire site.') .'</p>';
+      return '<p>'. t('This page provides access to the Shadowbox settings. The settings here work globally so any changes made here will affect Shadowbox for the entire site.') .'</p>';
   }
 }
 
@@ -76,6 +83,7 @@ function shadowbox_perm() {
  * @see shadowbox_admin_settings_validate()
  */
 function shadowbox_admin_settings() {
+  $shadowbox_path = drupal_get_path('module', 'shadowbox') .'/shadowbox/';
   // Global settings
   $form['shadowbox'] = array(
     '#type' => 'fieldset',
@@ -87,18 +95,7 @@ function shadowbox_admin_settings() {
     '#type' => 'checkbox',
     '#title' => t('Enable Shadowbox'),
     '#default_value' => variable_get('shadowbox_enabled', TRUE),
-    '#description' => t('Check this box to enable Shadowbox for the site.'),
-  );
-  $form['shadowbox']['shadowbox_css_skin'] = array(
-    '#type' => 'select',
-    '#title' => t('Skin'),
-    '#multiple' => FALSE,
-    '#description' => t('Select the skin to use for the Shadowbox overlay.'),
-    '#options' => array(
-      'original' => 'Original',
-      'light' => 'Light',
-    ),
-    '#default_value' => variable_get('shadowbox_css_skin', 'original'),
+    '#description' => t('Check this box to enable Shadowbox for the entire site.'),
   );
   $form['shadowbox']['shadowbox_excluded_pages'] = array(
     '#type' => 'textarea',
@@ -116,32 +113,46 @@ function shadowbox_admin_settings() {
   $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_images'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Image'),
-    '#description' => t('Supported image file extensions'),
+    '#description' => t('Supported image file extensions.'),
     '#options' => drupal_map_assoc(shadowbox_get_types('image')),
     '#default_value' => variable_get('shadowbox_supported_images', shadowbox_get_types('image')),
+  );
+  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_swf'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('SWF'),
+    '#description' => t('Supported SWF file extensions.'),
+    '#options' => drupal_map_assoc(shadowbox_get_types('swf')),
+    '#default_value' => variable_get('shadowbox_supported_swf', 'swf'),
+  );
+  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_flv'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('FLV'),
+    '#description' => t('Supported FLV file extensions. MP4 and MOV can be opened in the FLV Player rather than Quicktime if desired. Options checked here will override those from Quicktime.'),
+    '#options' => drupal_map_assoc(shadowbox_get_types('flv')),
+    '#default_value' => variable_get('shadowbox_supported_flv', 'flv'),
   );
   $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_quicktime'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Quicktime'),
-    '#description' => t('Movie file extensions supported by QuickTime'),
+    '#description' => t('Movie file extensions supported by QuickTime.'),
     '#options' => drupal_map_assoc(shadowbox_get_types('quicktime')),
     '#default_value' => variable_get('shadowbox_supported_quicktime', shadowbox_get_types('quicktime')),
   );
   $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_wmp'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Windows Media Player'),
-    '#description' => t('Movie file extensions supported by Windows Media Player'),
+    '#description' => t('Movie file extensions supported by Windows Media Player.'),
     '#options' => drupal_map_assoc(shadowbox_get_types('wmp')),
     '#default_value' => variable_get('shadowbox_supported_wmp', shadowbox_get_types('wmp')),
   );
   $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_qtwmp'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Quicktime and Windows Media Player'),
-    '#description' => t('Movie file extensions supported by both QuickTime and Windows Media Player'),
+    '#description' => t('Movie file extensions supported by both QuickTime and Windows Media Player.'),
     '#options' => drupal_map_assoc(shadowbox_get_types('qtwmp')),
     '#default_value' => variable_get('shadowbox_supported_qtwmp', shadowbox_get_types('qtwmp')),
   );
-  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_iframe'] = array(
+  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_iframe.'] = array(
     '#type' => 'checkboxes',
     '#title' => t('IFrame'),
     '#description' => t('File extensions that will be display in an iframe'),
@@ -156,37 +167,6 @@ function shadowbox_admin_settings() {
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
-  // Assets
-  $form['shadowbox']['shadowbox_options']['asset_paths'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Assets'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
-  $form['shadowbox']['shadowbox_options']['asset_paths']['shadowbox_asset_url'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Base asset URL'),
-    '#description' => t('The path to the assets (loading image, FLV player, and background image). Relative to Drupal root e.g. <code>sites/all/modules/shadowbox/shadowbox</code>.'),
-    '#size' => 40,
-    '#maxlength' => 255,
-    '#default_value' => variable_get('shadowbox_asset_url', drupal_get_path('module', 'shadowbox') .'/shadowbox'),
-  );
-  $form['shadowbox']['shadowbox_options']['asset_paths']['shadowbox_loading_image'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Loading image path'),
-    '#description' => t('The URL of an image to use as a loading indicator while loading content.'),
-    '#size' => 40,
-    '#maxlength' => 255,
-    '#default_value' => variable_get('shadowbox_loading_image', 'images/loading.gif'),
-  );
-  $form['shadowbox']['shadowbox_options']['asset_paths']['shadowbox_flv_player'] = array(
-    '#type' => 'textfield',
-    '#title' => t('FLV player'),
-    '#description' => t('The URL of the flash video player.'),
-    '#size' => 40,
-    '#maxlength' => 255,
-    '#default_value' => variable_get('shadowbox_flv_player', 'flvplayer.swf'),
-  );
   // Animation
   $form['shadowbox']['shadowbox_options']['animation_settings'] = array(
     '#type' => 'fieldset',
@@ -197,8 +177,14 @@ function shadowbox_admin_settings() {
   $form['shadowbox']['shadowbox_options']['animation_settings']['shadowbox_animate'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable animation'),
-    '#description' => t('Enable all fancy dimension and opacity animations. Disabling this option can improve the overall effect on computers with poor performance.'),
+    '#description' => t('Set this false to disable all fancy animations (except fades). This can improve the overall effect on computers with poor performance.'),
     '#default_value' => variable_get('shadowbox_animate', TRUE),
+  );
+  $form['shadowbox']['shadowbox_options']['animation_settings']['shadowbox_animate_fade'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable fading animations'),
+    '#description' => t('Set this false to disable all fading animations.'),
+    '#default_value' => variable_get('shadowbox_animate_fade', TRUE),
   );
   $form['shadowbox']['shadowbox_options']['animation_settings']['shadowbox_animation_sequence'] = array(
     '#type' => 'select',
@@ -268,13 +254,14 @@ function shadowbox_admin_settings() {
     '#maxlength' => 4,
     '#default_value' => variable_get('shadowbox_overlay_opacity', 0.85),
   );
-  $form['shadowbox']['shadowbox_options']['overlay']['shadowbox_background_image'] = array(
+  $form['shadowbox']['shadowbox_options']['overlay']['shadowbox_flash_background'] = array(
     '#type' => 'textfield',
-    '#title' => t('Overlay backround image'),
-    '#description' => t('The URL of a pre-made image to use for browsers (such as FF Mac) that don\'t support playing movies over backgrounds that are not 100% opaque.'),
-    '#size' => 40,
-    '#maxlength' => 255,
-    '#default_value' => variable_get('shadowbox_background_image', 'images/overlay-85.png'),
+    '#title' => t('Flash backround color'),
+    '#description' => t('The default background color to use for Flash movies.'),
+    '#size' => 8,
+    '#maxlength' => 7,
+    '#default_value' => variable_get('shadowbox_flash_background', '000'),
+    '#field_prefix' => '#',
   );
   $form['shadowbox']['shadowbox_options']['overlay']['shadowbox_viewport_padding'] = array(
     '#type' => 'textfield',
@@ -294,19 +281,19 @@ function shadowbox_admin_settings() {
   $form['shadowbox']['shadowbox_options']['gallery']['shadowbox_display_nav'] = array(
     '#type' => 'checkbox',
     '#title' => t('Display gallery navigation.'),
-    '#description' => t('Uncheck this option to hide the gallery navigation controls.'),
+    '#description' => t('Enable display of the gallery navigation controls.'),
     '#default_value' => variable_get('shadowbox_display_nav', TRUE),
   );
   $form['shadowbox']['shadowbox_options']['gallery']['shadowbox_continuous_galleries'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable continuous galleries'),
-    '#description' => t('Check this option to enable "continuous" galleries. By default, the galleries will not let a user go before the first image or after the last. Enabling this feature will let the user go directly to the first image in a gallery from the last one by selecting "Next".'),
+    '#description' => t('By default, the galleries will not let a user go before the first image or after the last. Enabling this feature will let the user go directly to the first image in a gallery from the last one by selecting "Next".'),
     '#default_value' => variable_get('shadowbox_continuous_galleries', FALSE),
   );
   $form['shadowbox']['shadowbox_options']['gallery']['shadowbox_display_counter'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable counter'),
-    '#description' => t('Uncheck this option to hide the gallery counter. Counters are never displayed on elements that are not part of a gallery.'),
+    '#description' => t('Enable display of the gallery counter. Counters are never displayed on elements that are not part of a gallery.'),
     '#default_value' => variable_get('shadowbox_display_counter', TRUE),
   );
   $form['shadowbox']['shadowbox_options']['gallery']['shadowbox_counter_type'] = array(
@@ -320,6 +307,18 @@ function shadowbox_admin_settings() {
     ),
     '#default_value' => variable_get('shadowbox_counter_type', 'default'),
   );
+  $form['shadowbox']['shadowbox_options']['gallery']['shadowbox_counter_limit'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Counter limit'),
+    '#description' => t('Limits the number of counter links that will be displayed in a "skip" style counter. If the actual number of gallery elements is greater than this value, the counter will be restrained to the elements immediately preceding and following the current element.'),
+    '#default_value' => variable_get('shadowbox_counter_limit', 10),
+  );
+  $form['shadowbox']['shadowbox_options']['gallery']['shadowbox_slideshow_delay'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Slideshow delay'),
+    '#description' => t('A delay (in seconds) to use for slideshows. If set to anything other than 0, this value determines an interval at which Shadowbox will automatically proceed to the next piece in the gallery.'),
+    '#default_value' => variable_get('shadowbox_slideshow_delay', 0),
+  );
   // Movies
   $form['shadowbox']['shadowbox_options']['movies'] = array(
     '#type' => 'fieldset',
@@ -327,16 +326,24 @@ function shadowbox_admin_settings() {
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
+  $form['shadowbox']['shadowbox_options']['movies']['shadowbox_flv_player'] = array(
+    '#type' => 'textfield',
+    '#title' => t('FLV player'),
+    '#description' => t('The URL of the flash video player. This path is relative to the Drupal root.'),
+    '#size' => 50,
+    '#maxlength' => 255,
+    '#default_value' => variable_get('shadowbox_flv_player', $shadowbox_path .'flvplayer.swf'),
+  );
   $form['shadowbox']['shadowbox_options']['movies']['shadowbox_autoplay_movies'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Enable auto-play movies'),
-    '#description' => t('Set this false to disable automatically playing movies when they are loaded.'),
+    '#title' => t('Auto-play movies'),
+    '#description' => t('Automatically play movies when they are loaded.'),
     '#default_value' => variable_get('shadowbox_autoplay_movies', TRUE),
   );
   $form['shadowbox']['shadowbox_options']['movies']['shadowbox_show_movie_controls'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable movie controls'),
-    '#description' => t('Set this false to disable displaying QuickTime and Windows Media player movie control bars.'),
+    '#description' => t('Enable display of QuickTime and Windows Media player movie controls.'),
     '#default_value' => variable_get('shadowbox_show_movie_controls', TRUE),
   );
   // Input controls
@@ -349,44 +356,14 @@ function shadowbox_admin_settings() {
   $form['shadowbox']['shadowbox_options']['input']['shadowbox_overlay_listen'] = array(
     '#type' => 'checkbox',
     '#title' => t('Mouse click closes overlay.'),
-    '#description' => t('Set this false to disable listening for mouse clicks on the overlay that will close Shadowbox.'),
+    '#description' => t('Enable listening for mouse clicks on the overlay that will close Shadowbox.'),
     '#default_value' => variable_get('shadowbox_overlay_listen', TRUE),
   );
-  $form['shadowbox']['shadowbox_options']['input']['keyboard'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Keyboard controls'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
-  $form['shadowbox']['shadowbox_options']['input']['keyboard']['shadowbox_enable_keys'] = array(
+  $form['shadowbox']['shadowbox_options']['input']['shadowbox_enable_keys'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable keys'),
-    '#description' => t('Set this false to disable keyboard navigation of galleries.'),
+    '#description' => t('Enable keyboard navigation of galleries.'),
     '#default_value' => variable_get('shadowbox_enable_keys', TRUE),
-  );
-  $form['shadowbox']['shadowbox_options']['input']['keyboard']['shadowbox_keys_close'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Close keys'),
-    '#description' => t('A list of keys (or key codes) that a user may use to close Shadowbox. Values should be separated by a space. Defaults to \'c q 27\' (c, q, or esc).'),
-    '#size' => 40,
-    '#maxlength' => 255,
-    '#default_value' => variable_get('shadowbox_keys_close', 'c q 27'),
-  );
-  $form['shadowbox']['shadowbox_options']['input']['keyboard']['shadowbox_keys_previous'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Previous keys'),
-    '#description' => t('An list of keys (or key codes) that a user may use to skip to the previous piece in the gallery. Values should be separated by a space. Defaults to \'p, 37\' (p or left arrow).'),
-    '#size' => 40,
-    '#maxlength' => 255,
-    '#default_value' => variable_get('shadowbox_keys_previous', 'p 37'),
-  );
-  $form['shadowbox']['shadowbox_options']['input']['keyboard']['shadowbox_keys_next'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Next keys'),
-    '#description' => t('A list of keys (or key codes) that a user may use to skip to the next piece in the gallery. Values should be separated by a space. Defaults to \'n, 39\' (n or right arrow).'),
-    '#size' => 40,
-    '#maxlength' => 255,
-    '#default_value' => variable_get('shadowbox_keys_next', 'n 39'),
   );
   // Media handling
   $form['shadowbox']['shadowbox_options']['media_handling'] = array(
@@ -395,17 +372,17 @@ function shadowbox_admin_settings() {
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
-  $form['shadowbox']['shadowbox_options']['media_handling']['shadowbox_handle_large_images'] = array(
+  $form['shadowbox']['shadowbox_options']['media_handling']['shadowbox_handle_oversize'] = array(
     '#type' => 'select',
     '#title' => t('Handle large images'),
     '#multiple' => FALSE,
-    '#description' => t('The mode to use for handling images that are too large for the viewport. May be one of "none", "resize", or "drag". The "none" setting will not alter the image dimensions, though clipping will occur. Setting this to "resize" enables on-the-fly resizing of large images. In this mode, the height and width of large images will be adjusted so that they may still be viewed in their entirety while maintaining the original aspect ratio. The "drag" mode will display the image at its original resolution, but will allow the user to drag the image within the view to see portions that may be clipped.'),
+    '#description' => t('The mode to use for handling images that are too large for the viewport. The "none" setting will not alter the image dimensions, though clipping may occur. Setting this to "resize" enables on-the-fly resizing of large content. In this mode, the height and width of large, resizable content will be adjusted so that it may still be viewed in its entirety while maintaining its original aspect ratio. The "drag" mode will display an oversized image at its original resolution, but will allow the user to drag it within the view to see portions that may be clipped.'),
     '#options' => array(
       'resize' => t('Resize'),
       'drag' => t('Drag'),
       'none' => t('None'),
     ),
-    '#default_value' => variable_get('shadowbox_handle_large_images', 'resize'),
+    '#default_value' => variable_get('shadowbox_handle_oversize', 'resize'),
   );
   $form['shadowbox']['shadowbox_options']['media_handling']['shadowbox_handle_unsupported'] = array(
     '#type' => 'select',
@@ -426,38 +403,41 @@ function shadowbox_admin_settings() {
  */
 function shadowbox_admin_settings_validate($form_id, &$form) {
   global $form_values;
-  $asset_url = $form_values['shadowbox_asset_url'];
-  $loading_image = $form_values['shadowbox_loading_image'];
   $flv_player = $form_values['shadowbox_flv_player'];
-  $resize_duration = $form_values['shadowbox_resize_duration'];
-  $fade_duration = $form_values['shadowbox_fade_duration'];
-  $initial_height = $form_values['shadowbox_initial_height'];
-  $initial_width = $form_values['shadowbox_initial_width'];
   $color = $form_values['shadowbox_overlay_color'];
   $opacity = $form_values['shadowbox_overlay_opacity'];
-  $background_image = $form_values['shadowbox_background_image'];
+  $flash_background = $form_values['shadowbox_flash_background'];
+  $slideshow_delay = $form_values['shadowbox_slideshow_delay'];
+  $resize_duration = $form_values['shadowbox_resize_duration'];
+  $fade_duration = $form_values['shadowbox_fade_duration'];
   $viewport_padding = $form_values['shadowbox_viewport_padding'];
-  $keys_close = $form_values['shadowbox_keys_close'];
-  $keys_previous = $form_values['shadowbox_keys_previous'];
-  $keys_next = $form_values['shadowbox_keys_next'];
+  $initial_height = $form_values['shadowbox_initial_height'];
+  $initial_width = $form_values['shadowbox_initial_width'];
+  $counter_limit = $form_values['shadowbox_counter_limit'];
 
-  if (!preg_match('!^([a-z0-9_\-.]+/)*[a-z0-9_\-]+$!i', $asset_url)) {
-    form_set_error('shadowbox_asset_url', t('You must enter a valid path in the form <code>path/to/asset</code> (no leading or trailing slashes).'));
-  }
+  // $asset_url = $form_values['shadowbox_asset_url'];
+  // $loading_image = $form_values['shadowbox_loading_image'];
+  // $keys_close = $form_values['shadowbox_keys_close'];
+  // $keys_previous = $form_values['shadowbox_keys_previous'];
+  // $keys_next = $form_values['shadowbox_keys_next'];
 
-  if (!preg_match('!^([a-z0-9_\-]+/)*[a-z0-9_\-]+\.gif$!i', $loading_image)) {
-    form_set_error('shadowbox_loading_image', t('You must enter a valid path to an animated GIF image in the form <code>images/image.gif</code>.'));
-  }
-  elseif (!file_exists($asset_url .'/'. $loading_image)) {
-    form_set_error('shadowbox_loading_image', t('The specified image does not exist.'));
-  }
+  // if (!preg_match('!^([a-z0-9_\-.]+/)*[a-z0-9_\-]+$!i', $asset_url)) {
+  //   form_set_error('shadowbox_asset_url', t('You must enter a valid path in the form <code>path/to/asset</code> (no leading or trailing slashes).'));
+  // }
+  //
+  // if (!preg_match('!^([a-z0-9_\-]+/)*[a-z0-9_\-]+\.gif$!i', $loading_image)) {
+  //   form_set_error('shadowbox_loading_image', t('You must enter a valid path to an animated GIF image in the form <code>images/image.gif</code>.'));
+  // }
+  // elseif (!file_exists($asset_url .'/'. $loading_image)) {
+  //   form_set_error('shadowbox_loading_image', t('The specified image does not exist.'));
+  // }
 
-  if (!preg_match('!^([a-z0-9_\-]+/)*[a-z0-9_\-]+\.swf$!i', $flv_player)) {
-    form_set_error('shadowbox_flv_player', t('You must enter a valid path to an SWF Flash Player in the form <code>flvplayer.swf</code>.'));
-  }
-  elseif (!file_exists($asset_url .'/'. $flv_player)) {
-    form_set_error('shadowbox_flv_player', t('The FLV player does not exist.'));
-  }
+  // if (!preg_match('!^([a-z0-9_\-]+/)*[a-z0-9_\-]+\.swf$!i', $flv_player)) {
+  //   form_set_error('shadowbox_flv_player', t('You must enter a valid path to an SWF Flash Player in the form <code>flvplayer.swf</code>.'));
+  // }
+  // elseif (!file_exists($asset_url .'/'. $flv_player)) {
+  //   form_set_error('shadowbox_flv_player', t('The FLV player does not exist.'));
+  // }
 
   if (!is_numeric($resize_duration) || $resize_duration < 0 || $resize_duration > 10) {
     form_set_error('shadowbox_resize_duration', t('You must enter a number between 0 and 10.'));
@@ -489,11 +469,8 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
     form_set_error('shadowbox_overlay_opacity', t('You must enter a decimal number between 0 and 1.'));
   }
 
-  if (!preg_match('!^([a-z0-9_\-]+/)*[a-z0-9_\-]+\.png$!i', $background_image)) {
-    form_set_error('shadowbox_background_image', t('You must enter a valid path to a PNG image in the form <code>images/overlay-85.png</code>.'));
-  }
-  elseif (!file_exists($asset_url .'/'. $background_image)) {
-    form_set_error('shadowbox_background_image', t('The specified image does not exist.'));
+  if (!_validate_hex_color($flash_background)) {
+    form_set_error('shadowbox_flash_background', t('You must enter a properly formed hex value (e.g. 000 or 000000 for black.)'));
   }
 
   if (!is_numeric($viewport_padding) || $viewport_padding < 0 || $viewport_padding > 200) {
@@ -503,16 +480,16 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
     $form_values['shadowbox_viewport_padding'] = (int)$viewport_padding;
   }
 
-  $keys_message = t('You must enter a properly formed string of keys or keycodes seprated by a space.');
-  if (_validate_keys_string($keys_close)) {
-    form_set_error('shadowbox_keys_close', $keys_message);
-  }
-  if (_validate_keys_string($keys_previous)) {
-    form_set_error('shadowbox_keys_previous', $keys_message);
-  }
-  if (_validate_keys_string($keys_next)) {
-    form_set_error('shadowbox_keys_next', $keys_message);
-  }
+  // $keys_message = t('You must enter a properly formed string of keys or keycodes seprated by a space.');
+  // if (_validate_keys_string($keys_close)) {
+  //   form_set_error('shadowbox_keys_close', $keys_message);
+  // }
+  // if (_validate_keys_string($keys_previous)) {
+  //   form_set_error('shadowbox_keys_previous', $keys_message);
+  // }
+  // if (_validate_keys_string($keys_next)) {
+  //   form_set_error('shadowbox_keys_next', $keys_message);
+  // }
 }
 
 /**
@@ -666,14 +643,19 @@ function shadowbox_imagecache_create_url($preset, $filepath) {
  */
 function shadowbox_construct_header() {
   $path = drupal_get_path('module', 'shadowbox');
-  drupal_add_css($path .'/shadowbox.css');
   if (shadowbox_active() && variable_get('shadowbox_enabled', TRUE)) {
-    (variable_get('shadowbox_css_skin', 'original') == 'light') ?
-      drupal_add_css($path ."/shadowbox/build/css/shadowbox-light.css") :
-      drupal_add_css($path ."/shadowbox/build/css/shadowbox.css");
-    drupal_add_js($path .'/shadowbox/build/js/adapter/shadowbox-jquery.js');
-    drupal_add_js($path .'/shadowbox/build/js/shadowbox.js');
+    drupal_add_js($path .'/shadowbox/build/adapter/shadowbox-jquery.js');
+    drupal_add_js($path .'/shadowbox/build/shadowbox.js');
     drupal_add_js($path .'/shadowbox.js');
+    drupal_add_js($path .'/shadowbox/src/skin/classic/skin.js');
+    drupal_add_css($path .'/shadowbox/src/skin/classic/skin.css');
+    drupal_add_js($path .'/shadowbox/build/lang/shadowbox-en.js');
+    drupal_add_js($path .'/shadowbox/build/player/shadowbox-img.js');
+    drupal_add_js($path .'/shadowbox/build/player/shadowbox-flv.js');
+    drupal_add_js($path .'/shadowbox/build/player/shadowbox-html.js');
+    drupal_add_js($path .'/shadowbox/build/player/shadowbox-iframe.js');
+    drupal_add_js($path .'/shadowbox/build/player/shadowbox-swf.js');
+    drupal_add_js($path .'/shadowbox/build/player/shadowbox-wmp.js');
     drupal_add_js(shadowbox_get_settings(), 'setting');
   }
 }
@@ -688,52 +670,48 @@ function shadowbox_construct_header() {
  *   An array containing settings to be used in drupal_add_js.
  */
 function shadowbox_get_settings($override = array()) {
+  $base_path = base_path();
   $module_path = drupal_get_path('module', 'shadowbox');
+  $shadowbox_path = $module_path .'/shadowbox/';
   $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
+  $swf = variable_get('shadowbox_supported_swf', shadowbox_get_types('swf'));
+  $flv = variable_get('shadowbox_supported_flv', shadowbox_get_types('flv'));
   $quicktime = variable_get('shadowbox_supported_quicktime', shadowbox_get_types('quicktime'));
   $wmp = variable_get('shadowbox_supported_wmp', shadowbox_get_types('wmp'));
   $qtwmp = variable_get('shadowbox_supported_qtwmp', shadowbox_get_types('qtwmp'));
   $iframe = variable_get('shadowbox_supported_iframe', shadowbox_get_types('iframe'));
   $settings = array(
-    'asset_url' => base_path() . variable_get('shadowbox_asset_url', $module_path .'/shadowbox') .'/',
-    'loading_image' => variable_get('shadowbox_loading_image', 'images/loading.gif'),
+    'flv_player' => $base_path . variable_get('shadowbox_flv_player', $shadowbox_path .'flvplayer.swf'),
     'animation' => variable_get('shadowbox_animate', TRUE),
+    'animation_fade' => variable_get('shadowbox_animate_fade', TRUE),
     'animation_sequence' => variable_get('shadowbox_animation_sequence', 'wh'),
+    'modal' => variable_get('shadowbox_overlay_listen', TRUE),
     'overlay_color' => variable_get('shadowbox_overlay_color', '000'),
-    'overlay_opacity' => variable_get('shadowbox_overlay_opacity', 0.85),
-    'overlay_listen' => variable_get('shadowbox_overlay_listen', TRUE),
-    'resize_duration' => variable_get('shadowbox_resize_duration', 0.35),
-    'fade_duration' => variable_get('shadowbox_fade_duration', 0.35),
-    'display_nav' => variable_get('shadowbox_display_nav', TRUE),
-    'flv_player' => variable_get('shadowbox_flv_player', 'flvplayer.swf'),
-    'background_image' => variable_get('shadowbox_background_image', 'images/overlay-85.png'),
+    'overlay_opacity' => variable_get('shadowbox_overlay_opacity', 0.8),
+    'flash_background' => variable_get('shadowbox_flash_background', '000000'),
     'autoplay_movies' => variable_get('shadowbox_autoplay_movies', TRUE),
     'show_movie_controls' => variable_get('shadowbox_show_movie_controls', TRUE),
+    'slideshow_delay' => variable_get('shadowbox_slideshow_delay', 0),
+    'resize_duration' => variable_get('shadowbox_resize_duration', 0.55),
+    'fade_duration' => variable_get('shadowbox_fade_duration', 0.35),
+    'display_nav' => variable_get('shadowbox_display_nav', TRUE),
     'continuous_galleries' => variable_get('shadowbox_continuous_galleries', FALSE),
     'display_counter' => variable_get('shadowbox_display_counter', TRUE),
     'counter_type' => variable_get('shadowbox_counter_type', 'default'),
+    'counter_limit' => variable_get('shadowbox_counter_limit', 10),
     'viewport_padding' => variable_get('shadowbox_viewport_padding', 20),
+    'handle_oversize' => variable_get('shadowbox_handle_oversize', 'resize'),
+    'handle_unsupported' => variable_get('shadowbox_handle_unsupported', 'link'),
     'initial_height' => variable_get('shadowbox_initial_height', 160),
     'initial_width' => variable_get('shadowbox_initial_width', 320),
     'enable_keys' => variable_get('shadowbox_enable_keys', TRUE),
-    'keys_close' => _explode_to_int(variable_get('shadowbox_keys_close', 'c q 27')),
-    'keys_previous' => _explode_to_int(variable_get('shadowbox_keys_previous', 'p 37')),
-    'keys_next' => _explode_to_int(variable_get('shadowbox_keys_next', 'n 39')),
-    'handle_large_images' => variable_get('shadowbox_handle_large_images', 'resize'),
-    'handle_unsupported' => variable_get('shadowbox_handle_unsupported', 'link'),
     'extensions_img' => _array_to_string_values($images),
+    'extensions_swf' => _array_to_string_values($swf),
+    'extensions_flv' => _array_to_string_values($flv),
     'extensions_qt' => _array_to_string_values($quicktime),
     'extensions_wmp' => _array_to_string_values($wmp),
     'extensions_qtwmp' => _array_to_string_values($qtwmp),
     'extensions_iframe' => _array_to_string_values($iframe),
-    'text_cancel' => t('Cancel'),
-    'text_loading' => t('Loading'),
-    'text_close' => t('Close'),
-    'text_next' => t('Next'),
-    'text_previous' => t('Previous'),
-    'errors_single' => t('You must install the <a href="{0}">{1}</a> browser plugin to view this content.'),
-    'errors_shared' => t('You must install both the <a href="{0}">{1}</a> and <a href="{2}">{3}</a> browser plugins to view this content.'),
-    'errors_either' => t('You must install either the <a href="{0}">{1}</a> or the <a href="{2}">{3}</a> browser plugin to view this content.'),
   );
   $settings = array_merge($settings, $override);
   $settings = array('shadowbox' => $settings);
@@ -770,6 +748,12 @@ function shadowbox_get_types($type) {
   switch ($type) {
     case 'image':
       return array('png', 'jpg', 'jpeg', 'gif', 'bmp');
+      break;
+    case 'swf':
+      return array('swf');
+      break;
+    case 'flv':
+      return array('flv', 'mp4', 'mov');
       break;
     case 'quicktime':
       return array('dv', 'mov', 'moov', 'movie', 'mp4');
