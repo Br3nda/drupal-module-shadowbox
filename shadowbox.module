@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.24.2.4 2008/07/29 14:32:36 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.24.2.5 2008/07/29 17:37:48 psynaptic Exp $
 
 /**
  * @file
@@ -786,8 +786,8 @@ function _validate_keys_string($input) {
  * @return
  *   TRUE if $input is a valid hex color value (e.g. 000 or 000000)
  */
-function _validate_hex_color($input, $full = FALSE) {
-  if ($full == TRUE) {
+function _validate_hex_color($input, $long_only = FALSE) {
+  if ($long_only == TRUE) {
     return preg_match('!^[a-f0-9]{6}$!i', $input);
   }
   else {
