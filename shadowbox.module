@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.24.2.3 2008/07/29 14:31:29 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.24.2.4 2008/07/29 14:32:36 psynaptic Exp $
 
 /**
  * @file
@@ -38,7 +38,7 @@ function shadowbox_help($section) {
       $output .= '<p>'. t('Shadowbox allows you to specify options on a per-instance basis by using a JSON-formatted parameter. More information on this feature can be found on the !shadowbox_usage', array('!shadowbox_usage' => l('Shadowbox usage page', 'http://mjijackson.com/shadowbox/doc/usage.html#markup', array(), NULL, NULL, TRUE))) .'</p>';
       $output .= '<strong>'. t('Example:') .'</strong>';
       $output .= '<p>'. t('<code><pre>&lt;a href=&quot;http://google.com&quot; rel=&quot;shadowbox;width=740;height=380;
-  options={overlayOpacity:1,resizeDuration:0.2};&quot;&gt;Google&lt;/a&gt;</pre></code>'). '</p>';
+  options={overlayOpacity:1,resizeDuration:0.2};&quot;&gt;Google&lt;/a&gt;</pre></code>') .'</p>';
       return $output;
 
     case 'admin/settings/shadowbox':
@@ -225,7 +225,7 @@ function shadowbox_admin_settings() {
   $form['shadowbox']['shadowbox_options']['animation_settings']['shadowbox_initial_width'] = array(
     '#type' => 'textfield',
     '#title' => t('Initial width'),
-    '#description' => t('The width of Shadowbox (in pixels) when it first appears on the screen. '),
+    '#description' => t('The width of Shadowbox (in pixels) when it first appears on the screen.'),
     '#size' => 5,
     '#maxlength' => 4,
     '#default_value' => variable_get('shadowbox_initial_width', 320),
