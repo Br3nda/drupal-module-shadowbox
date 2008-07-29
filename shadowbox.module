@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.24.2.2 2008/07/29 14:22:24 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.24.2.3 2008/07/29 14:31:29 psynaptic Exp $
 
 /**
  * @file
@@ -452,8 +452,8 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
     form_set_error('shadowbox_overlay_opacity', t('You must enter a decimal number between 0 and 1.'));
   }
 
-  if (!_validate_hex_color($flash_background)) {
-    form_set_error('shadowbox_flash_background', t('You must enter a properly formed hex value (e.g. 000 or 000000 for black.)'));
+  if (!_validate_hex_color($flash_background, TRUE)) {
+    form_set_error('shadowbox_flash_background', t('You must enter a 6 digit hex value (e.g. 000000 for black.)'));
   }
 
   if (!is_numeric($viewport_padding) || $viewport_padding < 0 || $viewport_padding > 200) {
@@ -786,8 +786,13 @@ function _validate_keys_string($input) {
  * @return
  *   TRUE if $input is a valid hex color value (e.g. 000 or 000000)
  */
-function _validate_hex_color($input) {
-  return preg_match('!^[a-f0-9]{3}([a-f0-9]{3})?$!i', $input);
+function _validate_hex_color($input, $full = FALSE) {
+  if ($full == TRUE) {
+    return preg_match('!^[a-f0-9]{6}$!i', $input);
+  }
+  else {
+    return preg_match('!^[a-f0-9]{3}([a-f0-9]{3})?$!i', $input);
+  }
 }
 
 /**
