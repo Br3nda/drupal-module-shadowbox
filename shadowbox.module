@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.24.2.1 2008/07/29 14:15:21 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.24.2.2 2008/07/29 14:22:24 psynaptic Exp $
 
 /**
  * @file
@@ -415,29 +415,12 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
   $initial_width = $form_values['shadowbox_initial_width'];
   $counter_limit = $form_values['shadowbox_counter_limit'];
 
-  // $asset_url = $form_values['shadowbox_asset_url'];
-  // $loading_image = $form_values['shadowbox_loading_image'];
-  // $keys_close = $form_values['shadowbox_keys_close'];
-  // $keys_previous = $form_values['shadowbox_keys_previous'];
-  // $keys_next = $form_values['shadowbox_keys_next'];
-
-  // if (!preg_match('!^([a-z0-9_\-.]+/)*[a-z0-9_\-]+$!i', $asset_url)) {
-  //   form_set_error('shadowbox_asset_url', t('You must enter a valid path in the form <code>path/to/asset</code> (no leading or trailing slashes).'));
-  // }
-  //
-  // if (!preg_match('!^([a-z0-9_\-]+/)*[a-z0-9_\-]+\.gif$!i', $loading_image)) {
-  //   form_set_error('shadowbox_loading_image', t('You must enter a valid path to an animated GIF image in the form <code>images/image.gif</code>.'));
-  // }
-  // elseif (!file_exists($asset_url .'/'. $loading_image)) {
-  //   form_set_error('shadowbox_loading_image', t('The specified image does not exist.'));
-  // }
-
-  // if (!preg_match('!^([a-z0-9_\-]+/)*[a-z0-9_\-]+\.swf$!i', $flv_player)) {
-  //   form_set_error('shadowbox_flv_player', t('You must enter a valid path to an SWF Flash Player in the form <code>flvplayer.swf</code>.'));
-  // }
-  // elseif (!file_exists($asset_url .'/'. $flv_player)) {
-  //   form_set_error('shadowbox_flv_player', t('The FLV player does not exist.'));
-  // }
+  if (!preg_match('!^([a-z0-9_\-]+/)*[a-z0-9_\-]+\.swf$!i', $flv_player)) {
+    form_set_error('shadowbox_flv_player', t('You must enter a valid path to an SWF Flash Player in the form <code>flvplayer.swf</code>.'));
+  }
+  elseif (!file_exists($flv_player)) {
+    form_set_error('shadowbox_flv_player', t('The FLV player does not exist.'));
+  }
 
   if (!is_numeric($resize_duration) || $resize_duration < 0 || $resize_duration > 10) {
     form_set_error('shadowbox_resize_duration', t('You must enter a number between 0 and 10.'));
@@ -479,17 +462,6 @@ function shadowbox_admin_settings_validate($form_id, &$form) {
   else {
     $form_values['shadowbox_viewport_padding'] = (int)$viewport_padding;
   }
-
-  // $keys_message = t('You must enter a properly formed string of keys or keycodes seprated by a space.');
-  // if (_validate_keys_string($keys_close)) {
-  //   form_set_error('shadowbox_keys_close', $keys_message);
-  // }
-  // if (_validate_keys_string($keys_previous)) {
-  //   form_set_error('shadowbox_keys_previous', $keys_message);
-  // }
-  // if (_validate_keys_string($keys_next)) {
-  //   form_set_error('shadowbox_keys_next', $keys_message);
-  // }
 }
 
 /**
@@ -670,7 +642,6 @@ function shadowbox_construct_header() {
  *   An array containing settings to be used in drupal_add_js.
  */
 function shadowbox_get_settings($override = array()) {
-  $base_path = base_path();
   $module_path = drupal_get_path('module', 'shadowbox');
   $shadowbox_path = $module_path .'/shadowbox/';
   $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
@@ -681,7 +652,7 @@ function shadowbox_get_settings($override = array()) {
   $qtwmp = variable_get('shadowbox_supported_qtwmp', shadowbox_get_types('qtwmp'));
   $iframe = variable_get('shadowbox_supported_iframe', shadowbox_get_types('iframe'));
   $settings = array(
-    'flv_player' => $base_path . variable_get('shadowbox_flv_player', $shadowbox_path .'flvplayer.swf'),
+    'flv_player' => base_path() . variable_get('shadowbox_flv_player', $shadowbox_path .'flvplayer.swf'),
     'animation' => variable_get('shadowbox_animate', TRUE),
     'animation_fade' => variable_get('shadowbox_animate_fade', TRUE),
     'animation_sequence' => variable_get('shadowbox_animation_sequence', 'wh'),
