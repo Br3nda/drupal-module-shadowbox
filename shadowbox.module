@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.24.2.5 2008/07/29 17:37:48 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.24.2.6 2008/07/29 20:44:12 psynaptic Exp $
 
 /**
  * @file
@@ -93,14 +93,26 @@ function shadowbox_admin_settings() {
   );
   $form['shadowbox']['shadowbox_enabled'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Enable Shadowbox'),
+    '#title' => t('Global kill-switch'),
     '#default_value' => variable_get('shadowbox_enabled', TRUE),
     '#description' => t('Check this box to enable Shadowbox for the entire site.'),
   );
-  $form['shadowbox']['shadowbox_excluded_pages'] = array(
+  $form['shadowbox']['active'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Page specific activation settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['shadowbox']['active']['shadowbox_active_type'] = array(
+    '#type' => 'radios',
+    '#title' => t('Enable Shadowbox on specific pages'),
+    '#options' => array('disable' => 'Enable on every page except the listed pages.', 'enable' => 'Enable on only the listed pages.'),
+    '#default_value' => variable_get('shadowbox_active_type', 'disable'),
+  );
+  $form['shadowbox']['active']['shadowbox_pages'] = array(
     '#type' => 'textarea',
-    '#title' => t('Deactivate Shadowbox on specific pages'),
-    '#default_value' => variable_get('shadowbox_excluded_pages', "admin*\nimg_assist*\nnode/add/*\nnode/*/edit"),
+    '#title' => t('Pages'),
+    '#default_value' => variable_get('shadowbox_pages', "admin*\nimg_assist*\nnode/add/*\nnode/*/edit"),
     '#description' => t("Enter one page per line as Drupal paths. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>')),
   );
   // Supported media
@@ -260,7 +272,7 @@ function shadowbox_admin_settings() {
     '#description' => t('The default background color to use for Flash movies.'),
     '#size' => 8,
     '#maxlength' => 7,
-    '#default_value' => variable_get('shadowbox_flash_background', '000'),
+    '#default_value' => variable_get('shadowbox_flash_background', '000000'),
     '#field_prefix' => '#',
   );
   $form['shadowbox']['shadowbox_options']['overlay']['shadowbox_viewport_padding'] = array(
@@ -697,13 +709,18 @@ function shadowbox_get_settings($override = array()) {
  */
 function shadowbox_active() {
   $path = drupal_get_path_alias($_GET['q']);
-  $regexp = '/^('. preg_replace(array('/(\r\n?|\n)/', '/\\\\\*/', '/(^|\|)\\\\<front\\\\>($|\|)/'), array('|', '.*', '\1'. preg_quote(variable_get('site_frontpage', 'node'), '/') .'\2'), preg_quote(variable_get('shadowbox_excluded_pages', "admin*\nimg_assist*\nnode/add/*\nnode/*/edit"), '/')) .')$/';
+  $regexp = '/^('. preg_replace(array('/(\r\n?|\n)/', '/\\\\\*/', '/(^|\|)\\\\<front\\\\>($|\|)/'), array('|', '.*', '\1'. preg_quote(variable_get('site_frontpage', 'node'), '/') .'\2'), preg_quote(variable_get('shadowbox_pages', "admin*\nimg_assist*\nnode/add/*\nnode/*/edit"), '/')) .')$/';
   // Compare with the internal and path alias (if any).
   $page_match = preg_match($regexp, $path);
   if ($path != $_GET['q']) {
     $page_match = $page_match || preg_match($regexp, $_GET['q']);
   }
-  return !$page_match;
+  if (variable_get('shadowbox_active_type', 'disable') == 'disable') {
+    return !$page_match;
+  }
+  else {
+    return $page_match;
+  }
 }
 
 /**

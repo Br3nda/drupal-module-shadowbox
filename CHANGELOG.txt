@@ -1,8 +1,10 @@
-$Id: CHANGELOG.txt,v 1.5.2.24.2.1 2008/07/29 14:15:21 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.5.2.24.2.2 2008/07/29 20:44:12 psynaptic Exp $
 
 Shadowbox 5.x-2.x-dev, 2008-07-29
 ---------------------------------
 - Updated module to use Shadowbox 2.0.
+- Added page activation option to choose whether to activate or deactivate for listed pages.
+- Removed shadowbox.css as min-width rules where interfering with drag functionality.
 
 Shadowbox 5.x-1.x-dev, 2008-07-12
 ---------------------------------
