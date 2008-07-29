@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.24 2008/07/12 18:22:28 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.25 2008/07/29 18:49:17 psynaptic Exp $
 
 /**
  * @file
@@ -666,7 +666,6 @@ function shadowbox_imagecache_create_url($preset, $filepath) {
  */
 function shadowbox_construct_header() {
   $path = drupal_get_path('module', 'shadowbox');
-  drupal_add_css($path .'/shadowbox.css');
   if (shadowbox_active() && variable_get('shadowbox_enabled', TRUE)) {
     (variable_get('shadowbox_css_skin', 'original') == 'light') ?
       drupal_add_css($path ."/shadowbox/build/css/shadowbox-light.css") :
