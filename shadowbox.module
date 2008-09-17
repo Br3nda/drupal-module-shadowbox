@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.24.2.6 2008/07/29 20:44:12 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.24.2.7 2008/09/17 09:16:28 psynaptic Exp $
 
 /**
  * @file
@@ -47,6 +47,13 @@ function shadowbox_help($section) {
 }
 
 /**
+ * Implementation of hook_perm().
+ */
+function shadowbox_perm() {
+  return array('administer shadowbox');
+}
+
+/**
  * Implementation of hook_menu().
  */
 function shadowbox_menu($may_cache) {
@@ -56,11 +63,27 @@ function shadowbox_menu($may_cache) {
     $items[] = array(
       'path' => 'admin/settings/shadowbox',
       'title' => 'Shadowbox',
-      'callback' => 'drupal_get_form',
-      'callback arguments' => array('shadowbox_admin_settings'),
+      'callback' => 'shadowbox_settings_page',
       'access' => user_access('administer shadowbox'),
-      'description' => 'Configure the settings for Shadowbox',
-      'type' => MENU_NORMAL_ITEM,
+      'description' => t('Configure the settings for Shadowbox.'),
+    );
+    $items[] = array('path' => 'admin/settings/shadowbox/global',
+      'title' => t('Global'),
+      'callback' => 'drupal_get_form',
+      'callback arguments' => array('shadowbox_global_settings'),
+      'access' => user_access('administer shadowbox'),
+      'description' => t('Configure the settings for Shadowbox.'),
+      'type' => MENU_DEFAULT_LOCAL_TASK,
+      'weight' => 0,
+    );
+    $items[] = array('path' => 'admin/settings/shadowbox/automatic',
+      'title' => t('Auto image handling'),
+      'callback' => 'drupal_get_form',
+      'callback arguments' => array('shadowbox_automatic_settings'),
+      'access' => user_access('administer shadowbox'),
+      'description' => t('Configure the Shadwobox automatic image handling settings.'),
+      'type' => MENU_LOCAL_TASK,
+      'weight' => 1,
     );
   }
   else {
@@ -70,27 +93,22 @@ function shadowbox_menu($may_cache) {
 }
 
 /**
- * Implementation of hook_perm().
+ * The default Shadowbox settings page.
  */
-function shadowbox_perm() {
-  return array('administer shadowbox');
+function shadowbox_settings_page($op = NULL) {
+  $output .= drupal_get_form('shadowbox_global_settings');
+  return $output;
 }
 
 /**
- * FAPI definition for the Shadowbox admin settings form.
+ * FAPI definition for the Shadowbox global settings form.
  *
  * @ingroup forms
- * @see shadowbox_admin_settings_validate()
+ * @see shadowbox_global_settings_validate()
  */
-function shadowbox_admin_settings() {
+function shadowbox_global_settings() {
   $shadowbox_path = drupal_get_path('module', 'shadowbox') .'/shadowbox/';
   // Global settings
-  $form['shadowbox'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Global settings'),
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-  );
   $form['shadowbox']['shadowbox_enabled'] = array(
     '#type' => 'checkbox',
     '#title' => t('Global kill-switch'),
@@ -411,9 +429,26 @@ function shadowbox_admin_settings() {
 }
 
 /**
+ * FAPI definition for the Shadowbox automatic image handling settings form.
+ *
+ * @ingroup forms
+ * @see shadowbox_global_settings_validate()
+ */
+function shadowbox_automatic_settings() {
+  $form['shadowbox_auto_enable_all_images'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable for all image links'),
+    '#description' => t('Enable this option to automatically add the <code>rel="shadowbox"</code> attribute to all links pointing to an image file.'),
+    '#default_value' => variable_get('shadowbox_auto_enable_all_images', 0),
+  );
+
+  return system_settings_form($form);
+}
+
+/**
  * Validate admin settings form inputs.
  */
-function shadowbox_admin_settings_validate($form_id, &$form) {
+function shadowbox_global_settings_validate($form_id, &$form) {
   global $form_values;
   $flv_player = $form_values['shadowbox_flv_player'];
   $color = $form_values['shadowbox_overlay_color'];
@@ -626,14 +661,16 @@ function shadowbox_imagecache_create_url($preset, $filepath) {
  * Build the Shadowbox header by adding the necessary CSS and JS files.
  */
 function shadowbox_construct_header() {
+  global $locale;
   $path = drupal_get_path('module', 'shadowbox');
   if (shadowbox_active() && variable_get('shadowbox_enabled', TRUE)) {
     drupal_add_js($path .'/shadowbox/build/adapter/shadowbox-jquery.js');
     drupal_add_js($path .'/shadowbox/build/shadowbox.js');
     drupal_add_js($path .'/shadowbox.js');
+    drupal_add_js($path .'/shadowbox_auto.js');
     drupal_add_js($path .'/shadowbox/src/skin/classic/skin.js');
     drupal_add_css($path .'/shadowbox/src/skin/classic/skin.css');
-    drupal_add_js($path .'/shadowbox/build/lang/shadowbox-en.js');
+    drupal_add_js($path .'/shadowbox/build/lang/shadowbox-'. $locale .'.js');
     drupal_add_js($path .'/shadowbox/build/player/shadowbox-img.js');
     drupal_add_js($path .'/shadowbox/build/player/shadowbox-flv.js');
     drupal_add_js($path .'/shadowbox/build/player/shadowbox-html.js');
@@ -695,6 +732,7 @@ function shadowbox_get_settings($override = array()) {
     'extensions_wmp' => _array_to_string_values($wmp),
     'extensions_qtwmp' => _array_to_string_values($qtwmp),
     'extensions_iframe' => _array_to_string_values($iframe),
+    'auto_enable_all_images' => variable_get('shadowbox_auto_enable_all_images', 0),
   );
   $settings = array_merge($settings, $override);
   $settings = array('shadowbox' => $settings);

@@ -1,4 +1,12 @@
-$Id: CHANGELOG.txt,v 1.5.2.24.2.2 2008/07/29 20:44:12 psynaptic Exp $
+$Id: CHANGELOG.txt,v 1.5.2.24.2.3 2008/09/17 09:16:28 psynaptic Exp $
+
+Shadowbox 5.x-2.1, 2008-09-17
+-----------------------------
+- Created tabs in admin settings form.
+- Removed global fieldset on default tab of admin settings form.
+- Added automatic image link handling using JavaScript.
+- #308059: Enabled translations by Davy Van Den Bremt.
+- Optimised assigning of variables in shadowbox.js.
 
 Shadowbox 5.x-2.x-dev, 2008-07-29
 ---------------------------------
