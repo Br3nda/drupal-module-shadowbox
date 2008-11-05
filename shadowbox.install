@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.install,v 1.1.2.5 2008/06/05 23:08:47 psynaptic Exp $
+// $Id: shadowbox.install,v 1.1.2.5.2.1 2008/11/05 00:07:12 psynaptic Exp $
 
 /**
  * @file
@@ -10,7 +10,6 @@
  * Implementation of hook_uninstall().
  */
 function shadowbox_uninstall() {
-  // delete the variables we created
   db_query("DELETE FROM {variable} WHERE name LIKE 'shadowbox_%'");
 }
 
@@ -27,15 +26,19 @@ function shadowbox_requirements($phase) {
     if (!file_exists($path .'/shadowbox/')) {
       $requirements['shadowbox'] = array(
         'title' => $t('Shadowbox'),
-        'description' => $t('In order for the Shadowbox module to work correctly, the Shadowbox \'full\' distribution must exists at <code>%path</code>.', array('%path' => $path .'/shadowbox')),
+        'description' => $t('In order for the Shadowbox module to work correctly, the Shadowbox 2.0 Full distribution must exists at <code>%path</code>.', array('%path' => $path .'/shadowbox')),
         'severity' => $phase == 'install' ? REQUIREMENT_WARNING : REQUIREMENT_ERROR,
         'value' => $t('Install 3rd party Shadowbox software'),
       );
     }
-    elseif (!file_exists($path .'/shadowbox/build/js/shadowbox.js') || !file_exists($path .'/shadowbox/build/js/adapter/shadowbox-jquery.js') || !file_exists($path .'/shadowbox/build/css/shadowbox.css')) {
+    elseif (!file_exists($path .'/shadowbox/build/shadowbox.js') || !file_exists($path .'/shadowbox/build/adapter/shadowbox-jquery.js')) {
       $requirements['shadowbox'] = array(
         'title' => $t('Shadowbox'),
-        'description' => $t('The <code>%path</code> path exists but it appears that the directory structure underneath is not correct. Please check that <code>%shadowbox</code>, <code>%jquery</code> and <code>%css</code> exist.', array('%path' => $path .'/shadowbox', '%shadowbox' => $path .'/shadowbox/build/js/shadowbox.js', '%jquery' => $path .'/shadowbox/build/js/adapter/shadowbox-jquery.js', '%css' => $path .'/shadowbox/build/css/shadowbox.css')),
+        'description' => $t('The <code>%path</code> path exists but it appears that the directory structure underneath is incorrect. Please check that <code>%shadowbox</code> and <code>%jquery</code> exist.',
+          array('%path' => $path .'/shadowbox',
+            '%shadowbox' => $path .'/shadowbox/build/shadowbox.js',
+            '%jquery' => $path .'/shadowbox/build/adapter/shadowbox-jquery.js',
+          )),
         'severity' => $phase == 'install' ? REQUIREMENT_WARNING : REQUIREMENT_ERROR,
         'value' => $t('3rd party Shadowbox software not properly installed'),
       );
@@ -50,4 +53,3 @@ function shadowbox_requirements($phase) {
   }
   return $requirements;
 }
-

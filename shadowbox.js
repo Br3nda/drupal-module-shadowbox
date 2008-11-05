@@ -1,39 +1,40 @@
-// $Id: shadowbox.js,v 1.1.2.3 2008/06/06 00:16:10 psynaptic Exp $
+// $Id: shadowbox.js,v 1.1.2.3.2.1 2008/11/05 00:07:12 psynaptic Exp $
 if (Drupal.jsEnabled) {
-  $(document).ready(function(){
+  $(window).load(function(){
+    var settings = Drupal.settings.shadowbox;
     var options = {
-      assetURL:             Drupal.settings.shadowbox.asset_url,
-      loadingImage:         Drupal.settings.shadowbox.loading_image,
-      animate:              Drupal.settings.shadowbox.animation,
-      animSequence:         Drupal.settings.shadowbox.animation_sequence,
-      flvPlayer:            Drupal.settings.shadowbox.flv_player,
-      overlayColor:         Drupal.settings.shadowbox.overlay_color,
-      overlayOpacity:       Drupal.settings.shadowbox.overlay_opacity,
-      overlayBgImage:       Drupal.settings.shadowbox.background_image,
-      listenOverlay:        Drupal.settings.shadowbox.overlay_listen,
-      autoplayMovies:       Drupal.settings.shadowbox.autoplay_movies,
-      showMovieControls:    Drupal.settings.shadowbox.show_movie_controls,
-      resizeDuration:       Drupal.settings.shadowbox.resize_duration,
-      fadeDuration:         Drupal.settings.shadowbox.fade_duration,
-      displayNav:           Drupal.settings.shadowbox.display_nav,
-      continuous:           Drupal.settings.shadowbox.continuous_galleries,
-      displayCounter:       Drupal.settings.shadowbox.display_counter,
-      counterType:          Drupal.settings.shadowbox.counter_type,
-      viewportPadding:      Drupal.settings.shadowbox.viewport_padding,
-      handleLgImages:       Drupal.settings.shadowbox.handle_large_images,
-      initialHeight:        Drupal.settings.shadowbox.initial_height,
-      initialWidth:         Drupal.settings.shadowbox.initial_width,
-      enableKeys:           Drupal.settings.shadowbox.enable_keys,
-      keysClose:            Drupal.settings.shadowbox.keys_close,
-      keysPrev:             Drupal.settings.shadowbox.keys_previous,
-      keysNext:             Drupal.settings.shadowbox.keys_next,
-      handleUnsupported:    Drupal.settings.shadowbox.handle_unsupported,
-      ext: {
-        img:                Drupal.settings.shadowbox.extensions_img,
-        qt:                 Drupal.settings.shadowbox.extensions_qt,
-        wmp:                Drupal.settings.shadowbox.extensions_wmp,
-        qtwmp:              Drupal.settings.shadowbox.extensions_qtwmp,
-        iframe:             Drupal.settings.shadowbox.extensions_iframe
+      animate:            settings.animation,
+      animateFade:        settings.animation_fade,
+      animSequence:       settings.animation_sequence,
+      flvPlayer:          settings.flv_player,
+      modal:              settings.modal,
+      overlayColor:       '#' + settings.overlay_color,
+      overlayOpacity:     settings.overlay_opacity,
+      flashBgColor:       '#' + settings.flash_background,
+      autoplayMovies:     settings.autoplay_movies,
+      showMovieControls:  settings.show_movie_controls,
+      slideshowDelay:     settings.slideshow_delay,
+      resizeDuration:     settings.resize_duration,
+      fadeDuration:       settings.fade_duration,
+      displayNav:         settings.display_nav,
+      continuous:         settings.continuous_galleries,
+      displayCounter:     settings.display_counter,
+      counterType:        settings.counter_type,
+      counterLimit:       settings.counter_limit,
+      viewportPadding:    settings.viewport_padding,
+      handleOversize:     settings.handle_oversize,
+      handleUnsupported:  settings.handle_unsupported,
+      initialHeight:      settings.initial_height,
+      initialWidth:       settings.initial_width,
+      enableKeys:         settings.enable_keys,
+      ext:     {
+          img:        Drupal.settings.shadowbox.extensions_img,
+          swf:        Drupal.settings.shadowbox.extensions_swf,
+          flv:        Drupal.settings.shadowbox.extensions_flv,
+          qt:         Drupal.settings.shadowbox.extensions_qt,
+          wmp:        Drupal.settings.shadowbox.extensions_wmp,
+          qtwmp:      Drupal.settings.shadowbox.extensions_qtwmp,
+          iframe:     Drupal.settings.shadowbox.extensions_iframe
       }
     };
     Shadowbox.init(options);
