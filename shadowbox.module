@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.3 2008/11/05 20:50:16 moonshine Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.4 2008/11/12 19:47:01 psynaptic Exp $
 
 /**
  * @file
@@ -518,32 +518,32 @@ function shadowbox_field_formatter_info() {
       $view_preset = $preset['presetname'];
       $formatters['shadowbox___original___'. $view_preset] = array(
         'label' => 'Shadowbox: original to '. $view_preset,
-        'field types' => array('image'),
+        'field types' => array('image', 'filefield'),
         'multiple values' => CONTENT_HANDLE_MODULE,
       );
       $formatters['shadowbox___'. $view_preset .'___original'] = array(
         'label' => 'Shadowbox: '. $view_preset .' to original',
-        'field types' => array('image'),
+        'field types' => array('image', 'filefield'),
         'multiple values' => CONTENT_HANDLE_MODULE,
       );
       $formatters['shadowbox_gallery___original___'. $view_preset] = array(
         'label' => 'Shadowbox Gallery (field): original to '. $view_preset,
-        'field types' => array('image'),
+        'field types' => array('image', 'filefield'),
         'multiple values' => CONTENT_HANDLE_MODULE,
       );
       $formatters['shadowbox_gallery___'. $view_preset .'___original'] = array(
         'label' => 'Shadowbox Gallery (field): '. $view_preset .' to original',
-        'field types' => array('image'),
+        'field types' => array('image', 'filefield'),
         'multiple values' => CONTENT_HANDLE_MODULE,
       );
       $formatters['shadowbox_gallery_nid___original___'. $view_preset] = array(
         'label' => 'Shadowbox Gallery (nid): original to '. $view_preset,
-        'field types' => array('image'),
+        'field types' => array('image', 'filefield'),
         'multiple values' => CONTENT_HANDLE_MODULE,
       );
       $formatters['shadowbox_gallery_nid___'. $view_preset .'___original'] = array(
         'label' => 'Shadowbox Gallery (nid): '. $view_preset .' to original',
-        'field types' => array('image'),
+        'field types' => array('image', 'filefield'),
         'multiple values' => CONTENT_HANDLE_MODULE,
       );
       foreach (imagecache_presets() as $preset_alt) {
@@ -551,17 +551,17 @@ function shadowbox_field_formatter_info() {
         if ($view_preset != $shadowbox_preset) {
           $formatters['shadowbox___'. $view_preset .'___'. $shadowbox_preset] = array(
             'label' => 'Shadowbox: '. $view_preset .' to '. $shadowbox_preset,
-            'field types' => array('image'),
+            'field types' => array('image', 'filefield'),
             'multiple values' => CONTENT_HANDLE_MODULE,
           );
           $formatters['shadowbox_gallery___'. $view_preset .'___'. $shadowbox_preset] = array(
             'label' => 'Shadowbox Gallery (field): '. $view_preset .' to '. $shadowbox_preset,
-            'field types' => array('image'),
+            'field types' => array('image', 'filefield'),
             'multiple values' => CONTENT_HANDLE_MODULE,
           );
           $formatters['shadowbox_gallery_nid___'. $view_preset .'___'. $shadowbox_preset] = array(
             'label' => 'Shadowbox Gallery (nid): '. $view_preset .' to '. $shadowbox_preset,
-            'field types' => array('image'),
+            'field types' => array('image', 'filefield'),
             'multiple values' => CONTENT_HANDLE_MODULE,
           );
         }
