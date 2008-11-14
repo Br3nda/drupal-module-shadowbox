@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.5 2008/11/13 23:49:04 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.6 2008/11/14 00:02:13 psynaptic Exp $
 
 /**
  * @file
@@ -690,19 +690,19 @@ function theme_shadowbox_formatter_shadowbox($element) {
  */
 function theme_imagefield_image_imagecache_shadowbox($view_preset, $item, $attributes = NULL, $gallery, $gallery_id = "") {
   $filepath = $item['filepath'];
-  $alt = $item['alt'];
-  $title = $item['title'];
+  $alt = $item['data']['alt'];
+  $title = $item['data']['title'];
   $rel = ($gallery) ? 'shadowbox['. $gallery_id .']' : 'shadowbox';
   $link_attributes = array(
     'rel' => $rel,
-    'title' => $item['title'] . $node_link,
+    'title' => $title,
   );
 
   if ($view_preset == 'original') {
     $image = theme('shadowbox_image', $filepath, $alt, $title, $attributes);
   }
   else {
-    $image = theme('imagecache', $view_preset, $filepath, $alt, $item['title'], $attributes);
+    $image = theme('imagecache', $view_preset, $filepath, $alt, $title, $attributes);
   }
 
   if ($item['shadowbox_preset'] == 'original') {
