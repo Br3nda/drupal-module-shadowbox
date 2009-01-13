@@ -1,6 +1,6 @@
-// $Id: shadowbox.js,v 1.1.2.3.2.1 2008/11/05 00:07:12 psynaptic Exp $
+// $Id: shadowbox.js,v 1.1.2.3.2.2 2009/01/13 11:05:04 psynaptic Exp $
 if (Drupal.jsEnabled) {
-  $(window).load(function(){
+  $(document).ready(function() {
     var settings = Drupal.settings.shadowbox;
     var options = {
       animate:            settings.animation,
