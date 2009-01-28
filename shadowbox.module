@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.8 2009/01/28 13:25:44 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.9 2009/01/28 13:30:00 psynaptic Exp $
 
 /**
  * @file
@@ -177,7 +177,7 @@ function shadowbox_global_settings() {
     '#options' => drupal_map_assoc(shadowbox_get_types('qtwmp')),
     '#default_value' => variable_get('shadowbox_supported_qtwmp', shadowbox_get_types('qtwmp')),
   );
-  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_iframe.'] = array(
+  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_iframe'] = array(
     '#type' => 'checkboxes',
     '#title' => t('IFrame'),
     '#description' => t('File extensions that will be display in an iframe'),
