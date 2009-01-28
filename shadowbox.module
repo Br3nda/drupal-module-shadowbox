@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.7 2009/01/13 13:02:05 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.8 2009/01/28 13:25:44 psynaptic Exp $
 
 /**
  * @file
@@ -759,6 +759,7 @@ function shadowbox_construct_header() {
     drupal_add_js($path .'/shadowbox/build/player/shadowbox-iframe.js');
     drupal_add_js($path .'/shadowbox/build/player/shadowbox-swf.js');
     drupal_add_js($path .'/shadowbox/build/player/shadowbox-wmp.js');
+    drupal_add_js($path .'/shadowbox/build/player/shadowbox-qt.js');
     drupal_add_js(shadowbox_get_settings(), 'setting');
   }
 }
