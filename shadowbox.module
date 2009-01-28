@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.24.2.12 2009/01/28 13:30:14 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.24.2.13 2009/01/28 14:00:56 psynaptic Exp $
 
 /**
  * @file
@@ -648,12 +648,16 @@ function theme_shadowbox_image($path, $alt = '', $title = '', $attributes = NULL
  * Implementation of the imagecache_create_url() function for integration with
  * imagecache module versions prior to imagecache 2.
  */
-function shadowbox_imagecache_create_url($preset, $filepath) {
+function shadowbox_imagecache_create_url($preset, $path) {
   if (function_exists('imagecache_create_url')) {
-    return imagecache_create_url($preset, $filepath);
+    return imagecache_create_url($preset, $path);
   }
   else {
-    $path = _imagecache_strip_file_directory($filepath);
+    $dirpath = file_directory_path();
+    $dirlen = strlen($dirpath);
+    if (substr($path, 0, $dirlen + 1) == $dirpath .'/') {
+      $path = substr($path, $dirlen + 1);
+    }
     return file_create_url(file_directory_path() .'/imagecache/'. $preset .'/'. $path);
   }
 }
