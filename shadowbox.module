@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.24.2.9 2009/01/13 13:05:00 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.24.2.10 2009/01/28 12:57:16 psynaptic Exp $
 
 /**
  * @file
@@ -706,7 +706,7 @@ function shadowbox_get_settings($override = array()) {
     'animation' => variable_get('shadowbox_animate', TRUE),
     'animation_fade' => variable_get('shadowbox_animate_fade', TRUE),
     'animation_sequence' => variable_get('shadowbox_animation_sequence', 'wh'),
-    'modal' => variable_get('shadowbox_overlay_listen', TRUE),
+    'modal' => !variable_get('shadowbox_overlay_listen', TRUE),
     'overlay_color' => variable_get('shadowbox_overlay_color', '000'),
     'overlay_opacity' => variable_get('shadowbox_overlay_opacity', 0.8),
     'flash_background' => variable_get('shadowbox_flash_background', '000000'),
