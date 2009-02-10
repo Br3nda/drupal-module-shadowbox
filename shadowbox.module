@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.12 2009/02/10 15:33:19 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.13 2009/02/10 16:42:11 psynaptic Exp $
 
 /**
  * @file
@@ -797,21 +797,51 @@ function shadowbox_imagecache_create_url($preset, $filepath) {
 function shadowbox_construct_header() {
   global $language;
   $path = drupal_get_path('module', 'shadowbox');
+
+  $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
+  $swf = variable_get('shadowbox_supported_swf', shadowbox_get_types('swf'));
+  $flv = variable_get('shadowbox_supported_flv', shadowbox_get_types('flv'));
+  $quicktime = variable_get('shadowbox_supported_quicktime', shadowbox_get_types('quicktime'));
+  $wmp = variable_get('shadowbox_supported_wmp', shadowbox_get_types('wmp'));
+  $qtwmp = variable_get('shadowbox_supported_qtwmp', shadowbox_get_types('qtwmp'));
+  $iframe = variable_get('shadowbox_supported_iframe', shadowbox_get_types('iframe'));
+
+  $image_support = array_filter($images);
+  $swf_support = array_filter($swf);
+  $flv_support = array_filter($flv);
+  $quicktime_support = array_filter($quicktime);
+  $wmp_support = array_filter($wmp);
+  $qtwmp_support = array_filter($qtwmp);
+  $iframe_support = array_filter($iframe);
+
   if (shadowbox_active() && variable_get('shadowbox_enabled', TRUE)) {
     drupal_add_js($path .'/shadowbox/build/adapter/shadowbox-jquery.js');
     drupal_add_js($path .'/shadowbox/build/shadowbox.js');
-    drupal_add_js($path .'/shadowbox.js');
     drupal_add_js($path .'/shadowbox_auto.js');
+    drupal_add_js($path .'/shadowbox.js');
     drupal_add_js($path .'/shadowbox/src/skin/classic/skin.js');
     drupal_add_css($path .'/shadowbox/src/skin/classic/skin.css');
     drupal_add_js($path .'/shadowbox/build/lang/shadowbox-'. $language->language .'.js');
-    drupal_add_js($path .'/shadowbox/build/player/shadowbox-img.js');
-    drupal_add_js($path .'/shadowbox/build/player/shadowbox-flv.js');
-    drupal_add_js($path .'/shadowbox/build/player/shadowbox-html.js');
-    drupal_add_js($path .'/shadowbox/build/player/shadowbox-iframe.js');
-    drupal_add_js($path .'/shadowbox/build/player/shadowbox-swf.js');
-    drupal_add_js($path .'/shadowbox/build/player/shadowbox-wmp.js');
-    drupal_add_js($path .'/shadowbox/build/player/shadowbox-qt.js');
+    if (!empty($image_support)) {
+      drupal_add_js($path .'/shadowbox/build/player/shadowbox-img.js');
+    }
+    if (!empty($swf_support)) {
+      drupal_add_js($path .'/shadowbox/build/player/shadowbox-swf.js');
+    }
+    if (!empty($flv_support)) {
+      drupal_add_js($path .'/shadowbox/build/player/shadowbox-flv.js');
+    }
+    if (!empty($quicktime_support)) {
+      drupal_add_js($path .'/shadowbox/build/player/shadowbox-qt.js');
+    }
+    if ((!empty($wmp_support)) || (!empty($qtwmp_support))) {
+      drupal_add_js($path .'/shadowbox/build/player/shadowbox-wmp.js');
+    }
+    if (!empty($iframe_support)) {
+      drupal_add_js($path .'/shadowbox/build/player/shadowbox-html.js');
+      drupal_add_js($path .'/shadowbox/build/player/shadowbox-iframe.js');
+    }
+
     drupal_add_js(shadowbox_get_settings(), 'setting');
   }
 }
@@ -826,19 +856,18 @@ function shadowbox_construct_header() {
  *   An array containing settings to be used in drupal_add_js.
  */
 function shadowbox_get_settings($override = array()) {
-  $module_path = drupal_get_path('module', 'shadowbox');
-  $shadowbox_path = $module_path .'/shadowbox/';
+  $path = drupal_get_path('module', 'shadowbox') .'/shadowbox/';
+
   $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
-  // $swf = variable_get('shadowbox_supported_swf', shadowbox_get_types('swf'));
-  // $flv = variable_get('shadowbox_supported_flv', shadowbox_get_types('flv'));
-  $swf = shadowbox_get_types('swf');
-  $flv = shadowbox_get_types('flv');
+  $swf = variable_get('shadowbox_supported_swf', shadowbox_get_types('swf'));
+  $flv = variable_get('shadowbox_supported_flv', shadowbox_get_types('flv'));
   $quicktime = variable_get('shadowbox_supported_quicktime', shadowbox_get_types('quicktime'));
   $wmp = variable_get('shadowbox_supported_wmp', shadowbox_get_types('wmp'));
   $qtwmp = variable_get('shadowbox_supported_qtwmp', shadowbox_get_types('qtwmp'));
   $iframe = variable_get('shadowbox_supported_iframe', shadowbox_get_types('iframe'));
+
   $settings = array(
-    'flv_player' => base_path() . variable_get('shadowbox_flv_player', $shadowbox_path .'flvplayer.swf'),
+    'flv_player' => base_path() . variable_get('shadowbox_flv_player', $path .'flvplayer.swf'),
     'animation' => variable_get('shadowbox_animate', TRUE),
     'animation_fade' => variable_get('shadowbox_animate_fade', TRUE),
     'animation_sequence' => variable_get('shadowbox_animation_sequence', 'wh'),
@@ -873,6 +902,7 @@ function shadowbox_get_settings($override = array()) {
   );
   $settings = array_merge($settings, $override);
   $settings = array('shadowbox' => $settings);
+
   return $settings;
 }
 
@@ -1003,8 +1033,8 @@ function _validate_keys_string($input) {
  * @return
  *   TRUE if $input is a valid hex color value (e.g. 000 or 000000)
  */
-function _validate_hex_color($input, $long_only = FALSE) {
-  if ($long_only == TRUE) {
+function _validate_hex_color($input, $long = FALSE) {
+  if ($long == TRUE) {
     return preg_match('!^[a-f0-9]{6}$!i', $input);
   }
   else {
@@ -1022,6 +1052,7 @@ function _validate_hex_color($input, $long_only = FALSE) {
  *   The filtered array.
  */
 function _array_to_string_values($array) {
+  $output = array();
   foreach ($array as $value) {
     if (is_string($value)) {
       $output[] = $value;
