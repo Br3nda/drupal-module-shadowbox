@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.10 2009/02/10 01:28:40 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.11 2009/02/10 13:27:40 psynaptic Exp $
 
 /**
  * @file
@@ -705,6 +705,10 @@ function theme_imagefield_image_imagecache_shadowbox($source, $destination, $ite
     'rel' => $rel,
     'title' => $title,
   );
+
+  if ($filepath == '') {
+    return;
+  }
 
   if ($source == 'original') {
     $image = theme('shadowbox_image', $filepath, $alt, $title);
