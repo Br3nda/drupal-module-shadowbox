@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.11 2009/02/10 13:27:40 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.12 2009/02/10 15:33:19 psynaptic Exp $
 
 /**
  * @file
@@ -527,11 +527,21 @@ function shadowbox_field_formatter_info() {
         'multiple values' => CONTENT_HANDLE_MODULE,
       );
       $formatters['shadowbox_gallery___original___'. $preset] = array(
-        'label' => 'Shadowbox Gallery (field): original to '. $preset,
+        'label' => 'Shadowbox Gallery (page): original to '. $preset,
         'field types' => array('image', 'filefield'),
         'multiple values' => CONTENT_HANDLE_MODULE,
       );
       $formatters['shadowbox_gallery___'. $preset .'___original'] = array(
+        'label' => 'Shadowbox Gallery (page): '. $preset .' to original',
+        'field types' => array('image', 'filefield'),
+        'multiple values' => CONTENT_HANDLE_MODULE,
+      );
+      $formatters['shadowbox_gallery_field___original___'. $preset] = array(
+        'label' => 'Shadowbox Gallery (field): original to '. $preset,
+        'field types' => array('image', 'filefield'),
+        'multiple values' => CONTENT_HANDLE_MODULE,
+      );
+      $formatters['shadowbox_gallery_field___'. $preset .'___original'] = array(
         'label' => 'Shadowbox Gallery (field): '. $preset .' to original',
         'field types' => array('image', 'filefield'),
         'multiple values' => CONTENT_HANDLE_MODULE,
@@ -554,6 +564,11 @@ function shadowbox_field_formatter_info() {
             'multiple values' => CONTENT_HANDLE_MODULE,
           );
           $formatters['shadowbox_gallery___'. $preset .'___'. $preset_alt] = array(
+            'label' => 'Shadowbox Gallery (page): '. $preset .' to '. $preset_alt,
+            'field types' => array('image', 'filefield'),
+            'multiple values' => CONTENT_HANDLE_MODULE,
+          );
+          $formatters['shadowbox_gallery_field___'. $preset .'___'. $preset_alt] = array(
             'label' => 'Shadowbox Gallery (field): '. $preset .' to '. $preset_alt,
             'field types' => array('image', 'filefield'),
             'multiple values' => CONTENT_HANDLE_MODULE,
@@ -619,6 +634,14 @@ function shadowbox_theme() {
         'arguments' => array('element' => NULL),
         'function' => 'theme_shadowbox_formatter_imagefield',
       );
+      $theme['shadowbox_formatter_shadowbox_gallery_field___original___'. $source] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_shadowbox_formatter_imagefield',
+      );
+      $theme['shadowbox_formatter_shadowbox_gallery_field___'. $source .'___original'] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_shadowbox_formatter_imagefield',
+      );
       $theme['shadowbox_formatter_shadowbox_gallery_nid___original___'. $source] = array(
         'arguments' => array('element' => NULL),
         'function' => 'theme_shadowbox_formatter_imagefield',
@@ -635,6 +658,10 @@ function shadowbox_theme() {
             'function' => 'theme_shadowbox_formatter_imagefield',
           );
           $theme['shadowbox_formatter_shadowbox_gallery___'. $source .'___'. $destination] = array(
+            'arguments' => array('element' => NULL),
+            'function' => 'theme_shadowbox_formatter_imagefield',
+          );
+          $theme['shadowbox_formatter_shadowbox_gallery_field___'. $source .'___'. $destination] = array(
             'arguments' => array('element' => NULL),
             'function' => 'theme_shadowbox_formatter_imagefield',
           );
@@ -665,8 +692,15 @@ function theme_shadowbox_formatter_imagefield($element) {
   $formatter = $element['#formatter'];
   $node = node_load($element['#node']->nid);
 
-  $gallery = ($theme == 'shadowbox_gallery' || $theme == 'shadowbox_gallery_nid') ? TRUE : FALSE;
-  $gallery_id = ($theme == 'shadowbox_gallery_nid') ? 'nid-'. $element['#node']->nid : $field_name;
+  if ($theme == 'shadowbox_gallery') {
+    $gallery_id = 'gallery';
+  }
+  elseif ('shadowbox_gallery_field') {
+    $gallery_id = $field_name;
+  }
+  elseif ('shadowbox_gallery_nid') {
+    $gallery_id = 'nid-'. $element['#node']->nid;
+  }
 
   $presets = shadowbox_get_imagecache_presets();
   foreach ($presets as $preset) {
@@ -678,7 +712,7 @@ function theme_shadowbox_formatter_imagefield($element) {
     foreach ($children as $key) {
       $item = $element[$key]['#item'];
       if ($source == 'original' || in_array($source, $presets)) {
-        $output .= theme('imagefield_image_imagecache_shadowbox', $source, $destination, $item, $gallery, $gallery_id);
+        $output .= theme('imagefield_image_imagecache_shadowbox', $source, $destination, $item, $gallery_id);
       }
     }
   }
@@ -686,7 +720,7 @@ function theme_shadowbox_formatter_imagefield($element) {
     $image = $node->$field_name;
     $item = $image[$element['#delta']];
     if ($source == 'original' || in_array($source, $presets)) {
-      $output .= theme('imagefield_image_imagecache_shadowbox', $source, $destination, $item, $gallery, $gallery_id);
+      $output .= theme('imagefield_image_imagecache_shadowbox', $source, $destination, $item, $gallery_id);
     }
   } 
 
@@ -696,14 +730,18 @@ function theme_shadowbox_formatter_imagefield($element) {
 /**
  * Implementation of theme_imagefield_image_imagecache_shadowbox().
  */
-function theme_imagefield_image_imagecache_shadowbox($source, $destination, $item, $gallery, $gallery_id = '') {
+function theme_imagefield_image_imagecache_shadowbox($source, $destination, $item, $gallery_id = '') {
   $filepath = $item['filepath'];
   $alt = $item['data']['alt'];
   $title = $item['data']['title'];
-  $rel = ($gallery) ? 'shadowbox['. $gallery_id .']' : 'shadowbox';
+  $rel = ($gallery_id != '') ? 'shadowbox['. $gallery_id .']' : 'shadowbox';
   $link_attributes = array(
     'rel' => $rel,
     'title' => $title,
+  );
+  $options = array(
+    'attributes' => $link_attributes,
+    'html' => TRUE,
   );
 
   if ($filepath == '') {
@@ -718,13 +756,13 @@ function theme_imagefield_image_imagecache_shadowbox($source, $destination, $ite
   }
 
   if ($destination == 'original') {
-    $output = l($image, file_create_url($filepath), array('attributes' => $link_attributes, 'html' => TRUE));
+    $output = l($image, file_create_url($filepath), $options);
   }
   else {
-    $output = l($image, shadowbox_imagecache_create_url($destination, $filepath), array('attributes' => $link_attributes, 'html' => TRUE));
+    $output = l($image, shadowbox_imagecache_create_url($destination, $filepath), $options);
   }
 
-  $wrapper_classes = ($gallery) ? 'sb-image sb-gallery sb-gallery-'. $gallery_id : 'sb-image sb-indivdual';
+  $wrapper_classes = ($gallery_id != '') ? 'sb-image sb-gallery sb-gallery-'. $gallery_id : 'sb-image sb-indivdual';
   $output = '<div class="'. $wrapper_classes .'">'. $output .'</div>';
 
   return $output;
@@ -873,7 +911,14 @@ function shadowbox_get_imagecache_presets($formatted = FALSE) {
     }
   }
   else {
-    $presets = _imagecache_get_presets();
+    if ($formatted) {
+      foreach (_imagecache_get_presets() as $id => $info) {
+        $presets[$id] = $info['presetname'];
+      }
+    }
+    else {
+      $presets = _imagecache_get_presets();
+    }
   }
   return $presets;
 }
