@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.13 2009/02/10 16:42:11 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.14 2009/02/10 17:02:41 psynaptic Exp $
 
 /**
  * @file
@@ -435,6 +435,12 @@ function shadowbox_automatic_settings() {
     '#title' => t('Enable for all image links'),
     '#description' => t('Enable this option to automatically add the <code>rel="shadowbox"</code> attribute to all links pointing to an image file.'),
     '#default_value' => variable_get('shadowbox_auto_enable_all_images', 0),
+  );
+  $form['shadowbox_auto_gallery'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Group images as a shadowbox gallery'),
+    '#description' => t('Enable this options to open all images in a shadowbox gallery rather than individually.'),
+    '#default_value' => variable_get('shadowbox_auto_gallery', 0),
   );
 
   return system_settings_form($form);
@@ -899,6 +905,7 @@ function shadowbox_get_settings($override = array()) {
     'extensions_qtwmp' => _array_to_string_values($qtwmp),
     'extensions_iframe' => _array_to_string_values($iframe),
     'auto_enable_all_images' => variable_get('shadowbox_auto_enable_all_images', 0),
+    'auto_gallery' => variable_get('shadowbox_auto_gallery', 0),
   );
   $settings = array_merge($settings, $override);
   $settings = array('shadowbox' => $settings);
