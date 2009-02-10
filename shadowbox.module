@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.15 2009/02/10 17:06:06 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.16 2009/02/10 17:08:54 psynaptic Exp $
 
 /**
  * @file
@@ -701,10 +701,10 @@ function theme_shadowbox_formatter_imagefield($element) {
   if ($theme == 'shadowbox_gallery') {
     $gallery_id = 'gallery';
   }
-  elseif ('shadowbox_gallery_field') {
+  elseif ($theme == 'shadowbox_gallery_field') {
     $gallery_id = $field_name;
   }
-  elseif ('shadowbox_gallery_nid') {
+  elseif ($theme == 'shadowbox_gallery_nid') {
     $gallery_id = 'nid-'. $element['#node']->nid;
   }
 
