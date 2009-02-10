@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.14 2009/02/10 17:02:41 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.15 2009/02/10 17:06:06 psynaptic Exp $
 
 /**
  * @file
@@ -439,7 +439,7 @@ function shadowbox_automatic_settings() {
   $form['shadowbox_auto_gallery'] = array(
     '#type' => 'checkbox',
     '#title' => t('Group images as a shadowbox gallery'),
-    '#description' => t('Enable this options to open all images in a shadowbox gallery rather than individually.'),
+    '#description' => t('Enable this options to open all images in a shadowbox gallery rather than individually. <strong>Warning:</strong> If enabled, this overrides the gallery settings for node display setting and views format setting.'),
     '#default_value' => variable_get('shadowbox_auto_gallery', 0),
   );
 
