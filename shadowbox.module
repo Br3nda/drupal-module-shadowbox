@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.9 2009/01/28 13:30:00 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.10 2009/02/10 01:28:40 psynaptic Exp $
 
 /**
  * @file
@@ -513,54 +513,53 @@ function shadowbox_global_settings_validate($form, &$form_state) {
  */
 function shadowbox_field_formatter_info() {
   $formatters = array();
-  if (module_exists('imagefield') && module_exists('imagecache')) {
-    foreach (imagecache_presets() as $preset) {
-      $view_preset = $preset['presetname'];
-      $formatters['shadowbox___original___'. $view_preset] = array(
-        'label' => 'Shadowbox: original to '. $view_preset,
+  if (module_exists('imagecache') && module_exists('imagefield')) {
+    $presets = shadowbox_get_imagecache_presets(TRUE);
+    foreach ($presets as $preset) {
+      $formatters['shadowbox___original___'. $preset] = array(
+        'label' => 'Shadowbox: original to '. $preset,
         'field types' => array('image', 'filefield'),
         'multiple values' => CONTENT_HANDLE_MODULE,
       );
-      $formatters['shadowbox___'. $view_preset .'___original'] = array(
-        'label' => 'Shadowbox: '. $view_preset .' to original',
+      $formatters['shadowbox___'. $preset .'___original'] = array(
+        'label' => 'Shadowbox: '. $preset .' to original',
         'field types' => array('image', 'filefield'),
         'multiple values' => CONTENT_HANDLE_MODULE,
       );
-      $formatters['shadowbox_gallery___original___'. $view_preset] = array(
-        'label' => 'Shadowbox Gallery (field): original to '. $view_preset,
+      $formatters['shadowbox_gallery___original___'. $preset] = array(
+        'label' => 'Shadowbox Gallery (field): original to '. $preset,
         'field types' => array('image', 'filefield'),
         'multiple values' => CONTENT_HANDLE_MODULE,
       );
-      $formatters['shadowbox_gallery___'. $view_preset .'___original'] = array(
-        'label' => 'Shadowbox Gallery (field): '. $view_preset .' to original',
+      $formatters['shadowbox_gallery___'. $preset .'___original'] = array(
+        'label' => 'Shadowbox Gallery (field): '. $preset .' to original',
         'field types' => array('image', 'filefield'),
         'multiple values' => CONTENT_HANDLE_MODULE,
       );
-      $formatters['shadowbox_gallery_nid___original___'. $view_preset] = array(
-        'label' => 'Shadowbox Gallery (nid): original to '. $view_preset,
+      $formatters['shadowbox_gallery_nid___original___'. $preset] = array(
+        'label' => 'Shadowbox Gallery (nid): original to '. $preset,
         'field types' => array('image', 'filefield'),
         'multiple values' => CONTENT_HANDLE_MODULE,
       );
-      $formatters['shadowbox_gallery_nid___'. $view_preset .'___original'] = array(
-        'label' => 'Shadowbox Gallery (nid): '. $view_preset .' to original',
+      $formatters['shadowbox_gallery_nid___'. $preset .'___original'] = array(
+        'label' => 'Shadowbox Gallery (nid): '. $preset .' to original',
         'field types' => array('image', 'filefield'),
         'multiple values' => CONTENT_HANDLE_MODULE,
       );
-      foreach (imagecache_presets() as $preset_alt) {
-        $shadowbox_preset = $preset_alt['presetname'];
-        if ($view_preset != $shadowbox_preset) {
-          $formatters['shadowbox___'. $view_preset .'___'. $shadowbox_preset] = array(
-            'label' => 'Shadowbox: '. $view_preset .' to '. $shadowbox_preset,
+      foreach ($presets as $preset_alt) {
+        if ($preset != $preset_alt) {
+          $formatters['shadowbox___'. $preset .'___'. $preset_alt] = array(
+            'label' => 'Shadowbox: '. $preset .' to '. $preset_alt,
             'field types' => array('image', 'filefield'),
             'multiple values' => CONTENT_HANDLE_MODULE,
           );
-          $formatters['shadowbox_gallery___'. $view_preset .'___'. $shadowbox_preset] = array(
-            'label' => 'Shadowbox Gallery (field): '. $view_preset .' to '. $shadowbox_preset,
+          $formatters['shadowbox_gallery___'. $preset .'___'. $preset_alt] = array(
+            'label' => 'Shadowbox Gallery (field): '. $preset .' to '. $preset_alt,
             'field types' => array('image', 'filefield'),
             'multiple values' => CONTENT_HANDLE_MODULE,
           );
-          $formatters['shadowbox_gallery_nid___'. $view_preset .'___'. $shadowbox_preset] = array(
-            'label' => 'Shadowbox Gallery (nid): '. $view_preset .' to '. $shadowbox_preset,
+          $formatters['shadowbox_gallery_nid___'. $preset .'___'. $preset_alt] = array(
+            'label' => 'Shadowbox Gallery (nid): '. $preset .' to '. $preset_alt,
             'field types' => array('image', 'filefield'),
             'multiple values' => CONTENT_HANDLE_MODULE,
           );
@@ -576,119 +575,128 @@ function shadowbox_field_formatter_info() {
  * Implementation of hook_theme().
  */
 function shadowbox_theme() {
-  $theme =  array(
+  $theme = array(
     'imagefield_image_imagecache_shadowbox' => array(
       'arguments' => array(
         'view_preset' => NULL,
         'field' => NULL,
         'item' => NULL,
-        'attributes' => NULL,
+        'attributes' => array(),
         'gallery' => NULL,
       ),
     ),
     'shadowbox_image' => array(
       'arguments' => array(
         'path' => NULL,
-        'alt' => NULL,
-        'title' => NULL,
-        'attributes' => NULL,
+        'alt' => '',
+        'title' => '',
+        'attributes' => array(),
       ),
     ),
   );
 
-  if (module_exists('imagefield') && module_exists('imagecache')) {
-    foreach (imagecache_presets() as $preset) {
-      $view_preset = $preset['presetname'];
-      $theme['shadowbox_formatter_shadowbox___original___'. $view_preset] = array(
+  // TODO: Add filefield support
+  // TODO: Add emfield support
+  // TODO: Which other CCK modules should we support?
+
+  if (module_exists('imagecache') && module_exists('imagefield')) {
+    $presets = shadowbox_get_imagecache_presets();
+    foreach ($presets as $preset) {
+      $source = $preset['presetname'];
+      $theme['shadowbox_formatter_shadowbox___original___'. $source] = array(
         'arguments' => array('element' => NULL),
-        'function' => 'theme_shadowbox_formatter_shadowbox',
+        'function' => 'theme_shadowbox_formatter_imagefield',
       );
-      $theme['shadowbox_formatter_shadowbox___'. $view_preset .'___original'] = array(
+      $theme['shadowbox_formatter_shadowbox___'. $source .'___original'] = array(
         'arguments' => array('element' => NULL),
-        'function' => 'theme_shadowbox_formatter_shadowbox',
+        'function' => 'theme_shadowbox_formatter_imagefield',
       );
-      $theme['shadowbox_formatter_shadowbox_gallery___original___'. $view_preset] = array(
+      $theme['shadowbox_formatter_shadowbox_gallery___original___'. $source] = array(
         'arguments' => array('element' => NULL),
-        'function' => 'theme_shadowbox_formatter_shadowbox',
+        'function' => 'theme_shadowbox_formatter_imagefield',
       );
-      $theme['shadowbox_formatter_shadowbox_gallery___'. $view_preset .'___original'] = array(
+      $theme['shadowbox_formatter_shadowbox_gallery___'. $source .'___original'] = array(
         'arguments' => array('element' => NULL),
-        'function' => 'theme_shadowbox_formatter_shadowbox',
+        'function' => 'theme_shadowbox_formatter_imagefield',
       );
-      $theme['shadowbox_formatter_shadowbox_gallery_nid___original___'. $view_preset] = array(
+      $theme['shadowbox_formatter_shadowbox_gallery_nid___original___'. $source] = array(
         'arguments' => array('element' => NULL),
-        'function' => 'theme_shadowbox_formatter_shadowbox',
+        'function' => 'theme_shadowbox_formatter_imagefield',
       );
-      $theme['shadowbox_formatter_shadowbox_gallery_nid___'. $view_preset .'___original'] = array(
+      $theme['shadowbox_formatter_shadowbox_gallery_nid___'. $source .'___original'] = array(
         'arguments' => array('element' => NULL),
-        'function' => 'theme_shadowbox_formatter_shadowbox',
+        'function' => 'theme_shadowbox_formatter_imagefield',
       );
-      foreach (imagecache_presets() as $preset_alt) {
-        $shadowbox_preset = $preset_alt['presetname'];
-        if ($view_preset != $shadowbox_preset) {
-          $theme['shadowbox_formatter_shadowbox___'. $view_preset .'___'. $shadowbox_preset] = array(
+      foreach ($presets as $preset) {
+        $destination = $preset['presetname'];
+        if ($source != $destination) {
+          $theme['shadowbox_formatter_shadowbox___'. $source .'___'. $destination] = array(
             'arguments' => array('element' => NULL),
-            'function' => 'theme_shadowbox_formatter_shadowbox',
+            'function' => 'theme_shadowbox_formatter_imagefield',
           );
-          $theme['shadowbox_formatter_shadowbox_gallery___'. $view_preset .'___'. $shadowbox_preset] = array(
+          $theme['shadowbox_formatter_shadowbox_gallery___'. $source .'___'. $destination] = array(
             'arguments' => array('element' => NULL),
-            'function' => 'theme_shadowbox_formatter_shadowbox',
+            'function' => 'theme_shadowbox_formatter_imagefield',
           );
-          $theme['shadowbox_formatter_shadowbox_gallery_nid___'. $view_preset .'___'. $shadowbox_preset] = array(
+          $theme['shadowbox_formatter_shadowbox_gallery_nid___'. $source .'___'. $destination] = array(
             'arguments' => array('element' => NULL),
-            'function' => 'theme_shadowbox_formatter_shadowbox',
+            'function' => 'theme_shadowbox_formatter_imagefield',
           );
         }
       }
     }
   }
-return $theme;
+  return $theme;
 }
 
 /**
- * Implementation of theme_shadowbox_formatter_shadowbox().
+ * Implementation of theme_shadowbox_formatter_imagefield().
+ *
+ * Note: Fields with multiple values are processed during a single invocation of this function.
  */
-function theme_shadowbox_formatter_shadowbox($element) {
-  list($theme_style, $view_preset, $shadowbox_preset) = explode('___', $element['#formatter'], 3);
-  // Set gallery flag
-  $gallery = ($theme_style == 'shadowbox_gallery' || $theme_style == 'shadowbox_gallery_nid') ? TRUE : FALSE;
-  // Set the gallery id to use for gallery grouping
-  if ($theme_style == 'shadowbox_gallery_nid')  $gallery_id = 'nid-'. $element['#node']->nid;
-  else $gallery_id = $element['#field_name'];
-  $output = "";
+function theme_shadowbox_formatter_imagefield($element) {
+  if (!module_exists('imagefield') || !module_exists('imagecache')) {
+    return;
+  }
 
-  if (module_exists('imagefield') && module_exists('imagecache')) {
-    $presets = array();
-    foreach (imagecache_presets() as $preset) {
-      $presets[] = $preset['presetname'];
-    }
-    foreach (element_children($element) as $item) {
-      if (isset($element[$item]['#item']['filepath'])) {
-        $filepath = &$element[$item]['#item']['filepath'];
-      }
-      else if (!empty($element[$item]['#item']['fid'])) {
-        $file = _imagefield_file_load($element[$item]['#item']['fid']);
-        $filepath = &$file['filepath'];
-      }
-      else {
-        return '';
-      }
-      $element[$item]['#item'] = array_merge($element[$item]['#item'], (array)$file);
-      $element[$item]['#item']['filepath'] = $filepath;
-      $element[$item]['#item']['shadowbox_preset'] = $shadowbox_preset;
+  list($theme, $source, $destination) = explode('___', $element['#formatter'], 3);
 
-      if ($view_preset == 'original' || in_array($view_preset, (array) $presets)) {
-        $output .= theme('imagefield_image_imagecache_shadowbox', $view_preset, $element[$item]['#item'], NULL, $gallery, $gallery_id);
+  $field_name = $element['#field_name'];
+  $formatter = $element['#formatter'];
+  $node = node_load($element['#node']->nid);
+
+  $gallery = ($theme == 'shadowbox_gallery' || $theme == 'shadowbox_gallery_nid') ? TRUE : FALSE;
+  $gallery_id = ($theme == 'shadowbox_gallery_nid') ? 'nid-'. $element['#node']->nid : $field_name;
+
+  $presets = shadowbox_get_imagecache_presets();
+  foreach ($presets as $preset) {
+    $presets[] = $preset['presetname'];
+  }
+
+  $output = '';
+  if ($children = element_children($element)) {
+    foreach ($children as $key) {
+      $item = $element[$key]['#item'];
+      if ($source == 'original' || in_array($source, $presets)) {
+        $output .= theme('imagefield_image_imagecache_shadowbox', $source, $destination, $item, $gallery, $gallery_id);
       }
     }
   }
+  else {
+    $image = $node->$field_name;
+    $item = $image[$element['#delta']];
+    if ($source == 'original' || in_array($source, $presets)) {
+      $output .= theme('imagefield_image_imagecache_shadowbox', $source, $destination, $item, $gallery, $gallery_id);
+    }
+  } 
+
   return $output;
 }
 
 /**
  * Implementation of theme_imagefield_image_imagecache_shadowbox().
  */
-function theme_imagefield_image_imagecache_shadowbox($view_preset, $item, $attributes = NULL, $gallery, $gallery_id = "") {
+function theme_imagefield_image_imagecache_shadowbox($source, $destination, $item, $gallery, $gallery_id = '') {
   $filepath = $item['filepath'];
   $alt = $item['data']['alt'];
   $title = $item['data']['title'];
@@ -698,21 +706,23 @@ function theme_imagefield_image_imagecache_shadowbox($view_preset, $item, $attri
     'title' => $title,
   );
 
-  if ($view_preset == 'original') {
-    $image = theme('shadowbox_image', $filepath, $alt, $title, $attributes);
+  if ($source == 'original') {
+    $image = theme('shadowbox_image', $filepath, $alt, $title);
   }
   else {
-    $image = theme('imagecache', $view_preset, $filepath, $alt, $title, $attributes);
+    $image = theme('imagecache', $source, $filepath, $alt, $title);
   }
 
-  if ($item['shadowbox_preset'] == 'original') {
+  if ($destination == 'original') {
     $output = l($image, file_create_url($filepath), array('attributes' => $link_attributes, 'html' => TRUE));
   }
   else {
-    $output = l($image, shadowbox_imagecache_create_url($item['shadowbox_preset'], $filepath), array('attributes' => $link_attributes, 'html' => TRUE));
+    $output = l($image, shadowbox_imagecache_create_url($destination, $filepath), array('attributes' => $link_attributes, 'html' => TRUE));
   }
-  $wrapper_classes = ($gallery) ? "sb-image sb-gallery sb-gallery-$gallery_id" : "sb-image sb-indivdual";
-  $output = "<div class=\"$wrapper_classes\">$output</div>";
+
+  $wrapper_classes = ($gallery) ? 'sb-image sb-gallery sb-gallery-'. $gallery_id : 'sb-image sb-indivdual';
+  $output = '<div class="'. $wrapper_classes .'">'. $output .'</div>';
+
   return $output;
 }
 
@@ -844,6 +854,24 @@ function shadowbox_active() {
   else {
     return $page_match;
   }
+}
+
+function shadowbox_get_imagecache_presets($formatted = FALSE) {
+  $presets = array();
+  if (function_exists('imagecache_presets')) {
+    if ($formatted) {
+      foreach (imagecache_presets() as $id => $info) {
+        $presets[$id] = $info['presetname'];
+      }
+    }
+    else {
+      $presets = imagecache_presets();
+    }
+  }
+  else {
+    $presets = _imagecache_get_presets();
+  }
+  return $presets;
 }
 
 /**
