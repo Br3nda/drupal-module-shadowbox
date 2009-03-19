@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.16 2009/02/10 17:08:54 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.17 2009/03/19 11:06:58 psynaptic Exp $
 
 /**
  * @file
@@ -119,14 +119,14 @@ function shadowbox_global_settings() {
   $form['shadowbox']['active']['shadowbox_active_type'] = array(
     '#type' => 'radios',
     '#title' => t('Enable Shadowbox on specific pages'),
-    '#options' => array('disable' => 'Enable on every page except the listed pages.', 'enable' => 'Enable on only the listed pages.'),
+    '#options' => array('disable' => t('Enable on every page except the listed pages.'), 'enable' => t('Enable on only the listed pages.'), 'php' => t('Enable if the following PHP code returns <code>TRUE</code> (PHP-mode, experts only).')),
     '#default_value' => variable_get('shadowbox_active_type', 'disable'),
   );
   $form['shadowbox']['active']['shadowbox_pages'] = array(
     '#type' => 'textarea',
     '#title' => t('Pages'),
     '#default_value' => variable_get('shadowbox_pages', "admin*\nimg_assist*\nnode/add/*\nnode/*/edit"),
-    '#description' => t("Enter one page per line as Drupal paths. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>')),
+    '#description' => t("Enter one page per line as Drupal paths. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>')). ' ' . t('If the PHP-mode is chosen, enter PHP code between %php. Note that executing incorrect PHP-code can break your Drupal site.', array('%php' => '<?php ?>')),
   );
   // Supported media
   $form['shadowbox']['shadowbox_supported_media'] = array(
@@ -920,6 +920,9 @@ function shadowbox_get_settings($override = array()) {
  *   TRUE if Shadowbox should be active for the current page.
  */
 function shadowbox_active() {
+  if (variable_get('shadowbox_active_type', 'disable') == 'php') {
+    return drupal_eval(variable_get('shadowbox_pages', ''));
+  }
   $path = drupal_get_path_alias($_GET['q']);
   $regexp = '/^('. preg_replace(array('/(\r\n?|\n)/', '/\\\\\*/', '/(^|\|)\\\\<front\\\\>($|\|)/'), array('|', '.*', '\1'. preg_quote(variable_get('site_frontpage', 'node'), '/') .'\2'), preg_quote(variable_get('shadowbox_pages', "admin*\nimg_assist*\nnode/add/*\nnode/*/edit"), '/')) .')$/';
   // Compare with the internal and path alias (if any).
