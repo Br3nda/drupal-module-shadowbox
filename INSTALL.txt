@@ -1,19 +1,23 @@
-$Id: INSTALL.txt,v 1.3.2.4.2.2 2009/03/12 11:39:09 psynaptic Exp $
+$Id: INSTALL.txt,v 1.3.2.4.2.3 2009/04/06 16:26:01 psynaptic Exp $
 
 INSTALLATION
 ------------
 
-1. Follow the usual module installation procedure [2].
-2. Download the Shadowbox 2.0 Full distribution [3].
+1. Follow the usual module installation procedure [1].
+2. Download the Shadowbox 2.0 Full distribution [2].
 3. Extract the download, rename the shadowbox-2.0 directory to just 'shadowbox'
    and place it inside the shadowbox module directory.
-4. Visit the status page [4] to check Shadowbox is installed correctly.
-5. Visit the settings page [5] to review the global settings.
+4. Visit the status page [3] to check Shadowbox is installed correctly.
+5. Visit the settings page [4] to review the global settings.
 
-[2] http://drupal.org/getting-started/5/install-contrib/
-[3] http://mjijackson.com/shadowbox/doc/download.html
-[4] admin/logs/status
-[5] admin/settings/shadowbox
+If you are experiencing any problems getting Shadowbox to work try clearing the
+cache using devel.module [5].
+
+[1] http://drupal.org/getting-started/5/install-contrib/
+[2] http://mjijackson.com/shadowbox/doc/download.html
+[3] admin/logs/status
+[4] admin/settings/shadowbox
+[5] http://drupal.org/project/devel
 
 Note: Translations for the Shadowbox interface are currently handled by files
 in the shadowbox/shadowbox/build/lang directory. If your site uses German,
