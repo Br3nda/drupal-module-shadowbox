@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.17 2009/03/19 11:06:58 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.18 2009/04/06 15:41:48 psynaptic Exp $
 
 /**
  * @file
@@ -827,7 +827,13 @@ function shadowbox_construct_header() {
     drupal_add_js($path .'/shadowbox.js');
     drupal_add_js($path .'/shadowbox/src/skin/classic/skin.js');
     drupal_add_css($path .'/shadowbox/src/skin/classic/skin.css');
-    drupal_add_js($path .'/shadowbox/build/lang/shadowbox-'. $language->language .'.js');
+    $language_file = $path .'/shadowbox/build/lang/shadowbox-'. $language->language .'.js';
+    if (file_exists($language_file)) {
+      drupal_add_js($language_file);
+    }
+    else {
+      drupal_set_message(t('Shadowbox: A language file does not exist for your language: !language (!code). Tried to load: !file', array('!language' => $language->name, '!code' => $language->language, '!file' => $language_file)), 'error');
+    }
     if (!empty($image_support)) {
       drupal_add_js($path .'/shadowbox/build/player/shadowbox-img.js');
     }
