@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.18 2009/04/06 15:41:48 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.19 2009/04/06 15:44:21 psynaptic Exp $
 
 /**
  * @file
@@ -106,7 +106,7 @@ function shadowbox_global_settings() {
   // Global settings
   $form['shadowbox']['shadowbox_enabled'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Global kill-switch'),
+    '#title' => t('Enable Shadowbox'),
     '#default_value' => variable_get('shadowbox_enabled', TRUE),
     '#description' => t('Check this box to enable Shadowbox for the entire site.'),
   );
