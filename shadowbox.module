@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.19 2009/04/06 15:44:21 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.20 2009/04/06 17:41:38 psynaptic Exp $
 
 /**
  * @file
@@ -524,65 +524,53 @@ function shadowbox_field_formatter_info() {
     foreach ($presets as $preset) {
       $formatters['shadowbox___original___'. $preset] = array(
         'label' => 'Shadowbox: original to '. $preset,
-        'field types' => array('image', 'filefield'),
-        'multiple values' => CONTENT_HANDLE_MODULE,
+        'field types' => array('filefield'),
       );
       $formatters['shadowbox___'. $preset .'___original'] = array(
         'label' => 'Shadowbox: '. $preset .' to original',
-        'field types' => array('image', 'filefield'),
-        'multiple values' => CONTENT_HANDLE_MODULE,
+        'field types' => array('filefield'),
       );
       $formatters['shadowbox_gallery___original___'. $preset] = array(
         'label' => 'Shadowbox Gallery (page): original to '. $preset,
-        'field types' => array('image', 'filefield'),
-        'multiple values' => CONTENT_HANDLE_MODULE,
+        'field types' => array('filefield'),
       );
       $formatters['shadowbox_gallery___'. $preset .'___original'] = array(
         'label' => 'Shadowbox Gallery (page): '. $preset .' to original',
-        'field types' => array('image', 'filefield'),
-        'multiple values' => CONTENT_HANDLE_MODULE,
+        'field types' => array('filefield'),
       );
       $formatters['shadowbox_gallery_field___original___'. $preset] = array(
         'label' => 'Shadowbox Gallery (field): original to '. $preset,
-        'field types' => array('image', 'filefield'),
-        'multiple values' => CONTENT_HANDLE_MODULE,
+        'field types' => array('filefield'),
       );
       $formatters['shadowbox_gallery_field___'. $preset .'___original'] = array(
         'label' => 'Shadowbox Gallery (field): '. $preset .' to original',
-        'field types' => array('image', 'filefield'),
-        'multiple values' => CONTENT_HANDLE_MODULE,
+        'field types' => array('filefield'),
       );
       $formatters['shadowbox_gallery_nid___original___'. $preset] = array(
         'label' => 'Shadowbox Gallery (nid): original to '. $preset,
-        'field types' => array('image', 'filefield'),
-        'multiple values' => CONTENT_HANDLE_MODULE,
+        'field types' => array('filefield'),
       );
       $formatters['shadowbox_gallery_nid___'. $preset .'___original'] = array(
         'label' => 'Shadowbox Gallery (nid): '. $preset .' to original',
-        'field types' => array('image', 'filefield'),
-        'multiple values' => CONTENT_HANDLE_MODULE,
+        'field types' => array('filefield'),
       );
       foreach ($presets as $preset_alt) {
         if ($preset != $preset_alt) {
           $formatters['shadowbox___'. $preset .'___'. $preset_alt] = array(
             'label' => 'Shadowbox: '. $preset .' to '. $preset_alt,
-            'field types' => array('image', 'filefield'),
-            'multiple values' => CONTENT_HANDLE_MODULE,
+            'field types' => array('filefield'),
           );
           $formatters['shadowbox_gallery___'. $preset .'___'. $preset_alt] = array(
             'label' => 'Shadowbox Gallery (page): '. $preset .' to '. $preset_alt,
-            'field types' => array('image', 'filefield'),
-            'multiple values' => CONTENT_HANDLE_MODULE,
+            'field types' => array('filefield'),
           );
           $formatters['shadowbox_gallery_field___'. $preset .'___'. $preset_alt] = array(
             'label' => 'Shadowbox Gallery (field): '. $preset .' to '. $preset_alt,
-            'field types' => array('image', 'filefield'),
-            'multiple values' => CONTENT_HANDLE_MODULE,
+            'field types' => array('filefield'),
           );
           $formatters['shadowbox_gallery_nid___'. $preset .'___'. $preset_alt] = array(
             'label' => 'Shadowbox Gallery (nid): '. $preset .' to '. $preset_alt,
-            'field types' => array('image', 'filefield'),
-            'multiple values' => CONTENT_HANDLE_MODULE,
+            'field types' => array('filefield'),
           );
         }
       }
