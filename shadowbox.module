@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.20 2009/04/06 17:41:38 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.21 2009/04/07 23:43:24 psynaptic Exp $
 
 /**
  * @file
@@ -711,10 +711,8 @@ function theme_shadowbox_formatter_imagefield($element) {
     }
   }
   else {
-    $image = $node->$field_name;
-    $item = $image[$element['#delta']];
     if ($source == 'original' || in_array($source, $presets)) {
-      $output .= theme('imagefield_image_imagecache_shadowbox', $source, $destination, $item, $gallery_id);
+      $output .= theme('imagefield_image_imagecache_shadowbox', $source, $destination, $element['#item'], $gallery_id);
     }
   } 
 
