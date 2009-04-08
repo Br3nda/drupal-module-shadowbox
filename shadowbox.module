@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.21 2009/04/07 23:43:24 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.22 2009/04/08 00:05:17 psynaptic Exp $
 
 /**
  * @file
@@ -680,20 +680,23 @@ function theme_shadowbox_formatter_imagefield($element) {
     return;
   }
 
-  list($theme, $source, $destination) = explode('___', $element['#formatter'], 3);
-
   $field_name = $element['#field_name'];
+  $item = $element['#item'];
   $formatter = $element['#formatter'];
   $node = node_load($element['#node']->nid);
 
-  if ($theme == 'shadowbox_gallery') {
-    $gallery_id = 'gallery';
-  }
-  elseif ($theme == 'shadowbox_gallery_field') {
-    $gallery_id = $field_name;
-  }
-  elseif ($theme == 'shadowbox_gallery_nid') {
-    $gallery_id = 'nid-'. $element['#node']->nid;
+  list($theme, $source, $destination) = explode('___', $formatter, 3);
+
+  switch ($theme) {
+    case 'shadowbox_gallery':
+      $gallery_id = 'gallery';
+      break;
+    case 'shadowbox_gallery_field':
+      $gallery_id = $field_name;
+      break;
+    case 'shadowbox_gallery_nid':
+      $gallery_id = 'nid-'. $element['#node']->nid;
+      break;
   }
 
   $presets = shadowbox_get_imagecache_presets();
@@ -701,20 +704,9 @@ function theme_shadowbox_formatter_imagefield($element) {
     $presets[] = $preset['presetname'];
   }
 
-  $output = '';
-  if ($children = element_children($element)) {
-    foreach ($children as $key) {
-      $item = $element[$key]['#item'];
-      if ($source == 'original' || in_array($source, $presets)) {
-        $output .= theme('imagefield_image_imagecache_shadowbox', $source, $destination, $item, $gallery_id);
-      }
-    }
+  if ($source == 'original' || in_array($source, $presets)) {
+    $output = theme('imagefield_image_imagecache_shadowbox', $source, $destination, $item, $gallery_id);
   }
-  else {
-    if ($source == 'original' || in_array($source, $presets)) {
-      $output .= theme('imagefield_image_imagecache_shadowbox', $source, $destination, $element['#item'], $gallery_id);
-    }
-  } 
 
   return $output;
 }
