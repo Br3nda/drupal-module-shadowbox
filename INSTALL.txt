@@ -1,4 +1,4 @@
-$Id: INSTALL.txt,v 1.4.2.5.2.1 2008/07/29 14:15:21 psynaptic Exp $
+$Id: INSTALL.txt,v 1.4.2.5.2.2 2009/04/14 12:29:19 psynaptic Exp $
 
 REQUIREMENTS
 ------------
@@ -18,7 +18,7 @@ INSTALLATION
 5. Visit the settings page [5] to review the global settings.
 
 [2] http://drupal.org/getting-started/5/install-contrib/
-[3] http://mjijackson.com/shadowbox/doc/download.html
+[3] http://michaeljackson.googlecode.com/files/shadowbox-2.0.zip
 [4] admin/logs/status
 [5] admin/settings/shadowbox
 
