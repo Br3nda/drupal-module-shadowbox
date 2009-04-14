@@ -1,4 +1,4 @@
-$Id: INSTALL.txt,v 1.3.2.4.2.4 2009/04/07 18:14:31 psynaptic Exp $
+$Id: INSTALL.txt,v 1.3.2.4.2.5 2009/04/14 12:28:34 psynaptic Exp $
 
 INSTALLATION
 ------------
@@ -14,7 +14,7 @@ If you are experiencing any problems getting Shadowbox to work try clearing the
 cache using devel.module [5].
 
 [1] http://drupal.org/getting-started/5/install-contrib/
-[2] http://mjijackson.com/shadowbox/doc/download.html
+[2] http://michaeljackson.googlecode.com/files/shadowbox-2.0.zip
 [3] admin/logs/status
 [4] admin/settings/shadowbox
 [5] http://drupal.org/project/devel
