@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.24.2.15 2009/04/14 12:25:14 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.24.2.16 2009/06/22 09:02:13 psynaptic Exp $
 
 /**
  * @file
@@ -488,7 +488,7 @@ function shadowbox_global_settings_validate($form_id, &$form) {
     form_set_error('shadowbox_initial_width', t('You must enter a number.'));
   }
   else {
-    $form_values['shadowbox_initial_height'] = floor($initial_width);
+    $form_values['shadowbox_initial_width'] = floor($initial_width);
   }
 
   if (!_validate_hex_color($color)) {
