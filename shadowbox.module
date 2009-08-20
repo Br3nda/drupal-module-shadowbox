@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.2 2009/08/20 14:44:53 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.3 2009/08/20 15:14:11 psynaptic Exp $
 
 /**
  * @file
@@ -80,7 +80,7 @@ function shadowbox_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('shadowbox_automatic_settings'),
     'access arguments' => array('administer shadowbox'),
-    'description' => 'Configure the Shadwobox automatic image handling settings.',
+    'description' => 'Configure the Shadowbox automatic image handling settings.',
     'type' => MENU_LOCAL_TASK,
     'weight' => 1,
   );
