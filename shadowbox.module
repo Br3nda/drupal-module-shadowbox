@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28 2009/08/20 11:16:04 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.1 2009/08/20 14:20:24 psynaptic Exp $
 
 /**
  * @file
@@ -287,15 +287,6 @@ function shadowbox_global_settings() {
     '#maxlength' => 4,
     '#default_value' => variable_get('shadowbox_overlay_opacity', 0.85),
   );
-  $form['shadowbox']['shadowbox_options']['overlay']['shadowbox_flash_background'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Flash backround color'),
-    '#description' => t('The default background color to use for Flash movies.'),
-    '#size' => 8,
-    '#maxlength' => 7,
-    '#default_value' => variable_get('shadowbox_flash_background', '000000'),
-    '#field_prefix' => '#',
-  );
   $form['shadowbox']['shadowbox_options']['overlay']['shadowbox_viewport_padding'] = array(
     '#type' => 'textfield',
     '#title' => t('Viewport padding'),
@@ -359,14 +350,6 @@ function shadowbox_global_settings() {
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
-  $form['shadowbox']['shadowbox_options']['movies']['shadowbox_flv_player'] = array(
-    '#type' => 'textfield',
-    '#title' => t('FLV player'),
-    '#description' => t('The URL of the flash video player. This path is relative to the Drupal root.'),
-    '#size' => 50,
-    '#maxlength' => 255,
-    '#default_value' => variable_get('shadowbox_flv_player', $shadowbox_location .'flvplayer.swf'),
-  );
   $form['shadowbox']['shadowbox_options']['movies']['shadowbox_autoplay_movies'] = array(
     '#type' => 'checkbox',
     '#title' => t('Auto-play movies'),
@@ -428,6 +411,7 @@ function shadowbox_global_settings() {
     ),
     '#default_value' => variable_get('shadowbox_handle_unsupported', 'link'),
   );
+
   return system_settings_form($form);
 }
 
@@ -458,7 +442,7 @@ function shadowbox_automatic_settings() {
  * Validate admin settings form inputs.
  */
 function shadowbox_global_settings_validate($form, &$form_state) {
-  $flv_formats = array_values($form_state['values']['shadowbox_supported_flv']);
+  // $flv_formats = array_values($form_state['values']['shadowbox_supported_flv']);
   $flv_player = $form_state['values']['shadowbox_flv_player'];
   $color = $form_state['values']['shadowbox_overlay_color'];
   $opacity = $form_state['values']['shadowbox_overlay_opacity'];
@@ -470,15 +454,6 @@ function shadowbox_global_settings_validate($form, &$form_state) {
   $initial_height = $form_state['values']['shadowbox_initial_height'];
   $initial_width = $form_state['values']['shadowbox_initial_width'];
   $counter_limit = $form_state['values']['shadowbox_counter_limit'];
-
-  if(count(array_intersect($flv_formats, shadowbox_get_types('flv'))) != 0) {
-    if (!preg_match('!^([a-z0-9_\-\.]+/)*[a-z0-9_\-]+\.swf$!i', $flv_player)) {
-      form_set_error('shadowbox_flv_player', t('You must enter a valid path to an SWF Flash Player in the form <code>flvplayer.swf</code>.'));
-    }
-    elseif (!file_exists($flv_player)) {
-      form_set_error('shadowbox_flv_player', t('The FLV player does not exist.'));
-    }
-  }
 
   if (!is_numeric($resize_duration) || $resize_duration < 0 || $resize_duration > 10) {
     form_set_error('shadowbox_resize_duration', t('You must enter a number between 0 and 10.'));
@@ -508,10 +483,6 @@ function shadowbox_global_settings_validate($form, &$form_state) {
 
   if ($opacity == '' || (floor($opacity) != 0 && $opacity != 1)) {
     form_set_error('shadowbox_overlay_opacity', t('You must enter a decimal number between 0 and 1.'));
-  }
-
-  if (!_validate_hex_color($flash_background, TRUE)) {
-    form_set_error('shadowbox_flash_background', t('You must enter a 6 digit hex value (e.g. 000000 for black.)'));
   }
 
   if (!is_numeric($viewport_padding) || $viewport_padding < 0 || $viewport_padding > 200) {
@@ -617,7 +588,7 @@ function shadowbox_theme() {
     ),
   );
 
-  // TODO: Add filefield support
+  // TODO: Add filefield: file widget support
   // TODO: Add emfield support
   // TODO: Which other CCK modules should we support?
 
@@ -813,17 +784,15 @@ function shadowbox_construct_header() {
   $iframe_support = array_filter($iframe);
 
   if (shadowbox_active() && variable_get('shadowbox_enabled', TRUE)) {
-    drupal_add_js($shadowbox_location .'/build/adapter/shadowbox-jquery.js');
-    drupal_add_js($shadowbox_location .'/build/shadowbox.js');
+    drupal_add_js($shadowbox_location .'/adapters/shadowbox-jquery.js');
+    drupal_add_js($shadowbox_location .'/shadowbox.js');
     drupal_add_js($module_path .'/shadowbox_auto.js');
-    drupal_add_js($module_path .'/shadowbox.js');
-    drupal_add_js($shadowbox_location .'/src/skin/classic/skin.js');
-    drupal_add_css($shadowbox_location .'/src/skin/classic/skin.css');
+    drupal_add_css($shadowbox_location .'/shadowbox.css');
     // If language is set to xx (i.e. when using string overrides module) default to English.
     if ($language->language == 'xx') {
       $language->language = 'en';
     }
-    $language_file = $shadowbox_location .'/build/lang/shadowbox-'. $language->language .'.js';
+    $language_file = $shadowbox_location .'/languages/shadowbox-'. $language->language .'.js';
     if (file_exists($language_file)) {
       drupal_add_js($language_file);
     }
@@ -831,26 +800,27 @@ function shadowbox_construct_header() {
       drupal_set_message(t('Shadowbox: A language file does not exist for your language: !language (!code). Tried to load: !file', array('!language' => $language->name, '!code' => $language->language, '!file' => $language_file)), 'error');
     }
     if (!empty($image_support)) {
-      drupal_add_js($shadowbox_location .'/build/player/shadowbox-img.js');
+      drupal_add_js($shadowbox_location .'/players/shadowbox-img.js');
     }
     if (!empty($swf_support)) {
-      drupal_add_js($shadowbox_location .'/build/player/shadowbox-swf.js');
+      drupal_add_js($shadowbox_location .'/players/shadowbox-swf.js');
     }
     if (!empty($flv_support)) {
-      drupal_add_js($shadowbox_location .'/build/player/shadowbox-flv.js');
+      drupal_add_js($shadowbox_location .'/players/shadowbox-flv.js');
     }
     if (!empty($quicktime_support)) {
-      drupal_add_js($shadowbox_location .'/build/player/shadowbox-qt.js');
+      drupal_add_js($shadowbox_location .'/players/shadowbox-qt.js');
     }
     if ((!empty($wmp_support)) || (!empty($qtwmp_support))) {
-      drupal_add_js($shadowbox_location .'/build/player/shadowbox-wmp.js');
+      drupal_add_js($shadowbox_location .'/players/shadowbox-wmp.js');
     }
     if (!empty($iframe_support)) {
-      drupal_add_js($shadowbox_location .'/build/player/shadowbox-html.js');
-      drupal_add_js($shadowbox_location .'/build/player/shadowbox-iframe.js');
+      drupal_add_js($shadowbox_location .'/players/shadowbox-html.js');
+      drupal_add_js($shadowbox_location .'/players/shadowbox-iframe.js');
     }
 
     drupal_add_js(shadowbox_get_settings(), 'setting');
+    drupal_add_js('Shadowbox.init(Drupal.settings.shadowbox);', 'inline', 'footer');
   }
 }
 
@@ -864,6 +834,8 @@ function shadowbox_construct_header() {
  *   An array containing settings to be used in drupal_add_js.
  */
 function shadowbox_get_settings($override = array()) {
+  global $language;
+
   $shadowbox_location = variable_get('shadowbox_location', $shadowbox_path);
 
   $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
@@ -874,40 +846,62 @@ function shadowbox_get_settings($override = array()) {
   $qtwmp = variable_get('shadowbox_supported_qtwmp', shadowbox_get_types('qtwmp'));
   $iframe = variable_get('shadowbox_supported_iframe', shadowbox_get_types('iframe'));
 
+  $image_support = array_filter($images);
+  $swf_support = array_filter($swf);
+  $flv_support = array_filter($flv);
+  $quicktime_support = array_filter($quicktime);
+  $wmp_support = array_filter($wmp);
+  $qtwmp_support = array_filter($qtwmp);
+  $iframe_support = array_filter($iframe);
+
+	$players = array();
+	if (!empty($image_support)) {
+		$players[] = 'img';
+	}
+	if (!empty($swf_support)) {
+		$players[] = 'swf';
+	}
+	if (!empty($flv_support)) {
+		$players[] = 'flv';
+	}
+	if (!empty($quicktime_support)) {
+		$players[] = 'qt';
+	}
+	if ((!empty($wmp_support)) || (!empty($qtwmp_support))) {
+		$players[] = 'wmp';
+	}
+	if (!empty($iframe_support)) {
+		$players[] = 'html';
+		$players[] = 'iframe';
+	}
+
   $settings = array(
-    'flv_player' => base_path() . variable_get('shadowbox_flv_player', $shadowbox_location .'flvplayer.swf'),
-    'animation' => variable_get('shadowbox_animate', TRUE),
-    'animation_fade' => variable_get('shadowbox_animate_fade', TRUE),
-    'animation_sequence' => variable_get('shadowbox_animation_sequence', 'wh'),
-    'modal' => !variable_get('shadowbox_overlay_listen', TRUE),
-    'overlay_color' => variable_get('shadowbox_overlay_color', '000'),
-    'overlay_opacity' => variable_get('shadowbox_overlay_opacity', 0.8),
-    'flash_background' => variable_get('shadowbox_flash_background', '000000'),
-    'autoplay_movies' => variable_get('shadowbox_autoplay_movies', TRUE),
-    'show_movie_controls' => variable_get('shadowbox_show_movie_controls', TRUE),
-    'slideshow_delay' => variable_get('shadowbox_slideshow_delay', 0),
-    'resize_duration' => variable_get('shadowbox_resize_duration', 0.55),
-    'fade_duration' => variable_get('shadowbox_fade_duration', 0.35),
-    'display_nav' => variable_get('shadowbox_display_nav', TRUE),
-    'continuous_galleries' => variable_get('shadowbox_continuous_galleries', FALSE),
-    'display_counter' => variable_get('shadowbox_display_counter', TRUE),
-    'counter_type' => variable_get('shadowbox_counter_type', 'default'),
-    'counter_limit' => variable_get('shadowbox_counter_limit', 10),
-    'viewport_padding' => variable_get('shadowbox_viewport_padding', 20),
-    'handle_oversize' => variable_get('shadowbox_handle_oversize', 'resize'),
-    'handle_unsupported' => variable_get('shadowbox_handle_unsupported', 'link'),
-    'initial_height' => variable_get('shadowbox_initial_height', 160),
-    'initial_width' => variable_get('shadowbox_initial_width', 320),
-    'enable_keys' => variable_get('shadowbox_enable_keys', TRUE),
-    'extensions_img' => _array_to_string_values($images),
-    'extensions_swf' => _array_to_string_values($swf),
-    'extensions_flv' => _array_to_string_values($flv),
-    'extensions_qt' => _array_to_string_values($quicktime),
-    'extensions_wmp' => _array_to_string_values($wmp),
-    'extensions_qtwmp' => _array_to_string_values($qtwmp),
-    'extensions_iframe' => _array_to_string_values($iframe),
+    'animate' => variable_get('shadowbox_animate', TRUE),
+    'animateFade' => variable_get('shadowbox_animate_fade', TRUE),
+    'animSequence' => variable_get('shadowbox_animation_sequence', 'wh'),
     'auto_enable_all_images' => variable_get('shadowbox_auto_enable_all_images', 0),
     'auto_gallery' => variable_get('shadowbox_auto_gallery', 0),
+    'autoplayMovies' => variable_get('shadowbox_autoplay_movies', TRUE),
+    'continuous' => variable_get('shadowbox_continuous_galleries', FALSE),
+    'counterLimit' => variable_get('shadowbox_counter_limit', 10),
+    'counterType' => variable_get('shadowbox_counter_type', 'default'),
+    'displayCounter' => variable_get('shadowbox_display_counter', TRUE),
+    'displayNav' => variable_get('shadowbox_display_nav', TRUE),
+    'enableKeys' => variable_get('shadowbox_enable_keys', TRUE),
+    'fadeDuration' => variable_get('shadowbox_fade_duration', 0.35),
+    'handleOversize' => variable_get('shadowbox_handle_oversize', 'resize'),
+    'handleUnsupported' => variable_get('shadowbox_handle_unsupported', 'link'),
+    'initialHeight' => variable_get('shadowbox_initial_height', 160),
+    'initialWidth' => variable_get('shadowbox_initial_width', 320),
+    'language' => $language->language,
+    'modal' => !variable_get('shadowbox_overlay_listen', TRUE),
+    'overlayColor' => '#'.variable_get('shadowbox_overlay_color', '000'),
+    'overlayOpacity' => variable_get('shadowbox_overlay_opacity', 0.8),
+		'players' => $players,
+    'resizeDuration' => variable_get('shadowbox_resize_duration', 0.55),
+    'showMovieControls' => variable_get('shadowbox_show_movie_controls', TRUE),
+    'slideshowDelay' => variable_get('shadowbox_slideshow_delay', 0),
+    'viewportPadding' => variable_get('shadowbox_viewport_padding', 20),
   );
   $settings = array_merge($settings, $override);
   $settings = array('shadowbox' => $settings);
