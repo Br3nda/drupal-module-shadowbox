@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.install,v 1.1.2.5.2.2 2009/04/06 17:58:59 psynaptic Exp $
+// $Id: shadowbox.install,v 1.1.2.5.2.3 2009/08/20 10:24:42 psynaptic Exp $
 
 /**
  * @file
@@ -29,22 +29,22 @@ function shadowbox_requirements($phase) {
   switch ($phase) {
     case 'install':
     case 'runtime':
-    $path = drupal_get_path('module', 'shadowbox');
-    if (!file_exists($path .'/shadowbox/')) {
+    $path = variable_get('shadowbox_location', $shadowbox_path);
+    if (!file_exists($path)) {
       $requirements['shadowbox'] = array(
         'title' => $t('Shadowbox'),
-        'description' => $t('In order for the Shadowbox module to work correctly, the Shadowbox 2.0 Full distribution must exists at <code>%path</code>.', array('%path' => $path .'/shadowbox')),
+        'description' => $t('In order for the Shadowbox module to work correctly, the Shadowbox 2.0 Full distribution must exists at <code>%path</code>.', array('%path' => $path)),
         'severity' => $phase == 'install' ? REQUIREMENT_WARNING : REQUIREMENT_ERROR,
         'value' => $t('Install 3rd party Shadowbox software'),
       );
     }
-    elseif (!file_exists($path .'/shadowbox/build/shadowbox.js') || !file_exists($path .'/shadowbox/build/adapter/shadowbox-jquery.js')) {
+    elseif (!file_exists($path .'/build/shadowbox.js') || !file_exists($path .'/build/adapter/shadowbox-jquery.js')) {
       $requirements['shadowbox'] = array(
         'title' => $t('Shadowbox'),
         'description' => $t('The <code>%path</code> path exists but it appears that the directory structure underneath is incorrect. Please check that <code>%shadowbox</code> and <code>%jquery</code> exist.',
           array('%path' => $path .'/shadowbox',
-            '%shadowbox' => $path .'/shadowbox/build/shadowbox.js',
-            '%jquery' => $path .'/shadowbox/build/adapter/shadowbox-jquery.js',
+            '%shadowbox' => $path .'/build/shadowbox.js',
+            '%jquery' => $path .'/build/adapter/shadowbox-jquery.js',
           )),
         'severity' => $phase == 'install' ? REQUIREMENT_WARNING : REQUIREMENT_ERROR,
         'value' => $t('3rd party Shadowbox software not properly installed'),

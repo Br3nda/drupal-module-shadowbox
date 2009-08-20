@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.23 2009/06/22 08:42:38 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.24 2009/08/20 10:24:42 psynaptic Exp $
 
 /**
  * @file
@@ -102,13 +102,21 @@ function shadowbox_init() {
  * @see shadowbox_global_settings_validate()
  */
 function shadowbox_global_settings() {
-  $shadowbox_path = drupal_get_path('module', 'shadowbox') .'/shadowbox/';
+  $shadowbox_location = variable_get('shadowbox_location', $shadowbox_path);
+  $module_path = drupal_get_path('module', 'shadowbox');
+
   // Global settings
   $form['shadowbox']['shadowbox_enabled'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable Shadowbox'),
     '#default_value' => variable_get('shadowbox_enabled', TRUE),
     '#description' => t('Check this box to enable Shadowbox for the entire site.'),
+  );
+  $form['shadowbox']['shadowbox_location'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Shadowbox location'),
+    '#default_value' => variable_get('shadowbox_location', $module_path .'/shadowbox'),
+    '#description' => t('Enter the location of the !download. It is recommended to use e.g. sites/all/plugins/shadowbox.', array('!download' => l('third party Shadowbox distribution', 'http://freestylesystems.co.uk/files/shadowbox-2.0.zip', array('absolute' => TRUE)))),
   );
   $form['shadowbox']['active'] = array(
     '#type' => 'fieldset',
@@ -357,7 +365,7 @@ function shadowbox_global_settings() {
     '#description' => t('The URL of the flash video player. This path is relative to the Drupal root.'),
     '#size' => 50,
     '#maxlength' => 255,
-    '#default_value' => variable_get('shadowbox_flv_player', $shadowbox_path .'flvplayer.swf'),
+    '#default_value' => variable_get('shadowbox_flv_player', $shadowbox_location .'flvplayer.swf'),
   );
   $form['shadowbox']['shadowbox_options']['movies']['shadowbox_autoplay_movies'] = array(
     '#type' => 'checkbox',
@@ -780,7 +788,8 @@ function shadowbox_imagecache_create_url($preset, $filepath) {
  */
 function shadowbox_construct_header() {
   global $language;
-  $path = drupal_get_path('module', 'shadowbox');
+  $module_path = drupal_get_path('module', 'shadowbox');
+  $shadowbox_location = variable_get('shadowbox_location', $shadowbox_path);
 
   $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
   $swf = variable_get('shadowbox_supported_swf', shadowbox_get_types('swf'));
@@ -799,13 +808,13 @@ function shadowbox_construct_header() {
   $iframe_support = array_filter($iframe);
 
   if (shadowbox_active() && variable_get('shadowbox_enabled', TRUE)) {
-    drupal_add_js($path .'/shadowbox/build/adapter/shadowbox-jquery.js');
-    drupal_add_js($path .'/shadowbox/build/shadowbox.js');
-    drupal_add_js($path .'/shadowbox_auto.js');
-    drupal_add_js($path .'/shadowbox.js');
-    drupal_add_js($path .'/shadowbox/src/skin/classic/skin.js');
-    drupal_add_css($path .'/shadowbox/src/skin/classic/skin.css');
-    $language_file = $path .'/shadowbox/build/lang/shadowbox-'. $language->language .'.js';
+    drupal_add_js($shadowbox_location .'/build/adapter/shadowbox-jquery.js');
+    drupal_add_js($shadowbox_location .'/build/shadowbox.js');
+    drupal_add_js($module_path .'/shadowbox_auto.js');
+    drupal_add_js($module_path .'/shadowbox.js');
+    drupal_add_js($shadowbox_location .'/src/skin/classic/skin.js');
+    drupal_add_css($shadowbox_location .'/src/skin/classic/skin.css');
+    $language_file = $shadowbox_location .'/build/lang/shadowbox-'. $language->language .'.js';
     if (file_exists($language_file)) {
       drupal_add_js($language_file);
     }
@@ -813,23 +822,23 @@ function shadowbox_construct_header() {
       drupal_set_message(t('Shadowbox: A language file does not exist for your language: !language (!code). Tried to load: !file', array('!language' => $language->name, '!code' => $language->language, '!file' => $language_file)), 'error');
     }
     if (!empty($image_support)) {
-      drupal_add_js($path .'/shadowbox/build/player/shadowbox-img.js');
+      drupal_add_js($shadowbox_location .'/build/player/shadowbox-img.js');
     }
     if (!empty($swf_support)) {
-      drupal_add_js($path .'/shadowbox/build/player/shadowbox-swf.js');
+      drupal_add_js($shadowbox_location .'/build/player/shadowbox-swf.js');
     }
     if (!empty($flv_support)) {
-      drupal_add_js($path .'/shadowbox/build/player/shadowbox-flv.js');
+      drupal_add_js($shadowbox_location .'/build/player/shadowbox-flv.js');
     }
     if (!empty($quicktime_support)) {
-      drupal_add_js($path .'/shadowbox/build/player/shadowbox-qt.js');
+      drupal_add_js($shadowbox_location .'/build/player/shadowbox-qt.js');
     }
     if ((!empty($wmp_support)) || (!empty($qtwmp_support))) {
-      drupal_add_js($path .'/shadowbox/build/player/shadowbox-wmp.js');
+      drupal_add_js($shadowbox_location .'/build/player/shadowbox-wmp.js');
     }
     if (!empty($iframe_support)) {
-      drupal_add_js($path .'/shadowbox/build/player/shadowbox-html.js');
-      drupal_add_js($path .'/shadowbox/build/player/shadowbox-iframe.js');
+      drupal_add_js($shadowbox_location .'/build/player/shadowbox-html.js');
+      drupal_add_js($shadowbox_location .'/build/player/shadowbox-iframe.js');
     }
 
     drupal_add_js(shadowbox_get_settings(), 'setting');
@@ -846,7 +855,7 @@ function shadowbox_construct_header() {
  *   An array containing settings to be used in drupal_add_js.
  */
 function shadowbox_get_settings($override = array()) {
-  $path = drupal_get_path('module', 'shadowbox') .'/shadowbox/';
+  $shadowbox_location = variable_get('shadowbox_location', $shadowbox_path);
 
   $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
   $swf = variable_get('shadowbox_supported_swf', shadowbox_get_types('swf'));
@@ -857,7 +866,7 @@ function shadowbox_get_settings($override = array()) {
   $iframe = variable_get('shadowbox_supported_iframe', shadowbox_get_types('iframe'));
 
   $settings = array(
-    'flv_player' => base_path() . variable_get('shadowbox_flv_player', $path .'flvplayer.swf'),
+    'flv_player' => base_path() . variable_get('shadowbox_flv_player', $shadowbox_location .'flvplayer.swf'),
     'animation' => variable_get('shadowbox_animate', TRUE),
     'animation_fade' => variable_get('shadowbox_animate_fade', TRUE),
     'animation_sequence' => variable_get('shadowbox_animation_sequence', 'wh'),
