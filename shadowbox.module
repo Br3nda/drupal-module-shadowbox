@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.24.2.16 2009/06/22 09:02:13 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.24.2.17 2009/08/20 10:53:41 psynaptic Exp $
 
 /**
  * @file
@@ -692,6 +692,10 @@ function shadowbox_construct_header() {
     drupal_add_js($path .'/shadowbox.js');
     drupal_add_js($path .'/shadowbox/src/skin/classic/skin.js');
     drupal_add_css($path .'/shadowbox/src/skin/classic/skin.css');
+    // If language is set to xx (i.e. when using string overrides module) default to English.
+    if ($locale == 'xx') {
+      $locale = 'en';
+    }
     drupal_add_js($path .'/shadowbox/build/lang/shadowbox-'. $locale .'.js');
     if (!empty($image_support)) {
       drupal_add_js($path .'/shadowbox/build/player/shadowbox-img.js');
