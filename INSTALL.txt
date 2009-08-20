@@ -1,4 +1,4 @@
-$Id: INSTALL.txt,v 1.3.2.4.2.5.2.1 2009/08/20 14:42:52 psynaptic Exp $
+$Id: INSTALL.txt,v 1.3.2.4.2.5.2.2 2009/08/20 16:14:01 psynaptic Exp $
 
 INSTALLATION
 ------------
@@ -26,6 +26,13 @@ copy/edit/rename one of the related language files to suit your site.
 
 If a language file is not found for the current language you will receive an
 error message.
+
+
+OPTIONAL
+--------
+
+Install checkall and multicolumncheckboxesradios modules. They enhance the
+admin settings form only.
 
 
 USAGE

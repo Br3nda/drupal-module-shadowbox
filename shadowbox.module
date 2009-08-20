@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.5 2009/08/20 15:59:43 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.6 2009/08/20 16:14:01 psynaptic Exp $
 
 /**
  * @file
@@ -814,8 +814,8 @@ function shadowbox_construct_header() {
   $iframe_support = array_filter($iframe);
 
   if (shadowbox_active() && variable_get('shadowbox_enabled', TRUE)) {
-    drupal_add_js($shadowbox_location .'/adapters/shadowbox-jquery.js');
     drupal_add_js($shadowbox_location .'/shadowbox.js');
+    drupal_add_js($shadowbox_location .'/adapters/shadowbox-jquery.js');
     drupal_add_js($module_path .'/shadowbox_auto.js');
     drupal_add_css($shadowbox_location .'/shadowbox.css');
     // If language is set to xx (i.e. when using string overrides module) default to English.
