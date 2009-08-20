@@ -1,4 +1,4 @@
-$Id: README.txt,v 1.1.2.2.2.1.2.1 2009/08/20 14:42:52 psynaptic Exp $
+$Id: README.txt,v 1.1.2.2.2.1.2.2 2009/08/20 17:28:55 psynaptic Exp $
 
 AUTHOR/MAINTAINERS
 ------------------
@@ -25,12 +25,6 @@ This module provides similar functionality to lightbox2 [1] and thickbox [2].
 
 [1] http://drupal.org/project/lightbox2
 [2] http://drupal.org/project/thickbox
-
-
-INSTALLATION
-------------
-
-See INSTALL.txt
 
 
 CHANGELOG
