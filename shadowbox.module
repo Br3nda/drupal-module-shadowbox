@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.27 2009/08/20 11:14:11 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28 2009/08/20 11:16:04 psynaptic Exp $
 
 /**
  * @file
@@ -471,7 +471,7 @@ function shadowbox_global_settings_validate($form, &$form_state) {
   $initial_width = $form_state['values']['shadowbox_initial_width'];
   $counter_limit = $form_state['values']['shadowbox_counter_limit'];
 
-  if(sizeof(array_intersect($flv_formats, shadowbox_get_types('flv'))) != 0) {
+  if(count(array_intersect($flv_formats, shadowbox_get_types('flv'))) != 0) {
     if (!preg_match('!^([a-z0-9_\-\.]+/)*[a-z0-9_\-]+\.swf$!i', $flv_player)) {
       form_set_error('shadowbox_flv_player', t('You must enter a valid path to an SWF Flash Player in the form <code>flvplayer.swf</code>.'));
     }
