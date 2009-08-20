@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.26 2009/08/20 10:58:44 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.27 2009/08/20 11:14:11 psynaptic Exp $
 
 /**
  * @file
@@ -458,6 +458,7 @@ function shadowbox_automatic_settings() {
  * Validate admin settings form inputs.
  */
 function shadowbox_global_settings_validate($form, &$form_state) {
+  $flv_formats = array_values($form_state['values']['shadowbox_supported_flv']);
   $flv_player = $form_state['values']['shadowbox_flv_player'];
   $color = $form_state['values']['shadowbox_overlay_color'];
   $opacity = $form_state['values']['shadowbox_overlay_opacity'];
@@ -470,11 +471,13 @@ function shadowbox_global_settings_validate($form, &$form_state) {
   $initial_width = $form_state['values']['shadowbox_initial_width'];
   $counter_limit = $form_state['values']['shadowbox_counter_limit'];
 
-  if (!preg_match('!^([a-z0-9_\-\.]+/)*[a-z0-9_\-]+\.swf$!i', $flv_player)) {
-    form_set_error('shadowbox_flv_player', t('You must enter a valid path to an SWF Flash Player in the form <code>flvplayer.swf</code>.'));
-  }
-  elseif (!file_exists($flv_player)) {
-    form_set_error('shadowbox_flv_player', t('The FLV player does not exist.'));
+  if(sizeof(array_intersect($flv_formats, shadowbox_get_types('flv'))) != 0) {
+    if (!preg_match('!^([a-z0-9_\-\.]+/)*[a-z0-9_\-]+\.swf$!i', $flv_player)) {
+      form_set_error('shadowbox_flv_player', t('You must enter a valid path to an SWF Flash Player in the form <code>flvplayer.swf</code>.'));
+    }
+    elseif (!file_exists($flv_player)) {
+      form_set_error('shadowbox_flv_player', t('The FLV player does not exist.'));
+    }
   }
 
   if (!is_numeric($resize_duration) || $resize_duration < 0 || $resize_duration > 10) {
