@@ -1,13 +1,16 @@
-$Id: README.txt,v 1.1.2.2.2.1 2008/11/05 00:07:12 psynaptic Exp $
+$Id: README.txt,v 1.1.2.2.2.1.2.1 2009/08/20 14:42:52 psynaptic Exp $
 
 AUTHOR/MAINTAINERS
 ------------------
 
 Module created by Richard Burford, aka, psynaptic
-http://freestylesystems.co.uk
+  http://drupal.org/user/93429
+  http://freestylesystems.co.uk/
 
 Shadowbox created by Michael J. I. Jackson
-http://mjijackson.com
+  http://www.shadowbox-js.com/
+  http://mjijackson.com/
+
 
 DESCRIPTION
 -----------
@@ -23,19 +26,14 @@ This module provides similar functionality to lightbox2 [1] and thickbox [2].
 [1] http://drupal.org/project/lightbox2
 [2] http://drupal.org/project/thickbox
 
+
 INSTALLATION
 ------------
 
 See INSTALL.txt
 
+
 CHANGELOG
 ---------
 
-See CHANGELOG.txt
-
-KNOWN ISSUES
-------------
-
-- MOV and MP4 movies open in Quicktime by default but this doesn't seem to work
-  properly in my test environment (Mac OS X 10.5.4). A work around is to enable
-  displaying MOV and MP4 files in the FLV Player.
+See http://drupal.org/project/cvs/247345?branch=DRUPAL-6--3
