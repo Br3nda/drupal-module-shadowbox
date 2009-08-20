@@ -1,9 +1,9 @@
-// $Id: shadowbox_auto.js,v 1.1.4.3 2009/02/10 17:02:41 psynaptic Exp $
+// $Id: shadowbox_auto.js,v 1.1.4.4 2009/08/20 10:32:13 psynaptic Exp $
 if (Drupal.jsEnabled) {
   $(document).ready(function() {
     var settings = Drupal.settings.shadowbox;
     if (settings.auto_enable_all_images == 1) {
-      var images = 'a[href$=jpg][rel=""], a[href$=png][rel=""], a[href$=gif][rel=""], a[href$=jpeg][rel=""], a[href$=bmp][rel=""]';
+      var images = 'a[href$=jpg][rel=""], a[href$=png][rel=""], a[href$=gif][rel=""], a[href$=jpeg][rel=""], a[href$=bmp][rel=""], a[href$=JPG][rel=""], a[href$=PNG][rel=""], a[href$=GIF][rel=""], a[href$=JPEG][rel=""], a[href$=BMP][rel=""]';
       $(images).each(function() {
         if (settings.auto_gallery == 1) {
           $(this).attr('rel', 'shadowbox[gallery]');
