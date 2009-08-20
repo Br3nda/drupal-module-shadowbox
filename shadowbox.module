@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.1 2009/08/20 14:20:24 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.2 2009/08/20 14:44:53 psynaptic Exp $
 
 /**
  * @file
@@ -797,7 +797,7 @@ function shadowbox_construct_header() {
       drupal_add_js($language_file);
     }
     else {
-      drupal_set_message(t('Shadowbox: A language file does not exist for your language: !language (!code). Tried to load: !file', array('!language' => $language->name, '!code' => $language->language, '!file' => $language_file)), 'error');
+      drupal_set_message(t('Shadowbox: A language file does not exist for your language: !language (!code). Tried to load: !file. You can resolve this by either copying an existing language file and renaming the file or creating a new language file. Using either method you must use the 2-letter code for your language so the filename has the form: shadowbox-xx.js where xx is your 2-letter language code.', array('!language' => $language->name, '!code' => $language->language, '!file' => $language_file)), 'error');
     }
     if (!empty($image_support)) {
       drupal_add_js($shadowbox_location .'/players/shadowbox-img.js');
