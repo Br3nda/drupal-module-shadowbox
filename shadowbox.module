@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.5.2.24.2.17 2009/08/20 10:53:41 psynaptic Exp $
+// $Id: shadowbox.module,v 1.5.2.24.2.18 2009/08/20 10:58:24 psynaptic Exp $
 
 /**
  * @file
@@ -559,7 +559,9 @@ function shadowbox_field_formatter_info() {
       }
     }
   }
-  asort($formatters);
+  if (is_array($formatters)) {
+    asort($formatters);
+  }
   return $formatters;
 }
 
