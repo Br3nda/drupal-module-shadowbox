@@ -1,4 +1,5 @@
-// $Id: shadowbox_auto.js,v 1.1.4.4 2009/08/20 10:32:13 psynaptic Exp $
+// $Id: shadowbox_auto.js,v 1.1.4.4.2.1 2009/08/21 16:27:38 psynaptic Exp $
+
 if (Drupal.jsEnabled) {
   $(document).ready(function() {
     var settings = Drupal.settings.shadowbox;
