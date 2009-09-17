@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.11 2009/09/17 21:08:32 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.12 2009/09/17 23:12:26 psynaptic Exp $
 
 /**
  * @file
@@ -378,11 +378,12 @@ function shadowbox_construct_header() {
   $iframe_support = array_filter($iframe);
 
   if (shadowbox_active() && variable_get('shadowbox_enabled', TRUE)) {
+    // Add the base files.
     drupal_add_js($shadowbox_location .'/shadowbox.js');
     drupal_add_js($shadowbox_location .'/adapters/shadowbox-jquery.js');
-    drupal_add_js($module_path .'/shadowbox_auto.js');
     drupal_add_css($shadowbox_location .'/shadowbox.css');
 
+    // Add the language file.
     $language_file = $shadowbox_location .'/languages/shadowbox-'. $language->language .'.js';
     if (file_exists($language_file)) {
       drupal_add_js($language_file);
@@ -391,6 +392,8 @@ function shadowbox_construct_header() {
       // If a language file doesn't exist, default to English.
       drupal_add_js($shadowbox_location .'/languages/shadowbox-en.js');
     }
+
+    // Add the "player" files.
     if (!empty($image_support)) {
       drupal_add_js($shadowbox_location .'/players/shadowbox-img.js');
     }
@@ -411,10 +414,16 @@ function shadowbox_construct_header() {
       drupal_add_js($shadowbox_location .'/players/shadowbox-iframe.js');
     }
 
+    // Print the JavaScript settings to the page.
     drupal_add_js(shadowbox_get_settings(), 'setting');
+
+    // Add the automatic image handling
+    drupal_add_js($module_path .'/shadowbox_auto.js');
+
+    // Initialize Shadowbox.
     drupal_add_js('Shadowbox.init(Drupal.settings.shadowbox);', 'inline', 'footer');
   }
-  
+
   // Special case for the admin settings page test.
   if ($_GET['q'] == 'admin/settings/shadowbox'
     || $_GET['q'] == 'admin/settings/shadowbox/global') {
