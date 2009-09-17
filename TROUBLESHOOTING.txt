@@ -1,20 +1,28 @@
-$Id: TROUBLESHOOTING.txt,v 1.1.2.2 2009/09/17 21:48:23 psynaptic Exp $
+$Id: TROUBLESHOOTING.txt,v 1.1.2.3 2009/09/17 23:49:38 psynaptic Exp $
 
 TROUBLESHOOTING
 -------------------------------------------------------------------------------
 
-- If you are experiencing any problems getting Shadowbox to work try clearing
+Step 1
+
+  If you are experiencing any problems getting Shadowbox to work try clearing
   the cache.
 
-- If you are trying to use Shadowbox for CCK and Views you need to have an
-  imagecache preset for anything to work.
+Imagecache Preset Is Required
 
-- Check that the link you expect to open in Shadowbox has the required rel
+  If you are trying to use Shadowbox for CCK and Views you need to have an
+  imagecache preset for display options to show up.
+
+Check for the rel Attrbute
+
+  Check that the link you expect to open in Shadowbox has the required rel
   attribute with a value of 'shadowbox' or 'lightbox', for example:
 
   <a href="/path/to/file.jpg" rel="shadowbox">
 
-- Translations for the Shadowbox interface are currently handled by JS files in
+Interface Translation
+
+  Translations for the Shadowbox interface are currently handled by JS files in
   the languages sub-directory of the downloaded Shadowbox distribution. If your
   site uses a language that is not already catered for, you will need to copy, 
   edit and rename one of the related language files to suit your site.
@@ -22,20 +30,26 @@ TROUBLESHOOTING
   If a language file is not found for the current language (defined by the
   value of $language->language) English will be used as a fallback.
 
-- Check the page in Firefox with Firebug's Console enabled. If there is a
+Check for JavaScript Errors
+
+  Check the page in Firefox with Firebug's Console enabled. If there is a
   JavaScript error it will be flagged up in the bottom right hand corner of the
   Firefox window.
   
   It is helpful to provide the error message in any issue posts you might make.
 
-- Check the issue queue to see if anyone has posted information about the same
+Check the Issue Queue
+
+  Check the issue queue to see if anyone has posted information about the same
   issue you are experiencing. Don't forget to check the issue queue before
   starting to create a patch for a module as someone might have already done
   some, if not all, of the work for you.
 
   http://drupal.org/project/issues/shadowbox
 
-- Finally, once you have done all you can to try and fix the problem yourself,
+Submit a New Issue
+
+  Finally, once you have done all you can to try and fix the problem yourself,
   you may post a new issue in the queue. Please include all the details you can
   think of that might be relevant to the issue. It helps to use a meaningful
   title that concisely expresses the scope of the issue.

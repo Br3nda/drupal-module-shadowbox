@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.14 2009/09/17 23:45:38 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.15 2009/09/17 23:52:37 psynaptic Exp $
 
 /**
  * @file
@@ -18,7 +18,7 @@ function shadowbox_help($path, $arg) {
       return t('
 <p>Shadowbox is a modal media viewer application akin to !lightbox and !thickbox. You can use it to display images, movies, and other web content in a window that is overlaid on top of the page.</p>
 
-<p>The module is integrated with filefield\'s image element so you can select from a number of different options for display images uploaded to nodes and shown in views.</p>
+<p>The module is integrated with filefield\'s image element so you can select from a number of different options for displaying images uploaded to nodes and shown in views.</p>
 
 <p>For instructions on manually crafting your links please see the !usage.</p>
 
@@ -30,7 +30,7 @@ function shadowbox_help($path, $arg) {
 ));
 
     case 'admin/settings/shadowbox':
-      return '<p>'. t('This page provides access to the Shadowbox settings. The settings here work globally so any changes made here will affect Shadowbox for the entire site.') .'</p>';
+      return t('<p>This page provides access to the Shadowbox settings. The settings here work globally so any changes made here will affect Shadowbox for the entire site.</p>');
   }
 }
 
