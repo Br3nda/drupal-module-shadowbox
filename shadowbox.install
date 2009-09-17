@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.install,v 1.1.2.5.2.3.2.2 2009/09/17 19:09:54 psynaptic Exp $
+// $Id: shadowbox.install,v 1.1.2.5.2.3.2.3 2009/09/17 23:13:24 psynaptic Exp $
 
 /**
  * @file
@@ -32,7 +32,7 @@ function shadowbox_requirements($phase) {
   switch ($phase) {
     case 'install':
     case 'runtime':
-    $shadowbox_path = 'sites/all/plugins/shadowbox';
+    $shadowbox_path = SHADOWBOX_DEFAULT_PATH;
     $path = variable_get('shadowbox_location', $shadowbox_path);
     if (!file_exists($path)) {
       $requirements['shadowbox'] = array(

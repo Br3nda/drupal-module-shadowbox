@@ -1,11 +1,13 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.12 2009/09/17 23:12:26 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.13 2009/09/17 23:13:24 psynaptic Exp $
 
 /**
  * @file
  * Shadowbox, a JavaScript media viewer application for displaying content in a
  * modal dialogue.
  */
+
+define('SHADOWBOX_DEFAULT_PATH', 'sites/all/plugins/shadowbox');
 
 /**
  * Implementation of hook_help().
@@ -102,7 +104,7 @@ function shadowbox_init() {
 }
 
 function shadowbox_installed() {
-  $shadowbox_path = 'sites/all/plugins/shadowbox';
+  $shadowbox_path = SHADOWBOX_DEFAULT_PATH;
   $shadowbox_location = variable_get('shadowbox_location', $shadowbox_path);
   return file_exists($shadowbox_location);
 }
@@ -358,7 +360,7 @@ function shadowbox_construct_header() {
   global $language;
 
   $module_path = drupal_get_path('module', 'shadowbox');
-  $shadowbox_path = 'sites/all/plugins/shadowbox';
+  $shadowbox_path = SHADOWBOX_DEFAULT_PATH;
   $shadowbox_location = variable_get('shadowbox_location', $shadowbox_path);
 
   $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
@@ -417,7 +419,7 @@ function shadowbox_construct_header() {
     // Print the JavaScript settings to the page.
     drupal_add_js(shadowbox_get_settings(), 'setting');
 
-    // Add the automatic image handling
+    // Add the automatic image handling.
     drupal_add_js($module_path .'/shadowbox_auto.js');
 
     // Initialize Shadowbox.
