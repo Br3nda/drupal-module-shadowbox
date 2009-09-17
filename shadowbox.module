@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.15 2009/09/17 23:52:37 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.16 2009/09/17 23:57:15 psynaptic Exp $
 
 /**
  * @file
@@ -406,7 +406,7 @@ function shadowbox_construct_header() {
     drupal_add_js(shadowbox_get_settings(), 'setting');
 
     // Add the automatic image handling.
-    drupal_add_js($module_path .'/shadowbox_auto.js');
+    drupal_add_js($module_path .'/shadowbox_auto.js', 'module', 'footer');
 
     // Initialize Shadowbox.
     drupal_add_js('Shadowbox.init(Drupal.settings.shadowbox);', 'inline', 'footer');
