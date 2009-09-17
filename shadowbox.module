@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.13 2009/09/17 23:13:24 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.14 2009/09/17 23:45:38 psynaptic Exp $
 
 /**
  * @file
@@ -15,33 +15,19 @@ define('SHADOWBOX_DEFAULT_PATH', 'sites/all/plugins/shadowbox');
 function shadowbox_help($path, $arg) {
   switch ($path) {
     case 'admin/help#shadowbox':
-      $output = '<p>'. t('Shadowbox is a modal media viewer application akin to !lightbox and !thickbox. You can use it to display images, movies, and other web content in a window that is overlaid on top of the originating page.', array('!lightbox' => l('lightbox2', 'http://drupal.org/project/lightbox2', array('absolute' => TRUE)), '!thickbox' => l('thickbox', 'http://drupal.org/project/thickbox', array('absolute' => TRUE)))) .'</p>';
-      $output .= '<h3>'. t('From the author of Shadowbox:') .'</h3>';
-      $output .= '<blockquote>'. t('Shadowbox is an online media viewer application that supports all of the web\'s most popular media publishing formats. Shadowbox is written entirely in JavaScript and CSS and is highly customizable. Using Shadowbox, website authors can showcase a wide assortment of media in all major browsers without navigating users away from the linking page.') .'</blockquote>';
-      $output .= '<h3>'. t('Usage:') .'</h3>';
-      $output .= '<p>'. t('This module has !global_settings that work on a site-wide basis.', array('!global_settings' => l('global settings', 'admin/settings/shadowbox'))) .'</p>';
-      $output .= '<p>'. t('Integration with !imagefield 2, !imagecache 2 and !views is provided and the same formatters found in lightbox2 are available in this module.', array('!imagecache' => l('imagecache', 'http://drupal.org/project/imagecache', array('absolute' => TRUE)), '!imagefield' => l('imagefield', 'http://drupal.org/project/imagefield', array('absolute' => TRUE)), '!views' => l('views', 'http://drupal.org/project/views', array('absolute' => TRUE)))) .'</p>';
-      $output .= '<p>'. t('To manually enable Shadowbox for a link you must add a <strong><code>rel</code></strong> attribute with a value of <strong><code>shadowbox</code></strong> (for compatibility with lightbox2 you can also use a value of <strong><code>lightbox</code></strong>).') .'</p>';
-      $output .= '<h4>'. t('Single media item:') .'</h4>';
-      $output .= '<p>'. t('The important thing to note here is the <code>rel</code> attribute. This tells Shadowbox you wish to activate it for this link. The <code>title</code> attribute is optional and can be used to give a caption to the item.') .'</p>';
-      $output .= '<strong>'. t('Example:') .'</strong>';
-      $output .= '<p>'. t('<code><pre>&lt;a href=&quot;image1.jpg&quot; rel=&quot;shadowbox&quot; title=&quot;Caption&quot;&gt;Image&lt;/a&gt;</pre></code>') .'</p>';
-      $output .= '<h4>'. t('Gallery:') .'</h4>';
-      $output .= '<p>'. t('Media of mixed type can be grouped into a gallery using <code>shadowbox[name]</code> where <code>name</code> is any value you wish to use for the current grouping of media. The value of <code>name</code> is only used internally by Shadowbox and won\'t be shown to the user.') .'</p>';
-      $output .= '<strong>'. t('Example:') .'</strong>';
-      $output .= '<p>'. t('<code><pre>&lt;a href=&quot;image1.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 1&quot;&gt;Image 1&lt;/a&gt;
-&lt;a href=&quot;image2.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 2&quot;&gt;Image 2&lt;/a&gt;
-&lt;a href=&quot;image3.jpg&quot; rel=&quot;shadowbox[gallery]&quot; title=&quot;Caption 3&quot;&gt;Image 3&lt;/a&gt;</pre></code>') .'</p>';
-      $output .= '<h4>'. t('iFrame:') .'</h4>';
-      $output .= '<p>'. t('A useful feature of Shadowbox is the ability to open another website directly on top of the current page.') .'</p>';
-      $output .= '<strong>'. t('Example:') .'</strong>';
-      $output .= '<p>'. t('<code><pre>&lt;a href=&quot;http://google.com&quot; rel=&quot;shadowbox&quot; title=&quot;Google&quot;&gt;Google&lt;/a&gt;</pre></code>') .'<p>';
-      $output .= '<h4>'. t('Advanced usage:') .'</h4>';
-      $output .= '<p>'. t('Shadowbox allows you to specify options on a per-instance basis by using a JSON-formatted parameter. More information on this feature can be found on the !shadowbox_usage', array('!shadowbox_usage' => l('Shadowbox usage page', 'http://mjijackson.com/shadowbox/doc/usage.html#markup', array('absolute' => TRUE)))) .'</p>';
-      $output .= '<strong>'. t('Example:') .'</strong>';
-      $output .= '<p>'. t('<code><pre>&lt;a href=&quot;http://google.com&quot; rel=&quot;shadowbox;width=740;height=380;
-  options={overlayOpacity:1,resizeDuration:0.2};&quot;&gt;Google&lt;/a&gt;</pre></code>') .'</p>';
-      return $output;
+      return t('
+<p>Shadowbox is a modal media viewer application akin to !lightbox and !thickbox. You can use it to display images, movies, and other web content in a window that is overlaid on top of the page.</p>
+
+<p>The module is integrated with filefield\'s image element so you can select from a number of different options for display images uploaded to nodes and shown in views.</p>
+
+<p>For instructions on manually crafting your links please see the !usage.</p>
+
+<p>This module has !options that work on a site-wide basis.</p>', array(
+  '!lightbox' => l('lightbox2', 'http://drupal.org/project/lightbox2'),
+  '!thickbox' => l('thickbox', 'http://drupal.org/project/thickbox'),
+  '!options' => l('options', 'admin/settings/shadowbox'),
+  '!usage' => l('official usage guide', 'http://www.shadowbox-js.com/usage.html#markup'),  
+));
 
     case 'admin/settings/shadowbox':
       return '<p>'. t('This page provides access to the Shadowbox settings. The settings here work globally so any changes made here will affect Shadowbox for the entire site.') .'</p>';
