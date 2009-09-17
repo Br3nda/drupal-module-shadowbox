@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.install,v 1.1.2.5.2.3.2.1 2009/08/20 14:24:40 psynaptic Exp $
+// $Id: shadowbox.install,v 1.1.2.5.2.3.2.2 2009/09/17 19:09:54 psynaptic Exp $
 
 /**
  * @file
@@ -26,16 +26,20 @@ function shadowbox_uninstall() {
 function shadowbox_requirements($phase) {
   $requirements = array();
   $t = get_t();
+
+  $shadowbox_site = 'http://www.shadowbox-js.com/';
+
   switch ($phase) {
     case 'install':
     case 'runtime':
+    $shadowbox_path = 'sites/all/plugins/shadowbox';
     $path = variable_get('shadowbox_location', $shadowbox_path);
     if (!file_exists($path)) {
       $requirements['shadowbox'] = array(
         'title' => $t('Shadowbox'),
-        'description' => $t('In order for the Shadowbox module to work correctly, the Shadowbox 2.0 Full distribution must exists at <code>%path</code>.', array('%path' => $path)),
+        'description' => $t('In order for the Shadowbox module to work, the third party Shadowbox distribution should be downloaded and its location set. It is recommended to put the third party plugin in sites/all/plugins/shadowbox but the location can be changed in the !settings. Currently looking for shadowbox in %path', array('!settings' => l('settings', 'admin/settings/shadowbox'), '%path' => $path)),
         'severity' => $phase == 'install' ? REQUIREMENT_WARNING : REQUIREMENT_ERROR,
-        'value' => $t('Install 3rd party Shadowbox software'),
+        'value' => $t('Third party !shadowbox software missing', array('!shadowbox' => l('Shadowbox', $shadowbox_site))),
       );
     }
     elseif (!file_exists($path .'/shadowbox.js') || !file_exists($path .'/adapters/shadowbox-jquery.js')) {

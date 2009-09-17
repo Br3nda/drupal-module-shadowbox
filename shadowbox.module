@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.7 2009/08/21 16:27:37 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.8 2009/09/17 19:09:54 psynaptic Exp $
 
 /**
  * @file
@@ -349,6 +349,7 @@ function shadowbox_construct_header() {
   global $language;
 
   $module_path = drupal_get_path('module', 'shadowbox');
+  $shadowbox_path = 'sites/all/plugins/shadowbox';
   $shadowbox_location = variable_get('shadowbox_location', $shadowbox_path);
 
   $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
@@ -381,7 +382,7 @@ function shadowbox_construct_header() {
       drupal_add_js($language_file);
     }
     else {
-      drupal_set_message(t('Shadowbox: A language file does not exist for your language: !language (!code). Tried to load: !file. You can resolve this by either copying an existing language file and renaming the file or creating a new language file. Using either method you must use the 2-letter code for your language so the filename has the form: shadowbox-xx.js where xx is your 2-letter language code.', array('!language' => $language->name, '!code' => $language->language, '!file' => $language_file)), 'error');
+      drupal_set_message(t('Shadowbox is not properly installed. Please check the !status', array('!status' => l('status report', 'admin/reports/status'))), 'warning');
     }
     if (!empty($image_support)) {
       drupal_add_js($shadowbox_location .'/players/shadowbox-img.js');

@@ -1,4 +1,4 @@
-$Id: INSTALL.txt,v 1.3.2.4.2.5.2.4 2009/08/20 17:28:55 psynaptic Exp $
+$Id: INSTALL.txt,v 1.3.2.4.2.5.2.5 2009/09/17 19:09:54 psynaptic Exp $
 
 
 INSTALLATION
@@ -28,6 +28,7 @@ cd sites/all/plugins
 wget http://freestylesystems.co.uk/files/shadowbox-build-3.0b.tar
 tar xf shadowbox-build-3.0b.tar
 rm shadowbox-build-3.0b.tar
+mv shadowbox-build-3.0b shadowbox
 
 
 OPTIONAL
