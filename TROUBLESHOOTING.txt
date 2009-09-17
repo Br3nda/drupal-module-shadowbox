@@ -1,4 +1,4 @@
-$Id: TROUBLESHOOTING.txt,v 1.1.2.1 2009/08/20 17:28:55 psynaptic Exp $
+$Id: TROUBLESHOOTING.txt,v 1.1.2.2 2009/09/17 21:48:23 psynaptic Exp $
 
 TROUBLESHOOTING
 -------------------------------------------------------------------------------
@@ -6,8 +6,12 @@ TROUBLESHOOTING
 - If you are experiencing any problems getting Shadowbox to work try clearing
   the cache.
 
+- If you are trying to use Shadowbox for CCK and Views you need to have an
+  imagecache preset for anything to work.
+
 - Check that the link you expect to open in Shadowbox has the required rel
-  attribute with a value of 'shadowbox' or 'lightbox':
+  attribute with a value of 'shadowbox' or 'lightbox', for example:
+
   <a href="/path/to/file.jpg" rel="shadowbox">
 
 - Translations for the Shadowbox interface are currently handled by JS files in
@@ -15,8 +19,8 @@ TROUBLESHOOTING
   site uses a language that is not already catered for, you will need to copy, 
   edit and rename one of the related language files to suit your site.
 
-  If a language file is not found for the current language you will receive an
-  error message.
+  If a language file is not found for the current language (defined by the
+  value of $language->language) English will be used as a fallback.
 
 - Check the page in Firefox with Firebug's Console enabled. If there is a
   JavaScript error it will be flagged up in the bottom right hand corner of the
@@ -27,12 +31,11 @@ TROUBLESHOOTING
 - Check the issue queue to see if anyone has posted information about the same
   issue you are experiencing. Don't forget to check the issue queue before
   starting to create a patch for a module as someone might have already done
-  most of the work for you.
+  some, if not all, of the work for you.
 
   http://drupal.org/project/issues/shadowbox
 
 - Finally, once you have done all you can to try and fix the problem yourself,
-  you may post an new issue in the queue. Please include all the details you
-  can think of that might be relevant to the issue. It helps to have a
-  meaningful title that concisely expresses the scope of the issue. Provide any
-  relevant debugging information you might have.
+  you may post a new issue in the queue. Please include all the details you can
+  think of that might be relevant to the issue. It helps to use a meaningful
+  title that concisely expresses the scope of the issue.

@@ -1,24 +1,27 @@
-$Id: INSTALL.txt,v 1.3.2.4.2.5.2.5 2009/09/17 19:09:54 psynaptic Exp $
+$Id: INSTALL.txt,v 1.3.2.4.2.5.2.6 2009/09/17 21:48:23 psynaptic Exp $
 
 
 INSTALLATION
 -------------------------------------------------------------------------------
 
-1. Follow the usual module installation procedure [1] or use Drush.
+1. Follow the usual module installation procedure [1] or use Drush [2].
+
+   [1] Installing contributed modules: http://drupal.org/node/70151
+   [2] Drush: http://drupal.org/project/drush
 
 2. Download Shadowbox 3.0 from http://www.shadowbox-js.com/download.html.
    Both build and source versions work fine.
 
 3. Extract the download and place it in sites/all/plugins so you have, for
-   example: sites/all/plugins/shadowbox-build-3.0b
+   example: sites/all/plugins/shadowbox
 
-4. View the status report at admin/logs/status to check that Shadowbox is
+4. View the status report at admin/reports/status to check that Shadowbox is
    installed correctly.
 
 5. Visit admin/settings/shadowbox to adjust the settings.
 
 
-COMMAND LINE USERS
+COMMAND LINE INSTALLATION
 -------------------------------------------------------------------------------
 
 drush dl shadowbox
