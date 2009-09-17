@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.8 2009/09/17 19:09:54 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.9 2009/09/17 19:27:40 psynaptic Exp $
 
 /**
  * @file
@@ -373,16 +373,14 @@ function shadowbox_construct_header() {
     drupal_add_js($shadowbox_location .'/adapters/shadowbox-jquery.js');
     drupal_add_js($module_path .'/shadowbox_auto.js');
     drupal_add_css($shadowbox_location .'/shadowbox.css');
-    // If language is set to xx (i.e. when using string overrides module) default to English.
-    if ($language->language == 'xx') {
-      $language->language = 'en';
-    }
+
     $language_file = $shadowbox_location .'/languages/shadowbox-'. $language->language .'.js';
     if (file_exists($language_file)) {
       drupal_add_js($language_file);
     }
     else {
-      drupal_set_message(t('Shadowbox is not properly installed. Please check the !status', array('!status' => l('status report', 'admin/reports/status'))), 'warning');
+      // If a language file doesn't exist, default to English.
+      drupal_add_js($shadowbox_location .'/languages/shadowbox-en.js';);
     }
     if (!empty($image_support)) {
       drupal_add_js($shadowbox_location .'/players/shadowbox-img.js');
