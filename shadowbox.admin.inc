@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.admin.inc,v 1.1.2.2 2009/09/17 19:09:54 psynaptic Exp $
+// $Id: shadowbox.admin.inc,v 1.1.2.3 2009/09/17 23:51:20 psynaptic Exp $
 
 /**
  * @file
@@ -14,7 +14,7 @@
  * @see shadowbox_global_settings_validate()
  */
 function shadowbox_global_settings() {
-  $shadowbox_path = 'sites/all/plugins/shadowbox';
+  $shadowbox_path = SHADOWBOX_DEFAULT_PATH;
   $shadowbox_location = variable_get('shadowbox_location', $shadowbox_path);
   $module_path = drupal_get_path('module', 'shadowbox');
 
