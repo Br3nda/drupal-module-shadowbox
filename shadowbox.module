@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.9 2009/09/17 19:27:40 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.10 2009/09/17 19:34:36 psynaptic Exp $
 
 /**
  * @file
@@ -95,7 +95,16 @@ function shadowbox_menu() {
  * Implementation of hook_init().
  */
 function shadowbox_init() {
+  if (!shadowbox_test()) {
+    drupal_set_message(t('Shadowbox is not properly installed. Please check the !status', array('!status' => l('status report', 'admin/reports/status'))), 'warning');
+  }
   shadowbox_construct_header();
+}
+
+function shadowbox_test() {
+  $shadowbox_path = 'sites/all/plugins/shadowbox';
+  $shadowbox_location = variable_get('shadowbox_location', $shadowbox_path);
+  return file_exists($shadowbox_location);
 }
 
 /**
@@ -380,7 +389,7 @@ function shadowbox_construct_header() {
     }
     else {
       // If a language file doesn't exist, default to English.
-      drupal_add_js($shadowbox_location .'/languages/shadowbox-en.js';);
+      drupal_add_js($shadowbox_location .'/languages/shadowbox-en.js');
     }
     if (!empty($image_support)) {
       drupal_add_js($shadowbox_location .'/players/shadowbox-img.js');
