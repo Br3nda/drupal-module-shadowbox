@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.16 2009/09/17 23:57:15 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.17 2009/09/18 01:19:40 psynaptic Exp $
 
 /**
  * @file
@@ -180,15 +180,16 @@ function shadowbox_theme() {
   $theme = array(
     'imagefield_image_imagecache_shadowbox' => array(
       'arguments' => array(
-        'view_preset' => NULL,
-        'field' => NULL,
+        'source' => NULL,
+        'destination' => NULL,
         'item' => NULL,
-        'attributes' => array(),
-        'gallery' => NULL,
+        'gallery_id' => array(),
+        'field_type_names' => NULL,
       ),
     ),
     'shadowbox_image' => array(
       'arguments' => array(
+        'path' => NULL,
         'alt' => '',
         'title' => '',
         'attributes' => array(),
@@ -246,10 +247,28 @@ function theme_shadowbox_image($path, $alt = '', $title = '', $attributes = NULL
 /**
  * Implementation of theme_imagefield_image_imagecache_shadowbox().
  */
-function theme_imagefield_image_imagecache_shadowbox($source, $destination, $item, $gallery_id = '') {
+function theme_imagefield_image_imagecache_shadowbox($source, $destination, $item, $gallery_id = '', $field_type_names) {
   $filepath = $item['filepath'];
+  if ($filepath == '') {
+    return;
+  }
+
   $alt = $item['data']['alt'];
-  $title = $item['data']['title'];
+
+  $title_text_setting = variable_get('shadowbox_title_text_'. $field_type_names, 0);
+  switch ($title_text_setting) {
+    case 0:
+      $title = $item['data']['title'];
+      break;
+    case 1:
+      $title = $item['data']['description'];
+      break;
+    case 2:
+      $node = node_load($item['nid']);
+      $title = $node->title;
+      break;
+  }
+
   $rel = ($gallery_id != '') ? 'shadowbox['. $gallery_id .']' : 'shadowbox';
   $link_attributes = array(
     'rel' => $rel,
@@ -259,10 +278,6 @@ function theme_imagefield_image_imagecache_shadowbox($source, $destination, $ite
     'attributes' => $link_attributes,
     'html' => TRUE,
   );
-
-  if ($filepath == '') {
-    return;
-  }
 
   if ($source == 'original') {
     $image = theme('shadowbox_image', $filepath, $alt, $title);
@@ -295,6 +310,7 @@ function theme_shadowbox_formatter_imagefield($element) {
   }
 
   $field_name = $element['#field_name'];
+  $field_type_names = $element['#type_name'] .'_'. $field_name;
   $item = $element['#item'];
   $formatter = $element['#formatter'];
   $node = node_load($element['#node']->nid);
@@ -319,7 +335,7 @@ function theme_shadowbox_formatter_imagefield($element) {
   }
 
   if ($source == 'original' || in_array($source, $presets)) {
-    $output = theme('imagefield_image_imagecache_shadowbox', $source, $destination, $item, $gallery_id);
+    $output = theme('imagefield_image_imagecache_shadowbox', $source, $destination, $item, $gallery_id, $field_type_names);
   }
 
   return $output;
@@ -672,3 +688,44 @@ function _array_to_string_values($array) {
   }
   return $output;
 }
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function shadowbox_form_alter(&$form, $form_state, $form_id) {
+  switch ($form_id) {
+    case 'content_field_edit_form':
+      if ($form['basic']['type']['#value'] == 'filefield') {
+        $field_name = $form['field_name']['#value'];
+        $type_name = $form['type_name']['#value'];
+        
+        $form['widget']['shadowbox_settings'] = array(
+          '#type' => 'fieldset',
+          '#title' => t('Shadowbox settings'),
+          '#collapsible' => TRUE,
+          '#collapsed' => TRUE,
+          '#access' => user_access('administer shadowbox'),
+          '#weight' => 10,
+        );
+        $form['widget']['shadowbox_settings']['title_text'] = array(
+          '#type' => 'select',
+          '#title' => t('Title text'),
+          '#description' => t('Select the source of the title text for this content type.'),
+          '#options' => array(
+            0 => t('Title text'),
+            1 => t('Description text'),
+            2 => t('Node title'),
+          ),
+          '#default_value' => variable_get('shadowbox_title_text_'. $type_name .'_'. $field_name, 0),
+        );
+        $form['#submit'][] = 'shadowbox_form_alter_submit';
+      }
+      break;
+  }
+}
+
+function shadowbox_form_alter_submit($form, &$form_state) {
+  $values = $form_state['values'];
+  variable_set('shadowbox_title_text_'. $values['type_name'] .'_'. $values['field_name'], $values['title_text']);
+}
+
