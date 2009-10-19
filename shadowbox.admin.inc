@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.admin.inc,v 1.1.2.3 2009/09/17 23:51:20 psynaptic Exp $
+// $Id: shadowbox.admin.inc,v 1.1.2.4 2009/10/19 11:33:20 psynaptic Exp $
 
 /**
  * @file
@@ -353,6 +353,20 @@ function shadowbox_global_settings() {
       'remove' => t('Remove'),
     ),
     '#default_value' => variable_get('shadowbox_handle_unsupported', 'link'),
+  );
+  
+  // Libraries
+  $form['shadowbox']['shadowbox_options']['libraries'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Libraries'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['shadowbox']['shadowbox_options']['libraries']['shadowbox_use_sizzle'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use Sizzle'),
+    '#description' => t('Enable loading the Sizzle.js CSS selector library.'),
+    '#default_value' => variable_get('shadowbox_use_sizzle', FALSE),
   );
 
   return system_settings_form($form);
