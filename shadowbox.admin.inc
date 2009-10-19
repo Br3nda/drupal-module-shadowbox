@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.admin.inc,v 1.1.2.4 2009/10/19 11:33:20 psynaptic Exp $
+// $Id: shadowbox.admin.inc,v 1.1.2.5 2009/10/19 11:34:51 psynaptic Exp $
 
 /**
  * @file
@@ -354,7 +354,7 @@ function shadowbox_global_settings() {
     ),
     '#default_value' => variable_get('shadowbox_handle_unsupported', 'link'),
   );
-  
+
   // Libraries
   $form['shadowbox']['shadowbox_options']['libraries'] = array(
     '#type' => 'fieldset',

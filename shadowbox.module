@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.18 2009/10/19 11:33:20 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.19 2009/10/19 11:34:51 psynaptic Exp $
 
 /**
  * @file
@@ -26,7 +26,7 @@ function shadowbox_help($path, $arg) {
   '!lightbox' => l('lightbox2', 'http://drupal.org/project/lightbox2'),
   '!thickbox' => l('thickbox', 'http://drupal.org/project/thickbox'),
   '!options' => l('options', 'admin/settings/shadowbox'),
-  '!usage' => l('official usage guide', 'http://www.shadowbox-js.com/usage.html#markup'),  
+  '!usage' => l('official usage guide', 'http://www.shadowbox-js.com/usage.html#markup'),
 ));
 
     case 'admin/settings/shadowbox':
@@ -465,26 +465,26 @@ function shadowbox_get_settings($override = array()) {
   $qtwmp_support = array_filter($qtwmp);
   $iframe_support = array_filter($iframe);
 
-	$players = array();
-	if (!empty($image_support)) {
-		$players[] = 'img';
-	}
-	if (!empty($swf_support)) {
-		$players[] = 'swf';
-	}
-	if (!empty($flv_support)) {
-		$players[] = 'flv';
-	}
-	if (!empty($quicktime_support)) {
-		$players[] = 'qt';
-	}
-	if ((!empty($wmp_support)) || (!empty($qtwmp_support))) {
-		$players[] = 'wmp';
-	}
-	if (!empty($iframe_support)) {
-		$players[] = 'html';
-		$players[] = 'iframe';
-	}
+  $players = array();
+  if (!empty($image_support)) {
+    $players[] = 'img';
+  }
+  if (!empty($swf_support)) {
+    $players[] = 'swf';
+  }
+  if (!empty($flv_support)) {
+    $players[] = 'flv';
+  }
+  if (!empty($quicktime_support)) {
+    $players[] = 'qt';
+  }
+  if ((!empty($wmp_support)) || (!empty($qtwmp_support))) {
+    $players[] = 'wmp';
+  }
+  if (!empty($iframe_support)) {
+    $players[] = 'html';
+    $players[] = 'iframe';
+  }
 
   $settings = array(
     'animate' => variable_get('shadowbox_animate', TRUE),
@@ -508,7 +508,7 @@ function shadowbox_get_settings($override = array()) {
     'modal' => !variable_get('shadowbox_overlay_listen', TRUE),
     'overlayColor' => '#'.variable_get('shadowbox_overlay_color', '000'),
     'overlayOpacity' => variable_get('shadowbox_overlay_opacity', 0.8),
-		'players' => $players,
+    'players' => $players,
     'resizeDuration' => variable_get('shadowbox_resize_duration', 0.55),
     'showMovieControls' => variable_get('shadowbox_show_movie_controls', TRUE),
     'slideshowDelay' => variable_get('shadowbox_slideshow_delay', 0),
@@ -699,7 +699,7 @@ function shadowbox_form_alter(&$form, $form_state, $form_id) {
       if ($form['basic']['type']['#value'] == 'filefield') {
         $field_name = $form['field_name']['#value'];
         $type_name = $form['type_name']['#value'];
-        
+
         $form['widget']['shadowbox_settings'] = array(
           '#type' => 'fieldset',
           '#title' => t('Shadowbox settings'),
