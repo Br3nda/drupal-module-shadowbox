@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.19 2009/10/19 11:34:51 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.20 2009/11/04 15:22:14 psynaptic Exp $
 
 /**
  * @file
@@ -425,7 +425,10 @@ function shadowbox_construct_header() {
     drupal_add_js($module_path .'/shadowbox_auto.js', 'module', 'footer');
 
     // Initialize Shadowbox.
-    drupal_add_js('Shadowbox.init(Drupal.settings.shadowbox);', 'inline', 'footer');
+    drupal_add_js('
+      Shadowbox.path = Drupal.settings.basePath + "'. $shadowbox_location .'";
+      Shadowbox.init(Drupal.settings.shadowbox);
+    ', 'inline', 'footer');
   }
 
   // Special case for the admin settings page test.
