@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.install,v 1.1.2.5.2.3.2.3 2009/09/17 23:13:24 psynaptic Exp $
+// $Id: shadowbox.install,v 1.1.2.5.2.3.2.4 2009/11/12 02:31:32 psynaptic Exp $
 
 /**
  * @file
@@ -37,7 +37,7 @@ function shadowbox_requirements($phase) {
     if (!file_exists($path)) {
       $requirements['shadowbox'] = array(
         'title' => $t('Shadowbox'),
-        'description' => $t('In order for the Shadowbox module to work, the third party Shadowbox distribution should be downloaded and its location set. It is recommended to put the third party plugin in sites/all/plugins/shadowbox but the location can be changed in the !settings. Currently looking for shadowbox in %path', array('!settings' => l('settings', 'admin/settings/shadowbox'), '%path' => $path)),
+        'description' => $t('In order for the Shadowbox module to work, the third party Shadowbox distribution should be downloaded and its location set. It is recommended to put the third party plugin in sites/all/libraries/shadowbox but the location can be changed in the !settings. Currently looking for shadowbox in %path', array('!settings' => l('settings', 'admin/settings/shadowbox'), '%path' => $path)),
         'severity' => $phase == 'install' ? REQUIREMENT_WARNING : REQUIREMENT_ERROR,
         'value' => $t('Third party !shadowbox software missing', array('!shadowbox' => l('Shadowbox', $shadowbox_site))),
       );

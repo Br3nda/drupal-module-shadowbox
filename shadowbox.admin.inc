@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.admin.inc,v 1.1.2.5 2009/10/19 11:34:51 psynaptic Exp $
+// $Id: shadowbox.admin.inc,v 1.1.2.6 2009/11/12 02:31:32 psynaptic Exp $
 
 /**
  * @file
@@ -37,7 +37,7 @@ function shadowbox_global_settings() {
     '#type' => 'textfield',
     '#title' => t('Shadowbox location'),
     '#default_value' => variable_get('shadowbox_location', $shadowbox_path),
-    '#description' => t('Enter the location of the !download. It is recommended to use e.g. sites/all/plugins/shadowbox.', array('!download' => l('third party Shadowbox distribution', 'http://www.shadowbox-js.com/download.html', array('absolute' => TRUE)))),
+    '#description' => t('Enter the location of the !download. It is recommended to use e.g. sites/all/libraries/shadowbox.', array('!download' => l('third party Shadowbox distribution', 'http://www.shadowbox-js.com/download.html', array('absolute' => TRUE)))),
   );
   $form['shadowbox']['active'] = array(
     '#type' => 'fieldset',

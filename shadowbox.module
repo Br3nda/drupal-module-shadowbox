@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.20 2009/11/04 15:22:14 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.21 2009/11/12 02:31:32 psynaptic Exp $
 
 /**
  * @file
@@ -7,7 +7,7 @@
  * modal dialogue.
  */
 
-define('SHADOWBOX_DEFAULT_PATH', 'sites/all/plugins/shadowbox');
+define('SHADOWBOX_DEFAULT_PATH', 'sites/all/libraries/shadowbox');
 
 /**
  * Implementation of hook_help().
@@ -450,6 +450,7 @@ function shadowbox_construct_header() {
 function shadowbox_get_settings($override = array()) {
   global $language;
 
+  $shadowbox_path = SHADOWBOX_DEFAULT_PATH;
   $shadowbox_location = variable_get('shadowbox_location', $shadowbox_path);
 
   $images = variable_get('shadowbox_supported_images', shadowbox_get_types('image'));
