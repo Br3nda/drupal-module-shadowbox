@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.21 2009/11/12 02:31:32 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.22 2009/12/10 00:29:51 psynaptic Exp $
 
 /**
  * @file
@@ -83,16 +83,7 @@ function shadowbox_menu() {
  * Implementation of hook_init().
  */
 function shadowbox_init() {
-  if (!shadowbox_installed()) {
-    drupal_set_message(t('Shadowbox is not properly installed. Please check the !status', array('!status' => l('status report', 'admin/reports/status'))), 'warning');
-  }
   shadowbox_construct_header();
-}
-
-function shadowbox_installed() {
-  $shadowbox_path = SHADOWBOX_DEFAULT_PATH;
-  $shadowbox_location = variable_get('shadowbox_location', $shadowbox_path);
-  return file_exists($shadowbox_location);
 }
 
 /**
