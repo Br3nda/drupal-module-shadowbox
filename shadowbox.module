@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.22 2009/12/10 00:29:51 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.23 2009/12/10 16:51:18 psynaptic Exp $
 
 /**
  * @file
@@ -104,31 +104,31 @@ function shadowbox_field_formatter_info() {
         'field types' => array('filefield'),
       );
       $formatters['shadowbox___'. $preset .'___original'] = array(
-        'label' => 'Shadowbox: '. $preset .' to original',
+        'label' => 'SB: '. $preset .' to original',
         'field types' => array('filefield'),
       );
       $formatters['shadowbox_gallery___original___'. $preset] = array(
-        'label' => 'Shadowbox Gallery (page): original to '. $preset,
+        'label' => 'SB G page: original to '. $preset,
         'field types' => array('filefield'),
       );
       $formatters['shadowbox_gallery___'. $preset .'___original'] = array(
-        'label' => 'Shadowbox Gallery (page): '. $preset .' to original',
+        'label' => 'SB G page: '. $preset .' to original',
         'field types' => array('filefield'),
       );
       $formatters['shadowbox_gallery_field___original___'. $preset] = array(
-        'label' => 'Shadowbox Gallery (field): original to '. $preset,
+        'label' => 'SB G field: original to '. $preset,
         'field types' => array('filefield'),
       );
       $formatters['shadowbox_gallery_field___'. $preset .'___original'] = array(
-        'label' => 'Shadowbox Gallery (field): '. $preset .' to original',
+        'label' => 'SB G field: '. $preset .' to original',
         'field types' => array('filefield'),
       );
       $formatters['shadowbox_gallery_nid___original___'. $preset] = array(
-        'label' => 'Shadowbox Gallery (nid): original to '. $preset,
+        'label' => 'SB G nid: original to '. $preset,
         'field types' => array('filefield'),
       );
       $formatters['shadowbox_gallery_nid___'. $preset .'___original'] = array(
-        'label' => 'Shadowbox Gallery (nid): '. $preset .' to original',
+        'label' => 'SB G nid: '. $preset .' to original',
         'field types' => array('filefield'),
       );
 
@@ -136,19 +136,19 @@ function shadowbox_field_formatter_info() {
 
         if ($preset != $preset_alt) {
           $formatters['shadowbox___'. $preset .'___'. $preset_alt] = array(
-            'label' => 'Shadowbox: '. $preset .' to '. $preset_alt,
+            'label' => 'SB: '. $preset .' to '. $preset_alt,
             'field types' => array('filefield'),
           );
           $formatters['shadowbox_gallery___'. $preset .'___'. $preset_alt] = array(
-            'label' => 'Shadowbox Gallery (page): '. $preset .' to '. $preset_alt,
+            'label' => 'SB G page: '. $preset .' to '. $preset_alt,
             'field types' => array('filefield'),
           );
           $formatters['shadowbox_gallery_field___'. $preset .'___'. $preset_alt] = array(
-            'label' => 'Shadowbox Gallery (field): '. $preset .' to '. $preset_alt,
+            'label' => 'SB G field: '. $preset .' to '. $preset_alt,
             'field types' => array('filefield'),
           );
           $formatters['shadowbox_gallery_nid___'. $preset .'___'. $preset_alt] = array(
-            'label' => 'Shadowbox Gallery (nid): '. $preset .' to '. $preset_alt,
+            'label' => 'SB G nid: '. $preset .' to '. $preset_alt,
             'field types' => array('filefield'),
           );
         }
