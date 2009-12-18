@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.23 2009/12/10 16:51:18 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.24 2009/12/18 09:10:47 psynaptic Exp $
 
 /**
  * @file
@@ -417,7 +417,7 @@ function shadowbox_construct_header() {
 
     // Initialize Shadowbox.
     drupal_add_js('
-      Shadowbox.path = Drupal.settings.basePath + "'. $shadowbox_location .'";
+      Shadowbox.path = Drupal.settings.basePath + "/'. $shadowbox_location .'";
       Shadowbox.init(Drupal.settings.shadowbox);
     ', 'inline', 'footer');
   }
