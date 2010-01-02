@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.admin.inc,v 1.1.2.6 2009/11/12 02:31:32 psynaptic Exp $
+// $Id: shadowbox.admin.inc,v 1.1.2.7 2010/01/02 10:53:30 psynaptic Exp $
 
 /**
  * @file
@@ -378,7 +378,6 @@ function shadowbox_global_settings() {
 function shadowbox_global_settings_validate($form, &$form_state) {
   $color = $form_state['values']['shadowbox_overlay_color'];
   $opacity = $form_state['values']['shadowbox_overlay_opacity'];
-  $flash_background = $form_state['values']['shadowbox_flash_background'];
   $slideshow_delay = $form_state['values']['shadowbox_slideshow_delay'];
   $resize_duration = $form_state['values']['shadowbox_resize_duration'];
   $fade_duration = $form_state['values']['shadowbox_fade_duration'];
