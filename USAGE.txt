@@ -1,8 +1,8 @@
-$Id: USAGE.txt,v 1.1.2.2 2009/09/17 23:45:38 psynaptic Exp $
+$Id: USAGE.txt,v 1.1.2.3 2010/01/03 22:52:15 psynaptic Exp $
 
 
 USAGE
--------------------------------------------------------------------------------
+=====
 
 The module is integrated with filefield's image element so you can select from
 a number of different options for displaying images uploaded to nodes and shown

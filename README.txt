@@ -1,7 +1,7 @@
-$Id: README.txt,v 1.1.2.2.2.1.2.2 2009/08/20 17:28:55 psynaptic Exp $
+$Id: README.txt,v 1.1.2.2.2.1.2.3 2010/01/03 22:52:15 psynaptic Exp $
 
 AUTHOR/MAINTAINERS
-------------------
+==================
 
 Module created by Richard Burford, aka, psynaptic
   http://drupal.org/user/93429
@@ -13,7 +13,7 @@ Shadowbox created by Michael J. I. Jackson
 
 
 DESCRIPTION
------------
+===========
 
 "Shadowbox is an online media viewer application that supports all of the web's
 most popular media publishing formats. Shadowbox is written entirely in
@@ -28,6 +28,6 @@ This module provides similar functionality to lightbox2 [1] and thickbox [2].
 
 
 CHANGELOG
----------
+=========
 
 See http://drupal.org/project/cvs/247345?branch=DRUPAL-6--3

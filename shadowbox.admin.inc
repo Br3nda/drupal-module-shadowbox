@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.admin.inc,v 1.1.2.7 2010/01/02 10:53:30 psynaptic Exp $
+// $Id: shadowbox.admin.inc,v 1.1.2.8 2010/01/03 22:52:15 psynaptic Exp $
 
 /**
  * @file
@@ -22,7 +22,7 @@ function shadowbox_global_settings() {
   $form['shadowbox']['test'] = array(
     '#type' => 'markup',
     '#prefix' => '<div id="shadowbox-settings-test">',
-    '#value' => l('Test Shadowbox with the current settings.', $module_path .'/sample.png', array('attributes' => array('rel' => 'shadowbox'))),
+    '#value' => l('Test Shadowbox with the current settings.', "$module_path/sample.png", array('attributes' => array('rel' => 'shadowbox'))),
     '#suffix' => '</div>',
   );
 

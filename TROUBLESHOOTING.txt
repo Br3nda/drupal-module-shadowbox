@@ -1,26 +1,26 @@
-$Id: TROUBLESHOOTING.txt,v 1.1.2.3 2009/09/17 23:49:38 psynaptic Exp $
+$Id: TROUBLESHOOTING.txt,v 1.1.2.4 2010/01/03 22:52:15 psynaptic Exp $
 
 TROUBLESHOOTING
--------------------------------------------------------------------------------
+===============
 
 Step 1
 
   If you are experiencing any problems getting Shadowbox to work try clearing
   the cache.
 
-Imagecache Preset Is Required
+Imagecache preset is required
 
   If you are trying to use Shadowbox for CCK and Views you need to have an
   imagecache preset for display options to show up.
 
-Check for the rel Attrbute
+Check for the rel attrbute
 
   Check that the link you expect to open in Shadowbox has the required rel
   attribute with a value of 'shadowbox' or 'lightbox', for example:
 
   <a href="/path/to/file.jpg" rel="shadowbox">
 
-Interface Translation
+Interface translation
 
   Translations for the Shadowbox interface are currently handled by JS files in
   the languages sub-directory of the downloaded Shadowbox distribution. If your
@@ -30,7 +30,7 @@ Interface Translation
   If a language file is not found for the current language (defined by the
   value of $language->language) English will be used as a fallback.
 
-Check for JavaScript Errors
+Check for JavaScript errors
 
   Check the page in Firefox with Firebug's Console enabled. If there is a
   JavaScript error it will be flagged up in the bottom right hand corner of the
@@ -38,7 +38,7 @@ Check for JavaScript Errors
   
   It is helpful to provide the error message in any issue posts you might make.
 
-Check the Issue Queue
+Check the issue queue
 
   Check the issue queue to see if anyone has posted information about the same
   issue you are experiencing. Don't forget to check the issue queue before
@@ -47,7 +47,7 @@ Check the Issue Queue
 
   http://drupal.org/project/issues/shadowbox
 
-Submit a New Issue
+Submit a new issue
 
   Finally, once you have done all you can to try and fix the problem yourself,
   you may post a new issue in the queue. Please include all the details you can

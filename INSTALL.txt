@@ -1,13 +1,13 @@
-$Id: INSTALL.txt,v 1.3.2.4.2.5.2.7 2009/11/12 02:31:32 psynaptic Exp $
+$Id: INSTALL.txt,v 1.3.2.4.2.5.2.8 2010/01/03 22:52:15 psynaptic Exp $
 
 
 INSTALLATION
--------------------------------------------------------------------------------
+============
 
 1. Follow the usual module installation procedure [1] or use Drush [2].
 
-   [1] Installing contributed modules: http://drupal.org/node/70151
-   [2] Drush: http://drupal.org/project/drush
+   [1] http://drupal.org/node/70151
+   [2] http://drupal.org/project/drush
 
 2. Download Shadowbox 3.0 from http://www.shadowbox-js.com/download.html.
    Both build and source versions work fine.
@@ -22,20 +22,20 @@ INSTALLATION
 
 
 COMMAND LINE INSTALLATION
--------------------------------------------------------------------------------
+=========================
 
 drush dl shadowbox
 drush enable shadowbox
 mkdir sites/all/libraries
 cd sites/all/libraries
-wget http://freestylesystems.co.uk/files/shadowbox-build-3.0b.tar
+wget http://freestylesystems.co.uk/files/shadowbox-build-3.0rc1.tgz
 tar xf shadowbox-build-3.0b.tar
 rm shadowbox-build-3.0b.tar
 mv shadowbox-build-3.0b shadowbox
 
 
 OPTIONAL
--------------------------------------------------------------------------------
+========
 
 Install checkall and multicolumncheckboxesradios modules. They enhance the
 admin settings form only.
