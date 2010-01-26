@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.25 2010/01/03 22:52:15 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.26 2010/01/26 15:58:41 psynaptic Exp $
 
 /**
  * @file
@@ -349,84 +349,85 @@ function shadowbox_imagecache_create_url($preset, $filepath) {
  */
 function shadowbox_construct_header() {
   global $language;
-  $shadowbox_location = variable_get('shadowbox_location', SHADOWBOX_DEFAULT_PATH);
 
   if (shadowbox_active() && variable_get('shadowbox_enabled', TRUE)) {
     // Add the base files.
-    shadowbox_library_add_js('/shadowbox.js');
-    shadowbox_library_add_js('/adapters/shadowbox-jquery.js');
-    shadowbox_library_add_css('/shadowbox.css');
+    shadowbox_library_add_js('shadowbox.js');
+    shadowbox_library_add_js('adapters/shadowbox-jquery.js');
+    shadowbox_library_add_css('shadowbox.css');
+
+    $shadowbox_location = variable_get('shadowbox_location', SHADOWBOX_DEFAULT_PATH);
 
     // Add the language file.
-    $language_file = "$shadowbox_location/languages/shadowbox-$language->language.js";
+    $language_file = "${shadowbox_location}/languages/shadowbox-$language->language.js";
     if (file_exists($language_file)) {
       drupal_add_js($language_file);
     }
     else {
       // If a language file doesn't exist, default to English.
-      shadowbox_library_add_js('/languages/shadowbox-en.js');
+      shadowbox_library_add_js('languages/shadowbox-en.js');
     }
 
     // Add the "player" files.
     if (shadowbox_media_support('images')) {
-      shadowbox_library_add_js('/players/shadowbox-img.js');
+      shadowbox_library_add_js('players/shadowbox-img.js');
     }
     if (shadowbox_media_support('swf')) {
-      shadowbox_library_add_js('/players/shadowbox-swf.js');
+      shadowbox_library_add_js('players/shadowbox-swf.js');
     }
     if (shadowbox_media_support('flv')) {
-      shadowbox_library_add_js('/players/shadowbox-flv.js');
+      shadowbox_library_add_js('players/shadowbox-flv.js');
     }
     if (shadowbox_media_support('quicktime')) {
-      shadowbox_library_add_js('/players/shadowbox-qt.js');
+      shadowbox_library_add_js('players/shadowbox-qt.js');
     }
     if (shadowbox_media_support('wmp') || shadowbox_media_support('qtwmp')) {
-      shadowbox_library_add_js('/players/shadowbox-wmp.js');
+      shadowbox_library_add_js('players/shadowbox-wmp.js');
     }
     if (shadowbox_media_support('iframe')) {
-      shadowbox_library_add_js('/players/shadowbox-html.js');
-      shadowbox_library_add_js('/players/shadowbox-iframe.js');
+      shadowbox_library_add_js('players/shadowbox-html.js');
+      shadowbox_library_add_js('players/shadowbox-iframe.js');
     }
 
     // Print the JavaScript settings to the page.
     drupal_add_js(shadowbox_get_settings(), 'setting');
 
     // Add the automatic image handling.
-    shadowbox_add_js('/shadowbox_auto.js');
+    shadowbox_add_js('shadowbox_auto.js');
 
     // Initialize Shadowbox.
     drupal_add_js('
-      Shadowbox.path = Drupal.settings.basePath + "/'. $shadowbox_location .'";
+      Shadowbox.path = "' . base_path() . $shadowbox_location . '/";
       Shadowbox.init(Drupal.settings.shadowbox);
     ', 'inline', 'footer');
-  }
 
-  // Special case for the admin settings page test.
-  if ($_GET['q'] == 'admin/settings/shadowbox'
-    || $_GET['q'] == 'admin/settings/shadowbox/global') {
-    shadowbox_add_css('/shadowbox.css');
+    shadowbox_add_css('shadowbox.css');
   }
 }
 
 function shadowbox_media_support($type) {
-  $types = array_filter(variable_get("shadowbox_supported_$type", shadowbox_get_types($type)));
+  $types = variable_get("shadowbox_supported_$type", shadowbox_get_types($type));
+  if (is_null($types)) {
+    $types = array();
+  }
+  $types = array_filter($types);
   return !empty($types);
 }
 
 function shadowbox_add_css($file) {
-  drupal_add_css(drupal_get_path('module', 'shadowbox') . $file);
+  drupal_add_css(drupal_get_path('module', 'shadowbox') . '/' . $file);
 }
 
 function shadowbox_add_js($file) {
-  drupal_add_js(drupal_get_path('module', 'shadowbox') . $file);
+  drupal_add_js(drupal_get_path('module', 'shadowbox') . '/' . $file);
 }
 
 function shadowbox_library_add_js($file) {
-  drupal_add_js(variable_get('shadowbox_location', SHADOWBOX_DEFAULT_PATH) . $file);
+  drupal_add_js(variable_get('shadowbox_location', SHADOWBOX_DEFAULT_PATH) . '/' . $file);
 }
 
 function shadowbox_library_add_css($file) {
-  drupal_add_css(variable_get('shadowbox_location', SHADOWBOX_DEFAULT_PATH) . $file);
+  drupal_add_css(variable_get('shadowbox_location', SHADOWBOX_DEFAULT_PATH) . '/' . $file);
 }
 
 /**
