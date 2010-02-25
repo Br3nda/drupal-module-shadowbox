@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.install,v 1.1.2.5.2.3.2.7 2010/02/24 18:50:33 nicholasalipaz Exp $
+// $Id: shadowbox.install,v 1.1.2.5.2.3.2.8 2010/02/25 10:41:56 nicholasalipaz Exp $
 
 /**
  * @file
@@ -41,12 +41,13 @@ function shadowbox_requirements($phase) {
         'value' => $t('Third party !shadowbox software missing', array('!shadowbox' => l('Shadowbox', $shadowbox_site))),
       );
     }
-    elseif (!file_exists("$path/shadowbox.js")) {
+    elseif (!file_exists("$path/shadowbox.js") || !file_exists("$path/adapters/shadowbox-jquery.js")) {
       $requirements['shadowbox'] = array(
         'title' => $t('Shadowbox'),
-        'description' => $t('The <code>%path</code> path exists but it appears that the directory structure underneath is incorrect. Please check that <code>%shadowbox</code> exists.',
+        'description' => $t('The <code>%path</code> path exists but it appears that the directory structure underneath is incorrect. Please check that <code>%shadowbox</code> and <code>%jquery</code> exist.',
           array('%path' => $path,
             '%shadowbox' => "$path/shadowbox.js",
+            '%jquery' => "$path/adapters/shadowbox-jquery.js",
           )),
         'severity' => $phase == 'install' ? REQUIREMENT_WARNING : REQUIREMENT_ERROR,
         'value' => $t('3rd party Shadowbox software not properly installed'),

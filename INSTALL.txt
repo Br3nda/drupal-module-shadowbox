@@ -1,4 +1,4 @@
-$Id: INSTALL.txt,v 1.3.2.4.2.5.2.10 2010/02/24 18:50:33 nicholasalipaz Exp $
+$Id: INSTALL.txt,v 1.3.2.4.2.5.2.11 2010/02/25 10:41:56 nicholasalipaz Exp $
 
 
 INSTALLATION
@@ -10,7 +10,7 @@ INSTALLATION
    [2] http://drupal.org/project/drush
 
 2. Download Shadowbox 3.0 from http://www.shadowbox-js.com/download.html.
-   Simply customize it to your needs, jQuery is suggested as the adapter, since it is included in Drupal.
+   Both build and source versions work fine.
 
 3. Extract the download and place it in sites/all/libraries so you have, for
    example: sites/all/libraries/shadowbox
@@ -28,10 +28,10 @@ drush dl shadowbox
 drush enable shadowbox
 mkdir sites/all/libraries
 cd sites/all/libraries
-wget http://freestylesystems.co.uk/sites/freestylesystems.co.uk/files/shadowbox-3.0.2.tgz
-tar xf shadowbox-3.0.2.tgz
-rm shadowbox-3.0.2.tgz
-mv shadowbox-3.0.2 shadowbox
+wget http://freestylesystems.co.uk/sites/freestylesystems.co.uk/files/shadowbox-build-3.0rc1.tgz
+tar xf shadowbox-build-3.0rc1.tgz
+rm shadowbox-build-3.0rc1.tgz
+mv shadowbox-build-3.0rc1 shadowbox
 
 
 OPTIONAL
