@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.28 2010/02/25 10:41:56 nicholasalipaz Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.27.2.1 2010/02/25 12:03:35 psynaptic Exp $
 
 /**
  * @file
@@ -353,41 +353,9 @@ function shadowbox_construct_header() {
   if (shadowbox_active() && variable_get('shadowbox_enabled', TRUE)) {
     // Add the base files.
     shadowbox_library_add_js('shadowbox.js');
-    shadowbox_library_add_js('adapters/shadowbox-jquery.js');
     shadowbox_library_add_css('shadowbox.css');
 
     $shadowbox_location = variable_get('shadowbox_location', SHADOWBOX_DEFAULT_PATH);
-
-    // Add the language file.
-    $language_file = "${shadowbox_location}/languages/shadowbox-$language->language.js";
-    if (file_exists($language_file)) {
-      drupal_add_js($language_file);
-    }
-    else {
-      // If a language file doesn't exist, default to English.
-      shadowbox_library_add_js('languages/shadowbox-en.js');
-    }
-
-    // Add the "player" files.
-    if (shadowbox_media_support('images')) {
-      shadowbox_library_add_js('players/shadowbox-img.js');
-    }
-    if (shadowbox_media_support('swf')) {
-      shadowbox_library_add_js('players/shadowbox-swf.js');
-    }
-    if (shadowbox_media_support('flv')) {
-      shadowbox_library_add_js('players/shadowbox-flv.js');
-    }
-    if (shadowbox_media_support('quicktime')) {
-      shadowbox_library_add_js('players/shadowbox-qt.js');
-    }
-    if (shadowbox_media_support('wmp') || shadowbox_media_support('qtwmp')) {
-      shadowbox_library_add_js('players/shadowbox-wmp.js');
-    }
-    if (shadowbox_media_support('iframe')) {
-      shadowbox_library_add_js('players/shadowbox-html.js');
-      shadowbox_library_add_js('players/shadowbox-iframe.js');
-    }
 
     // Print the JavaScript settings to the page.
     drupal_add_js(shadowbox_get_settings(), 'setting');
@@ -403,15 +371,6 @@ function shadowbox_construct_header() {
 
     shadowbox_add_css('shadowbox.css');
   }
-}
-
-function shadowbox_media_support($type) {
-  $types = variable_get("shadowbox_supported_$type", shadowbox_get_types($type));
-  if (is_null($types)) {
-    $types = array();
-  }
-  $types = array_filter($types);
-  return !empty($types);
 }
 
 function shadowbox_add_css($file) {
@@ -441,27 +400,6 @@ function shadowbox_library_add_css($file) {
  */
 function shadowbox_get_settings($override = array()) {
   global $language;
-
-  $players = array();
-  if (shadowbox_media_support('images')) {
-    $players[] = 'img';
-  }
-  if (shadowbox_media_support('swf')) {
-    $players[] = 'swf';
-  }
-  if (shadowbox_media_support('flv')) {
-    $players[] = 'flv';
-  }
-  if (shadowbox_media_support('quicktime')) {
-    $players[] = 'qt';
-  }
-  if (shadowbox_media_support('wmp') || shadowbox_media_support('qtwmp')) {
-    $players[] = 'wmp';
-  }
-  if (shadowbox_media_support('iframe')) {
-    $players[] = 'html';
-    $players[] = 'iframe';
-  }
 
   $settings = array(
     'animate' => variable_get('shadowbox_animate', TRUE),
@@ -557,42 +495,6 @@ function shadowbox_get_imagecache_presets($formatted = FALSE) {
     }
   }
   return $presets;
-}
-
-/**
- * Helper function to get default values for supported media types.
- *
- * @param $input
- *   The type of supported media options to return.
- *
- * @return
- *   An array with default values for each type.
- */
-function shadowbox_get_types($type) {
-  switch ($type) {
-    case 'image':
-      return array('png', 'jpg', 'jpeg', 'gif', 'bmp');
-      break;
-    case 'swf':
-      return array('swf');
-      break;
-    case 'flv':
-      return array('flv', 'mp4', 'mov');
-      break;
-    case 'quicktime':
-      return array('dv', 'mov', 'moov', 'movie', 'mp4');
-      break;
-    case 'wmp':
-      return array('asf', 'wm', 'wmv');
-      break;
-    case 'qtwmp':
-      return array('avi', 'mpg', 'mpeg');
-      break;
-    case 'iframe':
-      return array('asp', 'aspx', 'cgi', 'cfm', 'htm', 'html', 'pdf', 'pl', 'php',
-        'php3', 'php4', 'php5', 'phtml', 'rb', 'rhtml', 'shtml', 'txt', 'vbs');
-      break;
-  }
 }
 
 /**
