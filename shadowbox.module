@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.module,v 1.1.2.12.2.28.2.27.2.1 2010/02/25 12:03:35 psynaptic Exp $
+// $Id: shadowbox.module,v 1.1.2.12.2.28.2.27.2.2 2010/03/26 16:41:26 nicholasalipaz Exp $
 
 /**
  * @file
@@ -407,7 +407,7 @@ function shadowbox_get_settings($override = array()) {
     'animSequence' => variable_get('shadowbox_animation_sequence', 'wh'),
     'auto_enable_all_images' => variable_get('shadowbox_auto_enable_all_images', 0),
     'auto_gallery' => variable_get('shadowbox_auto_gallery', 0),
-    'autoplayMovies' => variable_get('shadowbox_autoplay_movies', TRUE),
+    'autoplayMovies' => (variable_get('shadowbox_autoplay_movies', 1) === 1) ? TRUE : FALSE,
     'continuous' => variable_get('shadowbox_continuous_galleries', FALSE),
     'counterLimit' => variable_get('shadowbox_counter_limit', 10),
     'counterType' => variable_get('shadowbox_counter_type', 'default'),

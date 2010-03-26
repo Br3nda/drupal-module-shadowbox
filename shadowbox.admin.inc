@@ -1,5 +1,5 @@
 <?php
-// $Id: shadowbox.admin.inc,v 1.1.2.10 2010/02/25 10:41:56 nicholasalipaz Exp $
+// $Id: shadowbox.admin.inc,v 1.1.2.9.2.1 2010/03/26 16:41:26 nicholasalipaz Exp $
 
 /**
  * @file
@@ -56,77 +56,6 @@ function shadowbox_global_settings() {
     '#title' => t('Pages'),
     '#default_value' => variable_get('shadowbox_pages', "admin*\nimg_assist*\nnode/add/*\nnode/*/edit"),
     '#description' => t("Enter one page per line as Drupal paths. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page. If the PHP-mode is chosen, enter PHP code between php tags. Note that executing incorrect PHP-code can break your Drupal site.", array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>')),
-  );
-
-  // Supported media
-  $form['shadowbox']['shadowbox_supported_media'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Supported media'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
-  $columns = array('width' => 10);
-  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_images'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('Image'),
-    '#description' => t('Supported image file extensions.'),
-    '#options' => drupal_map_assoc(shadowbox_get_types('image')),
-    '#default_value' => variable_get('shadowbox_supported_images', shadowbox_get_types('image')),
-    '#checkall' => TRUE,
-    '#multicolumn' => $columns,
-  );
-  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_swf'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('SWF'),
-    '#description' => t('Supported SWF file extensions.'),
-    '#options' => drupal_map_assoc(shadowbox_get_types('swf')),
-    '#default_value' => variable_get('shadowbox_supported_swf', array('swf')),
-    '#multicolumn' => $columns,
-  );
-  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_flv'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('FLV'),
-    '#description' => t('Supported FLV file extensions. MP4 and MOV can be opened in the FLV Player rather than Quicktime if desired. Options checked here will override those from Quicktime.'),
-    '#options' => drupal_map_assoc(shadowbox_get_types('flv')),
-    '#default_value' => variable_get('shadowbox_supported_flv', array('flv')),
-    '#checkall' => TRUE,
-    '#multicolumn' => $columns,
-  );
-  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_quicktime'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('Quicktime'),
-    '#description' => t('Movie file extensions supported by QuickTime.'),
-    '#options' => drupal_map_assoc(shadowbox_get_types('quicktime')),
-    '#default_value' => variable_get('shadowbox_supported_quicktime', shadowbox_get_types('quicktime')),
-    '#checkall' => TRUE,
-    '#multicolumn' => $columns,
-  );
-  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_wmp'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('Windows Media Player'),
-    '#description' => t('Movie file extensions supported by Windows Media Player.'),
-    '#options' => drupal_map_assoc(shadowbox_get_types('wmp')),
-    '#default_value' => variable_get('shadowbox_supported_wmp', shadowbox_get_types('wmp')),
-    '#checkall' => TRUE,
-    '#multicolumn' => $columns,
-  );
-  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_qtwmp'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('Quicktime and Windows Media Player'),
-    '#description' => t('Movie file extensions supported by both QuickTime and Windows Media Player.'),
-    '#options' => drupal_map_assoc(shadowbox_get_types('qtwmp')),
-    '#default_value' => variable_get('shadowbox_supported_qtwmp', shadowbox_get_types('qtwmp')),
-    '#checkall' => TRUE,
-    '#multicolumn' => $columns,
-  );
-  $form['shadowbox']['shadowbox_supported_media']['shadowbox_supported_iframe'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('IFrame'),
-    '#description' => t('File extensions that will be display in an iframe'),
-    '#options' => drupal_map_assoc(shadowbox_get_types('iframe')),
-    '#default_value' => variable_get('shadowbox_supported_iframe', array('asp', 'aspx', 'cgi', 'cfm', 'htm', 'html', 'pl', 'php', 'php3', 'php4', 'php5', 'phtml', 'rb', 'rhtml', 'shtml', 'vbs')),
-    '#checkall' => TRUE,
-    '#multicolumn' => $columns,
   );
 
   // Options
@@ -295,7 +224,7 @@ function shadowbox_global_settings() {
     '#type' => 'checkbox',
     '#title' => t('Auto-play movies'),
     '#description' => t('Automatically play movies when they are loaded.'),
-    '#default_value' => variable_get('shadowbox_autoplay_movies', TRUE),
+    '#default_value' => variable_get('shadowbox_autoplay_movies', 1),
   );
   $form['shadowbox']['shadowbox_options']['movies']['shadowbox_show_movie_controls'] = array(
     '#type' => 'checkbox',
