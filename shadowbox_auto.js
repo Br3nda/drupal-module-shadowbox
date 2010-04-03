@@ -1,4 +1,4 @@
-// $Id: shadowbox_auto.js,v 1.1.4.4.2.4 2010/01/04 10:00:33 psynaptic Exp $
+// $Id: shadowbox_auto.js,v 1.1.4.4.2.4.2.1 2010/04/03 05:53:55 nicholasalipaz Exp $
 
 Drupal.behaviors.shadowbox = function (context) {
   var settings = Drupal.settings.shadowbox;
@@ -12,4 +12,5 @@ Drupal.behaviors.shadowbox = function (context) {
       };
     });
   };
+  Shadowbox.setup();
 };
