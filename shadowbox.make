@@ -1,6 +1,6 @@
-; $Id: shadowbox.make,v 1.1.2.4.2.2 2010/06/15 15:31:24 nicholasalipaz Exp $
+; $Id: shadowbox.make,v 1.1.2.4.2.3 2010/06/15 15:39:46 nicholasalipaz Exp $
 ; Example drush make file for downloading third party Shadowbox library.
-; http://bit.ly/bJXFXR
+; http://bit.ly/EMVW5
 
 core = 6.x
 
